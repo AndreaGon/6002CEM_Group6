@@ -47,8 +47,6 @@ class HelpCenter extends StatelessWidget {
                       ],
                     ),
                   )
-
-
                 ],
               )
           )

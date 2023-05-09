@@ -18,7 +18,7 @@ class BookBridge extends StatelessWidget {
         theme: ThemeData(
             primaryColor: white
         ),
-        initialRoute: '/helpcenter'
+        initialRoute: '/homepage'
     );
   }
 }
