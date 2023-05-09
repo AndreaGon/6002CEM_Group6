@@ -38,15 +38,26 @@ class _HomePageState extends State<HomePage> {
                       onTap: () {},
                       child: Icon(
                         Icons.chat_outlined,
-                        size: 26.0,
                       ),
                     )
                 ),
               ]
               ),
 
-            body: Center(
-              child: Text("HOME", style: TextStyle(fontSize: 20, color: Colors.white)),
+            body: Column(
+              children: <Widget> [
+                Padding(padding: EdgeInsets.fromLTRB(180, 15, 0, 0)),
+                Text("HOME",
+                    style: TextStyle(
+                        fontSize: 36,
+                        color: darkbrown,
+                        fontWeight: FontWeight.bold
+                    )
+                ),
+                Padding(
+                  padding:EdgeInsets.fromLTRB(20, 10, 0, 0),
+                  child:Container(height:2.0, width:130.0, color:darkbrown))
+              ]
             ),
 
             drawer: Container(
