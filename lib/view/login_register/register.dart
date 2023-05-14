@@ -2,16 +2,16 @@ import 'dart:ui';
 
 import 'package:bookbridge/res/colors.dart';
 import 'package:flutter/material.dart';
-import '../../models/login_model.dart';
+import '../../models/register_model.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+class Register extends StatefulWidget {
+  const Register({Key? key}) : super(key: key);
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,44 +25,61 @@ class _LoginState extends State<Login> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox( //spacing
+                const SizedBox(
+                  //spacing
+                  height: 35,
+                ),
+                Image.asset('assets/applogo.png'),
+                const SizedBox(
+                  //spacing
                   height: 35,
                 ),
                 const Text(
-                  "Welcome To BookBridge",
-                  style: TextStyle(
-                    fontSize: 25,
-                  ),
-                ),
-                const SizedBox( //spacing
-                  height: 35,
-                ),
-                const Text(
-                  "Sign In",
+                  "Sign Up",
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
                 const Text(
-                  "Please sign in to continue.",
+                  "Create an account and start.",
                   style: TextStyle(fontSize: 20),
                 ),
-                const SizedBox( //spacing
+                const SizedBox(
+                  //spacing
                   height: 15,
                 ),
+                const TextField(), //text field for username
+                const SizedBox(
+                  //spacing
+                  height: 5,
+                ),
                 const TextField(), //text field for email
-                const SizedBox( //spacing
+                const SizedBox(
+                  height: 50,
+                ),
+                const TextField(), //text field for birth date
+                const SizedBox(
+                  //spacing
+                  height: 5,
+                ),
+                const TextField(), //text field for gender
+                const SizedBox(
+                  //spacing
                   height: 5,
                 ),
                 const TextField(), //text field for password
                 const SizedBox(
-                  height: 50,
+                  //spacing
+                  height: 5,
                 ),
-                const Text("",  //text for warning if login failure
+                const Text(
+                  "", //text for warning if login failure
                   style: TextStyle(
                     fontSize: 15,
                   ),
                 ),
-                InkWell( //sign in button
+                InkWell(
+                  //sign in button
                   onTap: () {},
                   child: Container(
                     width: 80,
@@ -72,7 +89,7 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(10)),
                     child: const Center(
                       child: Text(
-                        "Sign In",
+                        "Sign Up",
                         style: TextStyle(
                           color: white,
                           fontSize: 20,
@@ -82,7 +99,8 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                const SizedBox( //spacing
+                const SizedBox(
+                  //spacing
                   height: 50,
                 ),
                 Row(
@@ -94,13 +112,14 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     InkWell(
-                      onTap: (){},
+                      onTap: () {},
                       child: Container(
                         decoration: BoxDecoration(
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(10)),
                         child: const Center(
-                          child: Text(  //redirect to sign up page
+                          child: Text(
+                            //redirect to sign up page
                             "Sign Up",
                             style: TextStyle(
                               color: tan,
