@@ -9,9 +9,12 @@ import 'firebase_options.dart';
 
 
 void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+
 
   runApp(const BookBridge());
 }
@@ -32,8 +35,8 @@ class BookBridge extends StatelessWidget {
             primaryColor: white
         ),
         home: HomePage(),
-        initialRoute: '/',
-        routes: {'/': (context) => Login()},
+        initialRoute: '/init',
+        routes: {'/init': (context) => Login()},
     );
   }
 }
