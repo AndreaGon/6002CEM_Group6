@@ -1,10 +1,10 @@
 import 'package:bookbridge/res/colors.dart';
+import 'package:bookbridge/view/home/homepage.dart';
 import 'package:flutter/material.dart';
-import 'register.dart';
 import '../help_center/help_center.dart';
 import 'textfield.dart';
-
-import '../../models/login_model.dart';
+import 'package:bookbridge/view_model/login_viewmodel.dart';
+import 'package:bookbridge/view/login_register/register.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -16,6 +16,14 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  String loginStatusText = " ";
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  checkLogin(loginStatus){ //redirect to home page if successfully logged in
+    if (loginStatus == "ok"){
+      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +34,7 @@ class _LoginState extends State<Login> {
             image: AssetImage("assets/background_4.png"), fit: BoxFit.cover),
       ),
       child: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Colors.transparent,
         body: SafeArea(
           child: Padding(
@@ -68,25 +77,50 @@ class _LoginState extends State<Login> {
                   //spacing
                   height: 15,
                 ),
-                LoginRegisTextField( //text field for password
-                    hintText: "Enter your password",
-                    valueController: password,
-                    onChanged: (){
+                SizedBox(
+                  width: 300,
+                  child: TextField(
+                    obscureText: true,
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    controller: password,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      hintText: "Enter your password",
+                      hintStyle: const TextStyle(
+                        fontSize: 17,
+                        color: lightgrey,
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          width: 0.0,
+                          style: BorderStyle.none,
+                        ),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    onChanged: (value) {
                       setState(() {});
-                    }),
+                    },
+                  ),
+                ), //text field for password
                 const SizedBox(
                   height: 50,
                 ),
-                const Text(
-                  "", //text for warning if login failure
-                  style: TextStyle(
+                Text( //text for warning if fail to register
+                  loginStatusText,
+                  style: const TextStyle(
                     fontSize: 15,
+                    color: Colors.red,
                   ),
                 ),
                 InkWell(
                   //sign in button
                   onTap: () {
-
+                    loginStatusText = login(email.toString(), password.toString());
+                    setState(() {});//hide the progress bar again if has error and stayed on this page...
+                    checkLogin(loginStatusText);
                   },
                   child: Container(
                     width: 150,

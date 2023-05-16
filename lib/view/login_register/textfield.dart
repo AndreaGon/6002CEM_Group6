@@ -19,7 +19,6 @@ class LoginRegisTextField extends StatelessWidget {
       width: 300,
       child: TextField(
         controller: valueController,
-        keyboardType: TextInputType.number,
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,

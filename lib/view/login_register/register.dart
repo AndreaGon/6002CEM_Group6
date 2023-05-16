@@ -1,9 +1,12 @@
 import 'package:bookbridge/res/colors.dart';
+import 'package:bookbridge/view/home/homepage.dart';
 import 'package:flutter/material.dart';
 import 'textfield.dart';
 import '../help_center/help_center.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:email_validator/email_validator.dart';
 
-import '../../models/register_model.dart';
+import '../../view_model/register_viewmodel.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -16,8 +19,25 @@ class _RegisterState extends State<Register> {
   TextEditingController username = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController birthdate = TextEditingController();
-  String? _gender;
+  String? gender;
   TextEditingController password = TextEditingController();
+  String dateText = "Enter your birthdate";
+  String genderText = "Select your gender";
+  String registerStatusText = " ";
+
+  checkRegister(registerStatus){ //redirect to home page if successfully registered in
+    if (registerStatus == "ok"){
+      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+    }
+  }
+
+  hintTextColor(hint){
+    if(hint != "Enter your birthdate" && hint != "Select your gender"){
+      return Colors.black;
+    }else{
+      return lightgrey;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +106,9 @@ class _RegisterState extends State<Register> {
                             initialDate: DateTime.now(),
                             firstDate: DateTime(2000),
                             lastDate: DateTime(2050));
-                        print(date);
+                        birthdate.text = date.toString().substring(0, 10);
+                        dateText = birthdate.text;
+                        setState(() {});
                       },
                       child: Container(
                         padding: const EdgeInsets.fromLTRB(10, 7, 10, 8),
@@ -101,11 +123,12 @@ class _RegisterState extends State<Register> {
                         ),
                         child: Row(
                           children: [
-                            const Text(
-                              "Enter your birthdate",
-                              style: TextStyle(color: lightgrey, fontSize: 17),
+                            Text(
+                              dateText,
+                              style: TextStyle(
+                                  color: hintTextColor(dateText), fontSize: 17),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             IconButton(
                                 onPressed: () async {
                                   DateTime? date = await showDatePicker(
@@ -113,13 +136,19 @@ class _RegisterState extends State<Register> {
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime(2000),
                                       lastDate: DateTime(2050));
-                                  print(date);
+                                  birthdate.text =
+                                      date.toString().substring(0, 10);
+                                  dateText = birthdate.text;
+                                  setState(() {});
                                 },
-                                icon: const Icon(Icons.calendar_month, color: darkbrown,)),
+                                icon: const Icon(
+                                  Icons.calendar_month,
+                                  color: darkbrown,
+                                )),
                           ],
                         ),
                       ),
-                    ),
+                    ), //text field for birthdate
                     const SizedBox(
                       //spacing
                       height: 15,
@@ -137,47 +166,78 @@ class _RegisterState extends State<Register> {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                       child: DropdownButton(
-                          //text field for gender
-                          isExpanded: true,
-                          hint: const Text(
-                            "Select your gender",
-                            style: TextStyle(fontSize: 17, color: lightgrey),
-                          ),
-                          items: ["Male", "Female", "Prefer Not to Say"]
-                              .map(
-                                (v) => DropdownMenuItem(
-                                  value: v,
-                                  child: Text(v),
-                                ),
-                              )
-                              .toList(),
-                          value: _gender,
-                          onChanged: (v) {}),
+                        hint: Text(
+                          genderText,
+                          style: TextStyle(
+                              fontSize: 17, color: hintTextColor(genderText)),
+                        ),
+                        value: gender,
+                        //text field for gender
+                        isExpanded: true,
+                        items: ["Male", "Female", "Prefer Not to Say"]
+                            .map(
+                              (v) => DropdownMenuItem(
+                                value: v,
+                                child: Text(v),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (v) {
+                          gender = v! as String?;
+                          setState(() {});
+                        },
+                      ),
                     ), //text field for gender
                     const SizedBox(
                       //spacing
                       height: 15,
                     ),
-                    LoginRegisTextField(
-                        //text field for password
-                        hintText: "Enter your password",
-                        valueController: password,
-                        onChanged: () {
+                    SizedBox( //text field for password
+                      width: 300,
+                      child: TextField(
+                        obscureText: true,
+                        enableSuggestions: false,
+                        autocorrect: false,
+                        controller: password,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: "Enter your password",
+                          hintStyle: const TextStyle(
+                            fontSize: 17,
+                            color: lightgrey,
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              width: 0.0,
+                              style: BorderStyle.none,
+                            ),
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                        onChanged: (value) {
                           setState(() {});
-                        }), //text field for password
+                        },
+                      ),
+                    ),
                     const SizedBox(
                       //spacing
                       height: 15,
                     ),
-                    const Text(
-                      "", //text for warning if register failure
-                      style: TextStyle(
+                    Text(//text for warning if fail to register
+                    registerStatusText,
+                    style: const TextStyle(
                         fontSize: 15,
+                        color: Colors.red,
                       ),
                     ),
                     InkWell(
                       //sign in button
-                      onTap: () {},
+                      onTap: () {
+                        registerStatusText = register(username.toString(), email.toString(), birthdate.toString(), gender, password.toString());
+                        setState(() {}); //hide the progress bar again if has error and stayed on this page...
+                        checkRegister(registerStatusText);
+                      },
                       child: Container(
                         width: 150,
                         height: 60,
