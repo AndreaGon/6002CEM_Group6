@@ -1,6 +1,8 @@
+import 'package:bookbridge/view/help_center/help_center.dart';
+import 'package:bookbridge/view/home/homepage.dart';
 import 'package:flutter/material.dart';
 
-import 'package:bookbridge/view/help_center/help_center.dart';
+//import 'package:bookbridge/view/help_center/help_center.dart';
 
 import '../view/inbox/inbox.dart';
 
@@ -12,8 +14,10 @@ class MainRouter {
         return MaterialPageRoute(builder: (_)=> HelpCenter());
       case '/inbox':
         return MaterialPageRoute(builder: (_)=> Inbox());
+      case '/homepage':
+        return MaterialPageRoute(builder: (_)=> HomePage());
       default:
-        return MaterialPageRoute(builder: (_)=> HelpCenter());
+        return MaterialPageRoute(builder: (_)=> HomePage());
     }
   }
 }
