@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1086791175683",
+    "project_id": "book-bridge-d3392",
+    "storage_bucket": "book-bridge-d3392.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1086791175683:android:9290821799e61d27c28836",
+        "android_client_info": {
+          "package_name": "com.inti.bookbridge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1086791175683-1mp2vejmcnaqsm82qk4tdt6vjq2u7srq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMxTtSOaIoHPxFiPPlTPVZHQS662ZS2kw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1086791175683-1mp2vejmcnaqsm82qk4tdt6vjq2u7srq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1086791175683-ftemimhjc7ms4g9nfndap5f44and1d1b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.inti.bookbridge"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
