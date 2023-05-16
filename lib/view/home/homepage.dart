@@ -1,9 +1,13 @@
 import 'package:bookbridge/res/colors.dart';
 import 'package:bookbridge/utils/router.dart';
+import 'package:bookbridge/view/books/book_info.dart';
+import 'package:bookbridge/view/books/my_books.dart';
 import 'package:bookbridge/view/help_center/help_center.dart';
+import 'package:bookbridge/view/inbox/inbox.dart';
 import 'package:flutter/material.dart';
 
 import '../../view_model/books_viewmodel.dart';
+import '../login_register/login.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,14 +19,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    //viewModel.fetchUserData();
+    //viewModel.fetchBookData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/background_3.png"), fit: BoxFit.cover),
         ),
@@ -34,101 +38,100 @@ class _HomePageState extends State<HomePage> {
               title: null,
               backgroundColor: white,
               elevation: 0,
-              iconTheme: IconThemeData(color: darkbrown),
+              iconTheme: const IconThemeData(color: darkbrown),
               actions: <Widget> [
                 Padding(
-                    padding: EdgeInsets.only(right: 20.0),
+                    padding: const EdgeInsets.only(right: 20.0),
                     child: GestureDetector(
-                      onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));},
-                      child: Icon(Icons.chat_outlined,),
+                      onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => Inbox()));},
+                      child: const Icon(Icons.chat_outlined,),
                     )
                 ),
               ]
               ),
 
             //list tile of side menu
-            drawer: Container(
-              child: Drawer(
-                  child: ListView(padding: const EdgeInsets.all(0), children: [
-                    const DrawerHeader(
-                        decoration: BoxDecoration(color: white),
-                        //BoxDecoration
-                        child: Image(
-                            image: AssetImage("assets/applogo.png"),
-                            height: 20,
-                            width: 20)),
-                    ListTile(
-                      tileColor: darkbrown,
-                      leading: const Icon(Icons.person),
-                      iconColor: Colors.white,
-                      title: const Text(' Home ',
-                          style: TextStyle(fontSize: 20, color: Colors.white)),
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                      },
-                    ),
-                    ListTile(
-                      tileColor: darkbrown,
-                      leading: const Icon(Icons.book),
-                      iconColor: Colors.white,
-                      title: const Text(' My Books ',
-                          style: TextStyle(fontSize: 20, color: Colors.white)),
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                      },
-                    ),
-                    ListTile(
-                      tileColor: darkbrown,
-                      leading: const Icon(Icons.person_outlined),
-                      iconColor: Colors.white,
-                      title: const Text(' Profile ',
-                          style: TextStyle(fontSize: 20, color: Colors.white)),
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                      },
-                    ),
-                    ListTile(
-                      tileColor: darkbrown,
-                      leading: const Icon(Icons.help),
-                      iconColor: Colors.white,
-                      title: const Text(' Help ',
-                          style: TextStyle(fontSize: 20, color: Colors.white)),
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => HelpCenter()));
-                        }
-                    ),
-                    ListTile(
-                      tileColor: darkbrown,
-                      leading: const Icon(Icons.logout),
-                      iconColor: Colors.white,
-                      title: const Text(' Sign Out ',
-                          style: TextStyle(fontSize: 20, color: Colors.white)),
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                        },
-                    ),
-                      ]
-                      )
+            drawer: Drawer(
+                child: ListView(padding: const EdgeInsets.all(0), children: [
+                  const DrawerHeader(
+                      decoration: BoxDecoration(color: white),
+                      //BoxDecoration
+                      child: Image(
+                          image: AssetImage("assets/applogo.png"),
+                          height: 20,
+                          width: 20)),
+                  ListTile(
+                    tileColor: darkbrown,
+                    leading: const Icon(Icons.person),
+                    iconColor: Colors.white,
+                    title: const Text(' Home ',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                    },
                   ),
+                  ListTile(
+                    tileColor: darkbrown,
+                    leading: const Icon(Icons.book),
+                    iconColor: Colors.white,
+                    title: const Text(' My Books ',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MyBooks()));
+                    },
+                  ),
+                  ListTile(
+                    tileColor: darkbrown,
+                    leading: const Icon(Icons.person_outlined),
+                    iconColor: Colors.white,
+                    title: const Text(' Profile ',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                    },
+                  ),
+                  ListTile(
+                    tileColor: darkbrown,
+                    leading: const Icon(Icons.help),
+                    iconColor: Colors.white,
+                    title: const Text(' Help ',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HelpCenter()));
+                      }
+                  ),
+                  ListTile(
+                    tileColor: darkbrown,
+                    leading: const Icon(Icons.logout),
+                    iconColor: Colors.white,
+                    title: const Text(' Sign Out ',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+                      },
+                  ),
+                    ]
+                    )
                 ),
 
             //Page content
             body: Container(
-              margin: EdgeInsets.all(25.0),
+              margin: const EdgeInsets.all(15.0),
               child: Column(
                 children: [
 
                 //Page title
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("HOME", textAlign: TextAlign.left, style: TextStyle(fontSize: 36, color: darkbrown, fontWeight: FontWeight.bold)),
-                ),
-
-                //Underline
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(margin: const EdgeInsets.fromLTRB(0, 10, 0, 10), height:2.0, width:160, color:darkbrown, alignment: Alignment.centerLeft),
-                ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      margin: const EdgeInsets.all(15.0),
+                      decoration: const BoxDecoration(
+                          border: Border(bottom: BorderSide(width: 5, color: chocolate),)
+                      ),
+                      child: const Text("Home",
+                          style: TextStyle(height: 2, fontSize: 30, color: darkbrown, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
 
                 //Search box
                 Padding(
@@ -160,7 +163,7 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               //Book cover
                               Container(
-                                padding: EdgeInsets.all(20),
+                                padding: const EdgeInsets.all(20),
                                 height: 330,
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -173,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                               //Book name and price
                               ListTile(
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => BookInfo()));
                                   },
                                 title: Text("Book Name"),
                                 subtitle: Text("Book Price"),
