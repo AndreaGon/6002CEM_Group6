@@ -116,20 +116,18 @@ class _HomePageState extends State<HomePage> {
             body: Container(
               margin: EdgeInsets.all(25.0),
               child: Column(
-                children: <Widget> [
+                children: [
 
                 //Page title
-                Align(
+                const Align(
                   alignment: Alignment.centerLeft,
-                  child: Container(
-                    child: Text("HOME", textAlign: TextAlign.left, style: TextStyle(fontSize: 36, color: darkbrown, fontWeight: FontWeight.bold)),
-                  ),
+                  child: Text("HOME", textAlign: TextAlign.left, style: TextStyle(fontSize: 36, color: darkbrown, fontWeight: FontWeight.bold)),
                 ),
 
                 //Underline
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Container(margin: EdgeInsets.fromLTRB(0, 10, 0, 10), height:2.0, width:160, color:darkbrown, alignment: Alignment.centerLeft),
+                  child: Container(margin: const EdgeInsets.fromLTRB(0, 10, 0, 10), height:2.0, width:160, color:darkbrown, alignment: Alignment.centerLeft),
                 ),
 
                 //Search box
@@ -152,173 +150,51 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
-                Center(
-                  child: MergeSemantics(
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Card(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: <Widget>[
-                                Material(
-                                  color: Colors.white,
-                                  elevation: 0,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Container(
+                //Card list
+                Expanded(child: ListView(
+                    padding: const EdgeInsets.all(8),
+                    children: <Widget>[
+                      Card(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),),
+                        child:Column(
+                            children: [
+                              //Book cover
+                              Container(
+                                padding: EdgeInsets.all(20),
+                                height: 330,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    image: DecorationImage(fit: BoxFit.cover, image: AssetImage("assets/book_cover.png"),),
+                                  )
+                                )
+                              ),
 
-                                      decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/applogo.png"))),
-                                    ),
-
-
-                                ),
-
-                              //   Padding(
-                              //       padding: EdgeInsets.fromLTRB(20, 10.0, 20.0, 20.0),
-                              //       child: Column(
-                              //         crossAxisAlignment: CrossAxisAlignment.stretch,
-                              //         children: <Widget>[
-                              //           TextField(
-                              //             decoration: InputDecoration(
-                              //               labelText: "Email",
-                              //               hintText: "example@mail.com",
-                              //             ),
-                              //             autofocus: true,
-                              //           ),
-                              //           TextField(
-                              //             decoration: InputDecoration(
-                              //               labelText: "Password",
-                              //             ),
-                              //             autofocus: true,
-                              //           ),
-                              //           SizedBox(
-                              //             width: double.infinity,
-                              //             height: 100,
-                              //             // child: new RaisedButton(
-                              //             //   color: Colors.blue,
-                              //             //   child: Text(
-                              //             //     "Sign In",
-                              //             //     style: TextStyle(
-                              //             //       color: Colors.white,
-                              //             //       fontFamily: 'Raleway',
-                              //             //       fontSize: 22.0,
-                              //             //     ),
-                              //             //   ),
-                              //             //   onPressed: () => print('Sign In'),
-                              //             // ),
-                              //           )
-                              //         ],
-                              //       )),
-                                )],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                              //Book name and price
+                              ListTile(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                                  },
+                                title: Text("Book Name"),
+                                subtitle: Text("Book Price"),
+                                trailing: Icon(Icons.arrow_forward_ios),
+                              )
+                            ]
+                        )
+                      )
+                    ]
+                )
                 )
 
 
-                // Align(
-                //   alignment: Alignment.center,
-                //   child: Row(
-                //     mainAxisSize: MainAxisSize.max,
-                //     children: [
-                //       Card(
-                //           elevation: 0,
-                //           shape: RoundedRectangleBorder(
-                //               side: BorderSide(color: Theme.of(context).colorScheme.outline),
-                //               borderRadius: const BorderRadius.all(Radius.circular(12))
-                //           ),
-                //         child: Row(
-                //           mainAxisSize: MainAxisSize.max,
-                //           children: [
-                //             SizedBox(
-                //               //width: 200,
-                //               child: Center(child: Text('Outlined Card')),
-                //             )
-                //
-                //           ],
-                //
-                //           ),
-                //         ),
-                //
-                //
-                //
-                //
-                //
-                //
-                //     ],
-                //   ),
-                //
-                // ),
-
-                //Book List
-                // Row(
-                //   mainAxisSize: MainAxisSize.max,
-                //   children: <Widget> [
-                //     Container(
-                //       margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                //       decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white),
-                //
-                //
-                //     )
-                //   ],
-                // )
-
-                // Align(
-                //   alignment: Alignment.center,
-                //     //background card
-                //     child: Row(
-                //         mainAxisSize: MainAxisSize.max,
-                //         children: <Widget> [
-                //           Container(
-                //               margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                //               decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white),
-                //
-                //               // child: Align(
-                //               // alignment: Alignment.center,
-                //               //   child: Container(
-                //               //       width: 200,
-                //               //       decoration: const BoxDecoration(
-                //               //           image: DecorationImage(
-                //               //               image: AssetImage("assets/applogo.png"), fit: BoxFit.cover)
-                //               //       )
-                //               //   ),
-                //               // )
-                //
-                //
-                //
-                //           )
-                //         ]
-                //
-                //
-                //
-                //
-                //
-                //     )
-                //
-                //
-                //
-                //
-                //
-                // ),
-
-
-
-
-
-
                 ]
-              )
             )
+        )
         )
     );
   }
+}
+
 
 // Widget _getUsersListView(List<User>? users) {
 //   return ListView.builder(
@@ -369,4 +245,4 @@ class _HomePageState extends State<HomePage> {
 //   void _goToDetailScreen(BuildContext context, User item) {
 //     Navigator.pushNamed(context, UserDetailsScreen.id, arguments: item);
 //   }
-}
+
