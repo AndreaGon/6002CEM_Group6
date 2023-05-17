@@ -182,7 +182,7 @@ class BookInfo extends StatelessWidget{
                                         alignment: Alignment.centerLeft,
                                         child: Container(
                                             padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                            child: Text("Summary: The story follows the life of 17-year-old Emily as she navigates the challenges of her final year of high school, and the difficult circumstances that arise when her family is forced to move to a small town in the middle of winter. The story follows the life of 17-year-old Emily as she navigates the challenges of her final year of high school, and the difficult circumstances that arise when her family is forced to move to a small town in the middle of winter.", style: TextStyle(fontSize: 16, ))
+                                            child: Text("Summary: The story follows the life of 17-year-old Emily as she navigates the challenges of her final year of high school, and the difficult circumstances that arise when her family is forced to move to a small town in the middle of winter.", style: TextStyle(fontSize: 16, ))
                                         ),
                                       ),
 
