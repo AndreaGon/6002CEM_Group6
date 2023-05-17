@@ -129,7 +129,7 @@ class MyBooks extends StatelessWidget{
                                 child:Container(
                                   width: double.infinity,
                                   //Book cover
-                                  height: 200,
+                                  height: 150,
                                     alignment: Alignment.centerLeft,
                                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                                     child: Row(
