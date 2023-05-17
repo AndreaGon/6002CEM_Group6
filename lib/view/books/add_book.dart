@@ -1,4 +1,3 @@
-import 'package:bookbridge/view/login_register/textfield.dart';
 import 'package:flutter/material.dart';
 
 import '../../res/colors.dart';
@@ -291,6 +290,41 @@ class _AddBookState extends State<AddBook> {
                                                 )
                                             )
                                         )
+                                      ]
+                                  ),
+                                )
+                            ),
+
+                            //Book price
+                            Card(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                child:Container(
+                                  width: double.infinity,
+                                  height: 70,
+                                  alignment: Alignment.centerLeft,
+                                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                  child: Row(
+                                      children: [
+                                        const Text('Price: RM', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                                        SizedBox(
+                                          width: 200,
+                                          child: TextField(
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: Colors.white,
+                                              hintText: '0',
+                                              hintStyle: const TextStyle(fontSize: 16, color: lightgrey),
+                                              border: OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                  width: 0.0,
+                                                  style: BorderStyle.none,
+                                                ),
+                                                borderRadius: BorderRadius.circular(20.0),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ]
                                   ),
                                 )
