@@ -1,42 +1,32 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:email_validator/email_validator.dart';
-import 'package:bookbridge/view/login_register/login.dart';
 import 'package:flutter/material.dart';
 
 
-String loginEmail = "";
-String loginPassword = "";
+class LoginVM{
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-//function for firebase auth verify and login
-login (email, password) {
-  if(email != null && password != null){
-    bool isValid = false;
-    if ((regex.hasMatch(email)))
-      isValid = true;
-
-    if(isValid){
-        firebaseLogin();
-        return "ok";
-    }else{
-      return "Please enter a valid email!";
+  Future login(BuildContext context,String email, String password) async{
+    try{
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+      );
+      return "ok";
+    }on FirebaseAuthException catch(e){
+      print(e);
+      if(e.code == 'user-not-found'){
+          return "User not found, check your email or register an account...";
+      }
+      else if(e.code == 'wrong-password'){
+          return "Incorrect password...";
+      }
+      else{
+        return "Some error occurred...";
+      }
     }
   }
-  else{
-    return "Please fill in all the fields!";
-  }
-
 }
 
-Future firebaseLogin() async{
-  try {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: loginEmail.trim(),
-      password: loginPassword.trim(),
-    );
-  } on FirebaseAuthException catch (e) {
-    return e.toString();
-  }
-}
 
 
 

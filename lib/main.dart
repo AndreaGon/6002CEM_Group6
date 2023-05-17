@@ -1,5 +1,6 @@
 import 'package:bookbridge/view/home/homepage.dart';
 import 'package:bookbridge/view/login_register/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:bookbridge/res/colors.dart';
 import 'package:bookbridge/utils/router.dart';
@@ -31,7 +32,16 @@ class BookBridge extends StatelessWidget {
           textTheme: GoogleFonts.montserratTextTheme(Theme.of(context).textTheme,),
             primaryColor: white
         ),
-        home: HomePage(),
+        home: StreamBuilder<User?>(  //currently not working?
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot){
+            if(snapshot.hasData){
+              return HomePage();
+            }else{
+              return const Login();
+            }
+          },
+        ),
         initialRoute: '/init',
         routes: {'/init': (context) => Login()},
     );
