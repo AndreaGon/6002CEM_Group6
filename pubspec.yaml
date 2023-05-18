@@ -72,6 +72,8 @@ flutter:
    - assets/background_5.png
    - assets/applogo.png
    - assets/login_loading.svg
+   - assets/book_cover.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

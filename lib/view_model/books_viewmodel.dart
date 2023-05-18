@@ -1,21 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class BooksVM extends ChangeNotifier {
-  // final _myRepo = UserRepo();
-  //
-  // ApiResponse<UserModel> userModel = ApiResponse.loading();
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-  // void _setUserMain(ApiResponse<UserModel> response) {
-  //   print("Response: $response");
-  //   userModel = response;
-  //   notifyListeners();
-  // }
-  //
-  // Future<void> fetchUserData() async {
-  //   _setUserMain(ApiResponse.loading());
-  //   _myRepo
-  //       .getUserData()
-  //       .then((value) => _setUserMain(ApiResponse.completed(value)))
-  //       .onError((error, stackTrace) => _setUserMain(ApiResponse.error(error.toString())));
-  //
+// Future<void> addUser() {
+//   // Call the user's CollectionReference to add a new user
+//   return users
+//       .add({
+//     'full_name': fullName, // John Doe
+//     'company': company, // Stokes and Sons
+//     'age': age // 42
+//   })
+//       .then((value) => print("User Added"))
+//       .catchError((error) => print("Failed to add user: $error"));
+// }
 }
+

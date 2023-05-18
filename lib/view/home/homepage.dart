@@ -1,9 +1,13 @@
 import 'package:bookbridge/res/colors.dart';
 import 'package:bookbridge/utils/router.dart';
+import 'package:bookbridge/view/books/book_info.dart';
+import 'package:bookbridge/view/books/my_books.dart';
 import 'package:bookbridge/view/help_center/help_center.dart';
+import 'package:bookbridge/view/inbox/inbox.dart';
 import 'package:flutter/material.dart';
 
 import '../../view_model/books_viewmodel.dart';
+import '../login_register/login.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,14 +19,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    //viewModel.fetchUserData();
+    //viewModel.fetchBookData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/background_3.png"), fit: BoxFit.cover),
         ),
@@ -34,103 +38,100 @@ class _HomePageState extends State<HomePage> {
               title: null,
               backgroundColor: white,
               elevation: 0,
-              iconTheme: IconThemeData(color: darkbrown),
+              iconTheme: const IconThemeData(color: darkbrown),
               actions: <Widget> [
                 Padding(
-                    padding: EdgeInsets.only(right: 20.0),
+                    padding: const EdgeInsets.only(right: 20.0),
                     child: GestureDetector(
-                      onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));},
-                      child: Icon(Icons.chat_outlined,),
+                      onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => Inbox()));},
+                      child: const Icon(Icons.chat_outlined,),
                     )
                 ),
               ]
               ),
 
             //list tile of side menu
-            drawer: Container(
-              child: Drawer(
-                  child: ListView(padding: const EdgeInsets.all(0), children: [
-                    const DrawerHeader(
-                        decoration: BoxDecoration(color: white),
-                        //BoxDecoration
-                        child: Image(
-                            image: AssetImage("assets/applogo.png"),
-                            height: 20,
-                            width: 20)),
-                    ListTile(
-                      tileColor: darkbrown,
-                      leading: const Icon(Icons.person),
-                      iconColor: Colors.white,
-                      title: const Text(' Home ',
-                          style: TextStyle(fontSize: 20, color: Colors.white)),
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                      },
-                    ),
-                    ListTile(
-                      tileColor: darkbrown,
-                      leading: const Icon(Icons.book),
-                      iconColor: Colors.white,
-                      title: const Text(' My Books ',
-                          style: TextStyle(fontSize: 20, color: Colors.white)),
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                      },
-                    ),
-                    ListTile(
-                      tileColor: darkbrown,
-                      leading: const Icon(Icons.person_outlined),
-                      iconColor: Colors.white,
-                      title: const Text(' Profile ',
-                          style: TextStyle(fontSize: 20, color: Colors.white)),
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                      },
-                    ),
-                    ListTile(
-                      tileColor: darkbrown,
-                      leading: const Icon(Icons.help),
-                      iconColor: Colors.white,
-                      title: const Text(' Help ',
-                          style: TextStyle(fontSize: 20, color: Colors.white)),
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => HelpCenter()));
-                        }
-                    ),
-                    ListTile(
-                      tileColor: darkbrown,
-                      leading: const Icon(Icons.logout),
-                      iconColor: Colors.white,
-                      title: const Text(' Sign Out ',
-                          style: TextStyle(fontSize: 20, color: Colors.white)),
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                        },
-                    ),
-                      ]
-                      )
+            drawer: Drawer(
+                child: ListView(padding: const EdgeInsets.all(0), children: [
+                  const DrawerHeader(
+                      decoration: BoxDecoration(color: white),
+                      //BoxDecoration
+                      child: Image(
+                          image: AssetImage("assets/applogo.png"),
+                          height: 20,
+                          width: 20)),
+                  ListTile(
+                    tileColor: darkbrown,
+                    leading: const Icon(Icons.person),
+                    iconColor: Colors.white,
+                    title: const Text(' Home ',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                    },
                   ),
+                  ListTile(
+                    tileColor: darkbrown,
+                    leading: const Icon(Icons.book),
+                    iconColor: Colors.white,
+                    title: const Text(' My Books ',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MyBooks()));
+                    },
+                  ),
+                  ListTile(
+                    tileColor: darkbrown,
+                    leading: const Icon(Icons.person_outlined),
+                    iconColor: Colors.white,
+                    title: const Text(' Profile ',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                    },
+                  ),
+                  ListTile(
+                    tileColor: darkbrown,
+                    leading: const Icon(Icons.help),
+                    iconColor: Colors.white,
+                    title: const Text(' Help ',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HelpCenter()));
+                      }
+                  ),
+                  ListTile(
+                    tileColor: darkbrown,
+                    leading: const Icon(Icons.logout),
+                    iconColor: Colors.white,
+                    title: const Text(' Sign Out ',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+                      },
+                  ),
+                    ]
+                    )
                 ),
 
             //Page content
             body: Container(
-              margin: EdgeInsets.all(25.0),
+              margin: const EdgeInsets.all(15.0),
               child: Column(
-                children: <Widget> [
+                children: [
 
                 //Page title
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    child: Text("HOME", textAlign: TextAlign.left, style: TextStyle(fontSize: 36, color: darkbrown, fontWeight: FontWeight.bold)),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      margin: const EdgeInsets.all(15.0),
+                      decoration: const BoxDecoration(
+                          border: Border(bottom: BorderSide(width: 5, color: chocolate),)
+                      ),
+                      child: const Text("Home",
+                          style: TextStyle(height: 2, fontSize: 30, color: darkbrown, fontWeight: FontWeight.bold)),
+                    ),
                   ),
-                ),
-
-                //Underline
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(margin: EdgeInsets.fromLTRB(0, 10, 0, 10), height:2.0, width:160, color:darkbrown, alignment: Alignment.centerLeft),
-                ),
 
                 //Search box
                 Padding(
@@ -152,173 +153,51 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
-                Center(
-                  child: MergeSemantics(
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Card(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: <Widget>[
-                                Material(
-                                  color: Colors.white,
-                                  elevation: 0,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Container(
+                //Card list
+                Expanded(child: ListView(
+                    padding: const EdgeInsets.all(8),
+                    children: <Widget>[
+                      Card(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),),
+                        child:Column(
+                            children: [
+                              //Book cover
+                              Container(
+                                padding: const EdgeInsets.all(20),
+                                height: 330,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    image: DecorationImage(fit: BoxFit.cover, image: AssetImage("assets/book_cover.png"),),
+                                  )
+                                )
+                              ),
 
-                                      decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/applogo.png"))),
-                                    ),
-
-
-                                ),
-
-                              //   Padding(
-                              //       padding: EdgeInsets.fromLTRB(20, 10.0, 20.0, 20.0),
-                              //       child: Column(
-                              //         crossAxisAlignment: CrossAxisAlignment.stretch,
-                              //         children: <Widget>[
-                              //           TextField(
-                              //             decoration: InputDecoration(
-                              //               labelText: "Email",
-                              //               hintText: "example@mail.com",
-                              //             ),
-                              //             autofocus: true,
-                              //           ),
-                              //           TextField(
-                              //             decoration: InputDecoration(
-                              //               labelText: "Password",
-                              //             ),
-                              //             autofocus: true,
-                              //           ),
-                              //           SizedBox(
-                              //             width: double.infinity,
-                              //             height: 100,
-                              //             // child: new RaisedButton(
-                              //             //   color: Colors.blue,
-                              //             //   child: Text(
-                              //             //     "Sign In",
-                              //             //     style: TextStyle(
-                              //             //       color: Colors.white,
-                              //             //       fontFamily: 'Raleway',
-                              //             //       fontSize: 22.0,
-                              //             //     ),
-                              //             //   ),
-                              //             //   onPressed: () => print('Sign In'),
-                              //             // ),
-                              //           )
-                              //         ],
-                              //       )),
-                                )],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                              //Book name and price
+                              ListTile(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => BookInfo()));
+                                  },
+                                title: Text("Book Name"),
+                                subtitle: Text("Book Price"),
+                                trailing: Icon(Icons.arrow_forward_ios),
+                              )
+                            ]
+                        )
+                      )
+                    ]
+                )
                 )
 
 
-                // Align(
-                //   alignment: Alignment.center,
-                //   child: Row(
-                //     mainAxisSize: MainAxisSize.max,
-                //     children: [
-                //       Card(
-                //           elevation: 0,
-                //           shape: RoundedRectangleBorder(
-                //               side: BorderSide(color: Theme.of(context).colorScheme.outline),
-                //               borderRadius: const BorderRadius.all(Radius.circular(12))
-                //           ),
-                //         child: Row(
-                //           mainAxisSize: MainAxisSize.max,
-                //           children: [
-                //             SizedBox(
-                //               //width: 200,
-                //               child: Center(child: Text('Outlined Card')),
-                //             )
-                //
-                //           ],
-                //
-                //           ),
-                //         ),
-                //
-                //
-                //
-                //
-                //
-                //
-                //     ],
-                //   ),
-                //
-                // ),
-
-                //Book List
-                // Row(
-                //   mainAxisSize: MainAxisSize.max,
-                //   children: <Widget> [
-                //     Container(
-                //       margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                //       decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white),
-                //
-                //
-                //     )
-                //   ],
-                // )
-
-                // Align(
-                //   alignment: Alignment.center,
-                //     //background card
-                //     child: Row(
-                //         mainAxisSize: MainAxisSize.max,
-                //         children: <Widget> [
-                //           Container(
-                //               margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                //               decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white),
-                //
-                //               // child: Align(
-                //               // alignment: Alignment.center,
-                //               //   child: Container(
-                //               //       width: 200,
-                //               //       decoration: const BoxDecoration(
-                //               //           image: DecorationImage(
-                //               //               image: AssetImage("assets/applogo.png"), fit: BoxFit.cover)
-                //               //       )
-                //               //   ),
-                //               // )
-                //
-                //
-                //
-                //           )
-                //         ]
-                //
-                //
-                //
-                //
-                //
-                //     )
-                //
-                //
-                //
-                //
-                //
-                // ),
-
-
-
-
-
-
                 ]
-              )
             )
+        )
         )
     );
   }
+}
+
 
 // Widget _getUsersListView(List<User>? users) {
 //   return ListView.builder(
@@ -369,4 +248,4 @@ class _HomePageState extends State<HomePage> {
 //   void _goToDetailScreen(BuildContext context, User item) {
 //     Navigator.pushNamed(context, UserDetailsScreen.id, arguments: item);
 //   }
-}
+
