@@ -174,7 +174,7 @@ class MyBooks extends StatelessWidget{
 
                       InkWell(
                         //chat button
-                          onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => AddBook())); },
+                          onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => AddBook(name: '', book_cover: '', author: '', published_year: '', other_img: '', price: '', summary: '', uploaded_by: '',))); },
                           child: Container(
                               padding: const EdgeInsets.all(20),
                               width: double.maxFinite,
