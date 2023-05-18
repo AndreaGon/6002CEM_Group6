@@ -1,6 +1,7 @@
 
 import 'package:bookbridge/repository/books_repo.dart';
 import 'package:bookbridge/view/books/book_info.dart';
+import 'package:bookbridge/view_model/books_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -21,28 +22,6 @@ class AddBook extends StatelessWidget {
   TextEditingController summaryController = TextEditingController();
   TextEditingController priceController = TextEditingController();
 
-  //firebase
-  final String name;
-  final String book_cover;
-  final String author;
-  final String published_year;
-  final String other_img;
-  final String price;
-  final String summary;
-  final String uploaded_by;
-
-  //firebase
-  AddBook({
-    super.key,
-    required this.name,
-    required this.book_cover,
-    required this.author,
-    required this.published_year,
-    required this.other_img,
-    required this.price,
-    required this.summary,
-    required this.uploaded_by});
-
   @override
   Widget build(BuildContext context) {
 
@@ -50,22 +29,22 @@ class AddBook extends StatelessWidget {
     // Create a CollectionReference called users that references the firestore collection
     CollectionReference books = FirebaseFirestore.instance.collection('books');
 
-    Future<void> addBook() {
-      // Call the user's CollectionReference to add a new user
-      return books
-          .add({
-        'name': nameController.text,
-        'book_cover': 'book_cover',
-        'author': authorController.text,
-        'published_year': publishedyearController.text,
-        'other_img': 'other_img',
-        'price': priceController.text,
-        'summary': summaryController.text,
-        'uploaded_by': 'user1',
-      })
-          .then((value) => print("Book Added"))
-          .catchError((error) => print("Failed to add book: $error"));
-    }
+    // Future<void> uploadBook() {
+    //   // Call the user's CollectionReference to add a new user
+    //   return books
+    //       .add({
+    //     'name': nameController.text,
+    //     'book_cover': 'book_cover',
+    //     'author': authorController.text,
+    //     'published_year': publishedyearController.text,
+    //     'other_img': 'other_img',
+    //     'price': priceController.text,
+    //     'summary': summaryController.text,
+    //     'uploaded_by': 'user1',
+    //   })
+    //       .then((value) => print("Book Added"))
+    //       .catchError((error) => print("Failed to add book: $error"));
+    // }
 
     return Container(
         decoration: const BoxDecoration(
@@ -431,7 +410,7 @@ class AddBook extends StatelessWidget {
                       ),
 
                       InkWell(
-                          onTap: () { Navigator.of(context).pop(addBook()); },
+                          onTap: () { Navigator.of(context).pop( BooksVM().uploadBook() ); },
                           child: Container(
                             padding: const EdgeInsets.all(20),
                             width: double.maxFinite,

@@ -24,7 +24,7 @@ class MainRouter {
       case '/bookinfo':
         return MaterialPageRoute(builder: (_)=> BookInfo());
       case '/addbook':
-        return MaterialPageRoute(builder: (_)=> AddBook(name: '', book_cover: '', author: '', published_year: '', other_img: '', price: '', summary: '', uploaded_by: '',));
+        return MaterialPageRoute(builder: (_)=> AddBook());
       default:
         return MaterialPageRoute(builder: (_)=> HomePage());
     }
