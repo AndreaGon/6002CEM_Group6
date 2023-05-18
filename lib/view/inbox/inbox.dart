@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bookbridge/res/colors.dart';
+
+import '../../res/widgets/navigation.dart';
 class Inbox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -24,70 +26,7 @@ class Inbox extends StatelessWidget {
                   ),
                 ]
             ),
-            drawer: Container(
-              child: Drawer(
-                  child: ListView(padding: const EdgeInsets.all(0), children: [
-                    const DrawerHeader(
-                        decoration: BoxDecoration(color: white),
-                        //BoxDecoration
-                        child: Image(
-                            image: AssetImage("assets/applogo.png"),
-                            height: 20,
-                            width: 20)),
-                    ListTile(
-                      tileColor: darkbrown,
-                      leading: const Icon(Icons.person),
-                      iconColor: Colors.white,
-                      title: const Text(' Home ',
-                          style: TextStyle(fontSize: 20, color: Colors.white)),
-                      onTap: () {
-
-                      },
-                    ),
-                    ListTile(
-                      tileColor: darkbrown,
-                      leading: const Icon(Icons.book),
-                      iconColor: Colors.white,
-                      title: const Text(' My Books ',
-                          style: TextStyle(fontSize: 20, color: Colors.white)),
-                      onTap: () {
-
-                      },
-                    ),
-                    ListTile(
-                      tileColor: darkbrown,
-                      leading: const Icon(Icons.person_outlined),
-                      iconColor: Colors.white,
-                      title: const Text(' Profile ',
-                          style: TextStyle(fontSize: 20, color: Colors.white)),
-                      onTap: () {
-
-                      },
-                    ),
-                    ListTile(
-                        tileColor: darkbrown,
-                        leading: const Icon(Icons.help),
-                        iconColor: Colors.white,
-                        title: const Text(' Help ',
-                            style: TextStyle(fontSize: 20, color: Colors.white)),
-                        onTap: () {
-
-                        }
-                    ),
-                    ListTile(
-                      tileColor: darkbrown,
-                      leading: const Icon(Icons.logout),
-                      iconColor: Colors.white,
-                      title: const Text(' Sign Out ',
-                          style: TextStyle(fontSize: 20, color: Colors.white)),
-                      onTap: () {
-
-                      },
-                    ),
-                  ]
-                  )
-              ),
-            ),
+            drawer: SideNavigation(),
             body: new Container(
                 margin: new EdgeInsets.all(15.0),
                 child: new Column(

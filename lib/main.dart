@@ -1,4 +1,5 @@
 import 'package:bookbridge/view/home/homepage.dart';
+import 'package:bookbridge/view/inbox/inbox.dart';
 import 'package:bookbridge/view/login_register/login.dart';
 import 'package:flutter/material.dart';
 import 'package:bookbridge/res/colors.dart';
@@ -36,7 +37,7 @@ class BookBridge extends StatelessWidget {
         ),
         home: HomePage(),
         initialRoute: '/init',
-        routes: {'/init': (context) => Login()},
+        routes: {'/init': (context) => Inbox()},
     );
   }
 }
