@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import '../../res/colors.dart';
@@ -9,7 +10,10 @@ import 'my_books.dart';
 
 
 class AddBook extends StatefulWidget {
+
   const AddBook({super.key});
+
+  //AddBook(this.name,this.book_cover,this.author,this.published_year,this.other_img,this.price,this.summary,this.uploaded_by);
 
   @override
   State<AddBook> createState() => _AddBookState();
@@ -124,6 +128,42 @@ class _AddBookState extends State<AddBook> {
                       //Card list
                       Expanded(child: ListView(
                           children: <Widget>[
+                            //Book name
+                            Card(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                child:Container(
+                                  width: double.infinity,
+                                  height: 70,
+                                  alignment: Alignment.centerLeft,
+                                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                  child: Row(
+                                      children: [
+                                        const Text('Book Name: ', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                                        SizedBox(
+                                          width: 200,
+                                          child: TextField(
+                                            keyboardType: TextInputType.multiline,
+                                            maxLines: null,
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: Colors.white,
+                                              hintText: 'Enter book name',
+                                              hintStyle: const TextStyle(fontSize: 16, color: lightgrey),
+                                              border: OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                  width: 0.0,
+                                                  style: BorderStyle.none,
+                                                ),
+                                                borderRadius: BorderRadius.circular(20.0),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ]
+                                  ),
+                                )
+                            ),
+
                             //Book cover
                             Card(
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -330,7 +370,7 @@ class _AddBookState extends State<AddBook> {
                                 )
                             ),
 
-                            SizedBox(height: 10,),
+                            const SizedBox(height: 10,),
                           ]
                       )
                       ),
@@ -370,5 +410,7 @@ class _AddBookState extends State<AddBook> {
     );
   }
 }
+
+
 
 
