@@ -7,7 +7,7 @@ class BooksModel {
   final String published_year;
   final String summary;
   final String uploaded_by;
-  final Array other_img;
+  final String other_img;
   final String price;
 
   BooksModel(this.name,
