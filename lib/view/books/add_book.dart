@@ -1,8 +1,9 @@
-
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:bookbridge/repository/books_repo.dart';
 import 'package:bookbridge/view/books/book_info.dart';
 import 'package:bookbridge/view_model/books_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../res/colors.dart';
@@ -15,36 +16,16 @@ import 'my_books.dart';
 
 class AddBook extends StatelessWidget {
 
-  // One TextEditingController for each form input:
   TextEditingController nameController = TextEditingController();
   TextEditingController authorController = TextEditingController();
   TextEditingController publishedyearController = TextEditingController();
   TextEditingController summaryController = TextEditingController();
   TextEditingController priceController = TextEditingController();
 
+  AddBook({super.key});
+
   @override
   Widget build(BuildContext context) {
-
-    //firebase
-    // Create a CollectionReference called users that references the firestore collection
-    CollectionReference books = FirebaseFirestore.instance.collection('books');
-
-    // Future<void> uploadBook() {
-    //   // Call the user's CollectionReference to add a new user
-    //   return books
-    //       .add({
-    //     'name': nameController.text,
-    //     'book_cover': 'book_cover',
-    //     'author': authorController.text,
-    //     'published_year': publishedyearController.text,
-    //     'other_img': 'other_img',
-    //     'price': priceController.text,
-    //     'summary': summaryController.text,
-    //     'uploaded_by': 'user1',
-    //   })
-    //       .then((value) => print("Book Added"))
-    //       .catchError((error) => print("Failed to add book: $error"));
-    // }
 
     return Container(
         decoration: const BoxDecoration(
@@ -404,13 +385,13 @@ class AddBook extends StatelessWidget {
                                 )
                             ),
 
-                            const SizedBox(height: 10,),
+                            const SizedBox(height: 10),
                           ]
                       )
                       ),
 
                       InkWell(
-                          onTap: () { Navigator.of(context).pop( BooksVM().uploadBook() ); },
+                          onTap: () { uploadCheck(context); },
                           child: Container(
                             padding: const EdgeInsets.all(20),
                             width: double.maxFinite,
@@ -442,6 +423,34 @@ class AddBook extends StatelessWidget {
         )
     );
   }
+
+  uploadCheck(BuildContext context){
+
+    String name,author,year, summary, price ;
+
+    name = nameController.text ;
+    author = authorController.text ;
+    year = publishedyearController.text ;
+    summary = summaryController.text ;
+    price = priceController.text ;
+
+    if(name == '' || author == '' || year == '' || summary == '' || price == '')
+    {
+      Fluttertoast.showToast(
+        msg: "Please ensure all information are filled in except book condition.",
+        gravity: ToastGravity.BOTTOM,
+      );
+      return;
+    }else{
+      Navigator.pop(context);
+      BooksVM().uploadBook(name,author,year, summary, price);
+      Fluttertoast.showToast(
+        msg: "Book added.",
+        gravity: ToastGravity.BOTTOM,
+      );
+    }
+  }
+
 
 
 }

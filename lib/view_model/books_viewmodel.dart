@@ -1,37 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class BooksVM {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController authorController = TextEditingController();
-  TextEditingController publishedyearController = TextEditingController();
-  TextEditingController summaryController = TextEditingController();
-  TextEditingController priceController = TextEditingController();
 
-  // Create a CollectionReference called users that references the firestore collection
   CollectionReference books = FirebaseFirestore.instance.collection('books');
+  String userId = FirebaseAuth.instance.currentUser!.uid;
 
-  Future uploadBook() {
-    // Call the user's CollectionReference to add a new user
+  Future uploadBook(String name, String author, String year, String summary, String price) {
     return books
         .add({
-      'name': nameController.text,
+      'name': name,
       'book_cover': 'book_cover',
-      'author': authorController.text,
-      'published_year': publishedyearController.text,
+      'author': author,
+      'published_year': year,
       'other_img': 'other_img',
-      'price': priceController.text,
-      'summary': summaryController.text,
-      'uploaded_by': 'user1',
+      'price': price,
+      'summary': summary,
+      'uploaded_by': userId,
     })
         .then((value) => print("Book Added"))
         .catchError((error) => print("Failed to add book: $error"));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
   }
 }
 
