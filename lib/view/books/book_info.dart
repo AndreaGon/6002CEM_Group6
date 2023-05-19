@@ -124,7 +124,7 @@ class BookInfo extends StatelessWidget{
                               border: Border(
                                 bottom: BorderSide(width: 5, color: chocolate),)
                           ),
-                          child: Text("Book Name",
+                          child: const Text("Book Name",
                               style: TextStyle(height: 2,
                                   fontSize: 30,
                                   color: darkbrown,
@@ -145,7 +145,7 @@ class BookInfo extends StatelessWidget{
                                           child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(20),
-                                                image: DecorationImage(fit: BoxFit.cover, image: AssetImage("assets/book_cover.png"),),
+                                                image: const DecorationImage(fit: BoxFit.cover, image: AssetImage("assets/book_cover.png"),),
                                               )
                                           ),
                                       ),
@@ -155,7 +155,7 @@ class BookInfo extends StatelessWidget{
                                         alignment: Alignment.centerLeft,
                                         child: Container(
                                             padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                            child: Text("Book Price: RM 12", style: TextStyle(fontSize: 16,))
+                                            child: const Text("Book Price: RM 12", style: TextStyle(fontSize: 16,))
                                         ),
                                       ),
 
@@ -164,7 +164,7 @@ class BookInfo extends StatelessWidget{
                                         alignment: Alignment.centerLeft,
                                         child: Container(
                                             padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                            child: Text("Author: Jane Smith", style: TextStyle(fontSize: 16,))
+                                            child: const Text("Author: Jane Smith", style: TextStyle(fontSize: 16,))
                                         ),
                                       ),
 
@@ -173,7 +173,7 @@ class BookInfo extends StatelessWidget{
                                         alignment: Alignment.centerLeft,
                                         child: Container(
                                             padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                            child: Text("Published year: 1990", style: TextStyle(fontSize: 16,))
+                                            child: const Text("Published year: 1990", style: TextStyle(fontSize: 16,))
                                         ),
                                       ),
 
@@ -182,7 +182,7 @@ class BookInfo extends StatelessWidget{
                                         alignment: Alignment.centerLeft,
                                         child: Container(
                                             padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                            child: Text("Summary: The story follows the life of 17-year-old Emily as she navigates the challenges of her final year of high school, and the difficult circumstances that arise when her family is forced to move to a small town in the middle of winter.", style: TextStyle(fontSize: 16, ))
+                                            child: const Text("Summary: The story follows the life of 17-year-old Emily as she navigates the challenges of her final year of high school, and the difficult circumstances that arise when her family is forced to move to a small town in the middle of winter.", style: TextStyle(fontSize: 16, ))
                                         ),
                                       ),
 
@@ -191,7 +191,7 @@ class BookInfo extends StatelessWidget{
                             )
                       ),
 
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
 
                       Card(
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),),

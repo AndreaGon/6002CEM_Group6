@@ -1,4 +1,8 @@
 
+import 'package:bookbridge/repository/books_repo.dart';
+import 'package:bookbridge/view/books/book_info.dart';
+import 'package:bookbridge/view_model/books_viewmodel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../res/colors.dart';
@@ -9,19 +13,39 @@ import '../login_register/login.dart';
 import 'my_books.dart';
 
 
-class AddBook extends StatefulWidget {
+class AddBook extends StatelessWidget {
 
-  const AddBook({super.key});
+  // One TextEditingController for each form input:
+  TextEditingController nameController = TextEditingController();
+  TextEditingController authorController = TextEditingController();
+  TextEditingController publishedyearController = TextEditingController();
+  TextEditingController summaryController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
 
-  //AddBook(this.name,this.book_cover,this.author,this.published_year,this.other_img,this.price,this.summary,this.uploaded_by);
-
-  @override
-  State<AddBook> createState() => _AddBookState();
-}
-
-class _AddBookState extends State<AddBook> {
   @override
   Widget build(BuildContext context) {
+
+    //firebase
+    // Create a CollectionReference called users that references the firestore collection
+    CollectionReference books = FirebaseFirestore.instance.collection('books');
+
+    // Future<void> uploadBook() {
+    //   // Call the user's CollectionReference to add a new user
+    //   return books
+    //       .add({
+    //     'name': nameController.text,
+    //     'book_cover': 'book_cover',
+    //     'author': authorController.text,
+    //     'published_year': publishedyearController.text,
+    //     'other_img': 'other_img',
+    //     'price': priceController.text,
+    //     'summary': summaryController.text,
+    //     'uploaded_by': 'user1',
+    //   })
+    //       .then((value) => print("Book Added"))
+    //       .catchError((error) => print("Failed to add book: $error"));
+    // }
+
     return Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -142,6 +166,8 @@ class _AddBookState extends State<AddBook> {
                                         SizedBox(
                                           width: 200,
                                           child: TextField(
+                                            controller: nameController,
+                                            onChanged: (value) => nameController.text = value,
                                             keyboardType: TextInputType.multiline,
                                             maxLines: null,
                                             decoration: InputDecoration(
@@ -179,12 +205,12 @@ class _AddBookState extends State<AddBook> {
                                         const SizedBox(width: 10,),
                                         InkWell(
                                           //chat button
-                                            onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => const AddBook())); },
+                                            onTap: () {  },
                                             child: Container(
                                                 padding: const EdgeInsets.all(20),
                                                 decoration: BoxDecoration(color: light, borderRadius: BorderRadius.circular(20)),
                                                 child: Row(
-                                                    children: [
+                                                    children: const [
                                                       Icon(Icons.add_a_photo_outlined, color: darkbrown,size: 30,),
                                                       SizedBox(width: 10),
                                                       Text("Upload", style: TextStyle(color: darkbrown, fontSize: 15, fontWeight: FontWeight.bold,),textAlign: TextAlign.center),
@@ -211,6 +237,8 @@ class _AddBookState extends State<AddBook> {
                                         SizedBox(
                                           width: 200,
                                           child: TextField(
+                                            controller: authorController,
+                                            onChanged: (value) => authorController.text = value,
                                               keyboardType: TextInputType.text,
                                               decoration: InputDecoration(
                                                 filled: true,
@@ -246,6 +274,8 @@ class _AddBookState extends State<AddBook> {
                                         SizedBox(
                                           width: 200,
                                           child: TextField(
+                                            controller: publishedyearController,
+                                            onChanged: (value) => publishedyearController.text = value,
                                             keyboardType: TextInputType.number,
                                             decoration: InputDecoration(
                                               filled: true,
@@ -281,6 +311,8 @@ class _AddBookState extends State<AddBook> {
                                         SizedBox(
                                           width: 220,
                                           child: TextField(
+                                            controller: summaryController,
+                                            onChanged: (value) => summaryController.text = value,
                                             keyboardType: TextInputType.multiline,
                                             maxLines: null,
                                             decoration: InputDecoration(
@@ -349,6 +381,8 @@ class _AddBookState extends State<AddBook> {
                                         SizedBox(
                                           width: 200,
                                           child: TextField(
+                                            controller: priceController,
+                                            onChanged: (value) => priceController.text = value,
                                             keyboardType: TextInputType.number,
                                             decoration: InputDecoration(
                                               filled: true,
@@ -376,8 +410,7 @@ class _AddBookState extends State<AddBook> {
                       ),
 
                       InkWell(
-                        //Book cover upload
-                          onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage())); },
+                          onTap: () { Navigator.of(context).pop( BooksVM().uploadBook() ); },
                           child: Container(
                             padding: const EdgeInsets.all(20),
                             width: double.maxFinite,
@@ -409,7 +442,10 @@ class _AddBookState extends State<AddBook> {
         )
     );
   }
+
+
 }
+
 
 
 
