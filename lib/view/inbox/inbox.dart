@@ -1,10 +1,19 @@
+import 'dart:convert';
+
+import 'package:bookbridge/view/inbox/chat.dart';
+import 'package:bookbridge/view_model/login_viewmodel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:bookbridge/res/colors.dart';
 
 import '../home/side_navi.dart';
+import '../../view_model/inbox_view_model.dart';
 class Inbox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    InboxVM inboxVM = InboxVM();
+
     return Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -27,9 +36,9 @@ class Inbox extends StatelessWidget {
                 ]
             ),
             drawer: const SideNavi(),
-            body: new Container(
+            body: Container(
                 margin: new EdgeInsets.all(15.0),
-                child: new Column(
+                child: Column(
                   children: [
                     Align(
                       alignment: Alignment.centerLeft,
@@ -43,39 +52,66 @@ class Inbox extends StatelessWidget {
                       ),
                     ),
 
-                    Container(
-                      margin: const EdgeInsets.all(15.0),
-                      padding: const EdgeInsets.all(15.0),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: new Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                border: Border(bottom: BorderSide(width: 3, color: chocolate),)
-                            ),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: new Text("Tella Lim",
-                                  style: TextStyle(height: 2, fontSize: 15, color: darkbrown, fontWeight: FontWeight.bold)),
-                            )
-                          ),
+                    FutureBuilder(
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.data == null) {
+                            return Container();
+                          }
+                          return ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              Map<String, dynamic> chatModel = snapshot.data?.docs[index].data();
+                              return Container(
+                                  margin: const EdgeInsets.all(15.0),
+                                  padding: const EdgeInsets.all(15.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: Offset(0, 3), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                  child: new InkWell(
+                                    onTap: (){
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Chat()));
+                                    },
+                                    child: new Column(
+                                      children: [
+                                        Container(
+                                            decoration: BoxDecoration(
+                                                border: Border(bottom: BorderSide(width: 3, color: chocolate),)
+                                            ),
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: new Text(chatModel["chat_name"],
+                                                  style: TextStyle(height: 2, fontSize: 15, color: darkbrown, fontWeight: FontWeight.bold)),
+                                            )
+                                        ),
+                                        Align(
+                                          alignment: Alignment.topLeft,
+                                          child: new Text(chatModel["recent_message"],
+                                              style: TextStyle(height: 2, fontSize: 13, color: darkbrown)),
+                                        )
 
-                          new Text("Hello Christine! May I ask about the book pages and the packaging of...",
-                              style: TextStyle(height: 2, fontSize: 13, color: darkbrown)),
-                        ],
-                      )
+                                      ],
+
+                                    )
+                                  )
+                              );
+                            }
+
+                          );
+                        },
+                      future: inboxVM.getAllChats()
                     )
+
                   ],
                 )
             )

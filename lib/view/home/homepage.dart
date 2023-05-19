@@ -1,4 +1,5 @@
 import 'package:bookbridge/res/colors.dart';
+import 'package:bookbridge/res/widgets/navigation.dart';
 import 'package:bookbridge/utils/router.dart';
 import 'package:bookbridge/view/books/book_info.dart';
 import 'package:bookbridge/view/books/my_books.dart';
@@ -53,7 +54,6 @@ class _HomePageState extends State<HomePage> {
 
             //list tile of side menu
             drawer: const SideNavi(),
-
             //Page content
             body: Container(
               margin: const EdgeInsets.all(15.0),

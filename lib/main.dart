@@ -1,5 +1,6 @@
 import 'package:bookbridge/view/books/add_book.dart';
 import 'package:bookbridge/view/home/homepage.dart';
+import 'package:bookbridge/view/inbox/inbox.dart';
 import 'package:bookbridge/view/login_register/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
