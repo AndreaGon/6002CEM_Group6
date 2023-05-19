@@ -1,21 +1,73 @@
+import 'dart:io';
 import 'package:bookbridge/view/home/side_navi.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:bookbridge/repository/books_repo.dart';
-import 'package:bookbridge/view/books/book_info.dart';
 import 'package:bookbridge/view_model/books_viewmodel.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 import '../../res/colors.dart';
-import '../help_center/help_center.dart';
 import '../home/homepage.dart';
 import '../inbox/inbox.dart';
-import '../login_register/login.dart';
 import 'my_books.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
+class AddBook extends StatefulWidget {
+  AddBook({Key? key}) : super(key: key);
+
+  @override
+  State<AddBook> createState() => _AddBookState();
+}
+
+class _AddBookState extends State<AddBook> {
+
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
+
+  File? _photo;
+  final ImagePicker _picker = ImagePicker();
+
+  Future imgFromGallery() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+        uploadFile();
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future imgFromCamera() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+        uploadFile();
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future uploadFile() async {
+    if (_photo == null) return;
+    final fileName = basename(_photo!.path);
+    final destination = 'files/$fileName';
+
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination)
+          .child('file/');
+      await ref.putFile(_photo!);
+    } catch (e) {
+      print('error occured');
+    }
+  }
 
 
-class AddBook extends StatelessWidget {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController authorController = TextEditingController();
@@ -23,11 +75,8 @@ class AddBook extends StatelessWidget {
   TextEditingController summaryController = TextEditingController();
   TextEditingController priceController = TextEditingController();
 
-  AddBook({super.key});
-
   @override
   Widget build(BuildContext context) {
-
     return Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -125,10 +174,9 @@ class AddBook extends StatelessWidget {
                                   child: Row(
                                       children: [
                                         const Text('Book Cover: ', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                        const SizedBox(width: 10,),
+                                        const SizedBox(width: 10),
                                         InkWell(
-                                          //chat button
-                                            onTap: () {  },
+                                            onTap: () { _showPicker(context); },
                                             child: Container(
                                                 padding: const EdgeInsets.all(20),
                                                 decoration: BoxDecoration(color: light, borderRadius: BorderRadius.circular(20)),
@@ -263,7 +311,6 @@ class AddBook extends StatelessWidget {
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                                 child:Container(
                                   width: double.infinity,
-                                  //Book cover
                                   height: 100,
                                   alignment: Alignment.centerLeft,
                                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -272,11 +319,9 @@ class AddBook extends StatelessWidget {
                                         const Text('Book Condition(optional): ', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
                                         const SizedBox(width: 10,),
                                         InkWell(
-                                          //chat button
                                             onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage())); },
                                             child: Container(
                                                 padding: const EdgeInsets.all(20),
-                                                //width: 80,
                                                 decoration: BoxDecoration(color: light, borderRadius: BorderRadius.circular(20)),
                                                 child: Row(
                                                     children: const [
@@ -393,8 +438,35 @@ class AddBook extends StatelessWidget {
     }
   }
 
-
-
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Gallery'),
+                      onTap: () {
+                        imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
 }
 
 
