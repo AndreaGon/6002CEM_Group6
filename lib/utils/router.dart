@@ -26,8 +26,6 @@ class MainRouter {
         return MaterialPageRoute(builder: (_)=> BookInfo());
       case '/addbook':
         return MaterialPageRoute(builder: (_)=> AddBook());
-      case '/chat':
-        return MaterialPageRoute(builder: (_)=> Chat());
       default:
         return MaterialPageRoute(builder: (_)=> HomePage());
     }

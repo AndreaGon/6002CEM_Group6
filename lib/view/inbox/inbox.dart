@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bookbridge/models/chats_model.dart';
 import 'package:bookbridge/view/inbox/chat.dart';
 import 'package:bookbridge/view_model/login_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -81,7 +82,7 @@ class Inbox extends StatelessWidget {
                                   ),
                                   child: new InkWell(
                                     onTap: (){
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Chat()));
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(chatModel: chatModel)));
                                     },
                                     child: new Column(
                                       children: [
@@ -110,7 +111,7 @@ class Inbox extends StatelessWidget {
 
                           );
                         },
-                      future: inboxVM.getAllChats()
+                      future: inboxVM.getAllInbox()
                     )
 
                   ],
