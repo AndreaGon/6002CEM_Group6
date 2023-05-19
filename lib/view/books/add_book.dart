@@ -6,10 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import '../../res/colors.dart';
-import '../home/homepage.dart';
 import '../inbox/inbox.dart';
-import 'my_books.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class AddBook extends StatefulWidget {
   AddBook({Key? key}) : super(key: key);
@@ -20,54 +17,76 @@ class AddBook extends StatefulWidget {
 
 class _AddBookState extends State<AddBook> {
 
-  firebase_storage.FirebaseStorage storage =
-      firebase_storage.FirebaseStorage.instance;
-
-  File? _photo;
+  File? _coverphoto;
+  File? _conditionphoto;
+  late String BookCover;
+  late String BookCondition;
   final ImagePicker _picker = ImagePicker();
 
-  Future imgFromGallery() async {
+  Future imgFromGalleryBookCover() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
-        _photo = File(pickedFile.path);
-        uploadFile();
+        _coverphoto = File(pickedFile.path);
+        BookCover = basename(_coverphoto!.path);
+        //uploadBookCover();
       } else {
-        print('No image selected.');
+        Fluttertoast.showToast(
+          msg: "Please choose a book cover.",
+          gravity: ToastGravity.BOTTOM,
+        );
       }
     });
   }
 
-  Future imgFromCamera() async {
+  Future imgFromCameraBookCover() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
 
     setState(() {
       if (pickedFile != null) {
-        _photo = File(pickedFile.path);
-        uploadFile();
+        _coverphoto = File(pickedFile.path);
+        BookCover = basename(_coverphoto!.path);
       } else {
-        print('No image selected.');
+        Fluttertoast.showToast(
+          msg: "Please choose a book cover.",
+          gravity: ToastGravity.BOTTOM,
+        );
       }
     });
   }
 
-  Future uploadFile() async {
-    if (_photo == null) return;
-    final fileName = basename(_photo!.path);
-    final destination = 'files/$fileName';
+  Future imgFromGalleryBookCondition() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
-    try {
-      final ref = firebase_storage.FirebaseStorage.instance
-          .ref(destination)
-          .child('file/');
-      await ref.putFile(_photo!);
-    } catch (e) {
-      print('error occured');
-    }
+    setState(() {
+      if (pickedFile != null) {
+        _conditionphoto = File(pickedFile.path);
+        BookCondition = basename(_conditionphoto!.path);
+      } else {
+        Fluttertoast.showToast(
+          msg: "Please choose a book cover.",
+          gravity: ToastGravity.BOTTOM,
+        );
+      }
+    });
   }
 
+  Future imgFromCameraBookCondition() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
 
+    setState(() {
+      if (pickedFile != null) {
+        _conditionphoto = File(pickedFile.path);
+        BookCondition = basename(_conditionphoto!.path);
+      } else {
+        Fluttertoast.showToast(
+          msg: "Please choose a book cover.",
+          gravity: ToastGravity.BOTTOM,
+        );
+      }
+    });
+  }
 
   TextEditingController nameController = TextEditingController();
   TextEditingController authorController = TextEditingController();
@@ -139,9 +158,7 @@ class _AddBookState extends State<AddBook> {
                                           width: 200,
                                           child: TextField(
                                             controller: nameController,
-                                            onChanged: (value) => nameController.text = value,
-                                            keyboardType: TextInputType.multiline,
-                                            maxLines: null,
+                                            keyboardType: TextInputType.text,
                                             decoration: InputDecoration(
                                               filled: true,
                                               fillColor: Colors.white,
@@ -176,7 +193,7 @@ class _AddBookState extends State<AddBook> {
                                         const Text('Book Cover: ', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
                                         const SizedBox(width: 10),
                                         InkWell(
-                                            onTap: () { _showPicker(context); },
+                                            onTap: () { _showPickerCover(context); },
                                             child: Container(
                                                 padding: const EdgeInsets.all(20),
                                                 decoration: BoxDecoration(color: light, borderRadius: BorderRadius.circular(20)),
@@ -209,7 +226,6 @@ class _AddBookState extends State<AddBook> {
                                           width: 200,
                                           child: TextField(
                                             controller: authorController,
-                                            onChanged: (value) => authorController.text = value,
                                               keyboardType: TextInputType.text,
                                               decoration: InputDecoration(
                                                 filled: true,
@@ -246,7 +262,6 @@ class _AddBookState extends State<AddBook> {
                                           width: 200,
                                           child: TextField(
                                             controller: publishedyearController,
-                                            onChanged: (value) => publishedyearController.text = value,
                                             keyboardType: TextInputType.number,
                                             decoration: InputDecoration(
                                               filled: true,
@@ -283,7 +298,6 @@ class _AddBookState extends State<AddBook> {
                                           width: 220,
                                           child: TextField(
                                             controller: summaryController,
-                                            onChanged: (value) => summaryController.text = value,
                                             keyboardType: TextInputType.multiline,
                                             maxLines: null,
                                             decoration: InputDecoration(
@@ -319,7 +333,7 @@ class _AddBookState extends State<AddBook> {
                                         const Text('Book Condition(optional): ', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
                                         const SizedBox(width: 10,),
                                         InkWell(
-                                            onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage())); },
+                                            onTap: () { _showPickerCondition(context); },
                                             child: Container(
                                                 padding: const EdgeInsets.all(20),
                                                 decoration: BoxDecoration(color: light, borderRadius: BorderRadius.circular(20)),
@@ -350,7 +364,6 @@ class _AddBookState extends State<AddBook> {
                                           width: 200,
                                           child: TextField(
                                             controller: priceController,
-                                            onChanged: (value) => priceController.text = value,
                                             keyboardType: TextInputType.number,
                                             decoration: InputDecoration(
                                               filled: true,
@@ -413,23 +426,27 @@ class _AddBookState extends State<AddBook> {
 
   uploadCheck(BuildContext context){
 
-    String name,author,year, summary, price ;
+    String name,author,year, summary, price, bookcover, bookcondition;
 
-    name = nameController.text ;
-    author = authorController.text ;
-    year = publishedyearController.text ;
-    summary = summaryController.text ;
-    price = priceController.text ;
+    bookcondition = 'BookCondition/'+BookCondition;
+    bookcover = 'BookCover/'+BookCover;
+    name = nameController.text;
+    author = authorController.text;
+    year = publishedyearController.text;
+    summary = summaryController.text;
+    price = priceController.text;
 
-    if(name == '' || author == '' || year == '' || summary == '' || price == '')
+    if(name == '' || author == '' || year == '' || summary == '' || price == '' || BookCover == '' || BookCondition == '')
     {
       Fluttertoast.showToast(
-        msg: "Please ensure all information are filled in except book condition.",
+        msg: "Please ensure all information are filled in.",
         gravity: ToastGravity.BOTTOM,
       );
       return;
     } else{
-      BooksVM().uploadBook(name,author,year, summary, price);
+      BooksVM().uploadBook(name,author,year, summary, price, bookcover, bookcondition);
+      BooksVM().uploadBookCover(_coverphoto!);
+      BooksVM().uploadBookCondition(_conditionphoto!);
       Navigator.pop(context);
       Fluttertoast.showToast(
         msg: "Book added.",
@@ -438,7 +455,7 @@ class _AddBookState extends State<AddBook> {
     }
   }
 
-  void _showPicker(context) {
+  void _showPickerCover(context) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -450,14 +467,44 @@ class _AddBookState extends State<AddBook> {
                       leading: new Icon(Icons.photo_library),
                       title: new Text('Gallery'),
                       onTap: () {
-                        imgFromGallery();
+                        imgFromGalleryBookCover();
                         Navigator.of(context).pop();
                       }),
                   new ListTile(
                     leading: new Icon(Icons.photo_camera),
                     title: new Text('Camera'),
                     onTap: () {
-                      imgFromCamera();
+                      imgFromCameraBookCover();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  void _showPickerCondition(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Gallery'),
+                      onTap: () {
+                        imgFromGalleryBookCondition();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      imgFromCameraBookCondition();
                       Navigator.of(context).pop();
                     },
                   ),
