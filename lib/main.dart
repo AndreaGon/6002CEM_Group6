@@ -45,7 +45,7 @@ class BookBridge extends StatelessWidget {
           },
         ),
         initialRoute: '/init',
-        routes: {'/init': (context) => Inbox()},
+        routes: {'/init': (context) => Login()},
     );
   }
 }
