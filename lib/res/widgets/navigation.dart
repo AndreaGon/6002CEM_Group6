@@ -1,4 +1,6 @@
 import 'package:bookbridge/res/colors.dart';
+import 'package:bookbridge/view/login_register/login.dart';
+import 'package:bookbridge/view_model/login_viewmodel.dart';
 import 'package:flutter/material.dart';
 
 import '../../view/help_center/help_center.dart';
@@ -67,7 +69,8 @@ class SideNavigation extends StatelessWidget {
               title: const Text(' Sign Out ',
                   style: TextStyle(fontSize: 20, color: Colors.white)),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                LoginVM().signOut();
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
               },
             ),
           ]

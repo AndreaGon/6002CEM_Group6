@@ -25,6 +25,14 @@ class LoginVM{
       }
     }
   }
+
+  Future getCurrentUserId() async{
+    return _auth.currentUser!.uid;
+  }
+
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
 }
 
 
