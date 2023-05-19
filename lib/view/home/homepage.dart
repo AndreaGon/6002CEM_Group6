@@ -3,6 +3,7 @@ import 'package:bookbridge/utils/router.dart';
 import 'package:bookbridge/view/books/book_info.dart';
 import 'package:bookbridge/view/books/my_books.dart';
 import 'package:bookbridge/view/help_center/help_center.dart';
+import 'package:bookbridge/view/home/side_navi.dart';
 import 'package:bookbridge/view/inbox/inbox.dart';
 import 'package:flutter/material.dart';
 
@@ -51,68 +52,7 @@ class _HomePageState extends State<HomePage> {
               ),
 
             //list tile of side menu
-            drawer: Drawer(
-                child: ListView(padding: const EdgeInsets.all(0), children: [
-                  const DrawerHeader(
-                      decoration: BoxDecoration(color: white),
-                      //BoxDecoration
-                      child: Image(
-                          image: AssetImage("assets/applogo.png"),
-                          height: 20,
-                          width: 20)),
-                  ListTile(
-                    tileColor: darkbrown,
-                    leading: const Icon(Icons.person),
-                    iconColor: Colors.white,
-                    title: const Text(' Home ',
-                        style: TextStyle(fontSize: 20, color: Colors.white)),
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                    },
-                  ),
-                  ListTile(
-                    tileColor: darkbrown,
-                    leading: const Icon(Icons.book),
-                    iconColor: Colors.white,
-                    title: const Text(' My Books ',
-                        style: TextStyle(fontSize: 20, color: Colors.white)),
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MyBooks()));
-                    },
-                  ),
-                  ListTile(
-                    tileColor: darkbrown,
-                    leading: const Icon(Icons.person_outlined),
-                    iconColor: Colors.white,
-                    title: const Text(' Profile ',
-                        style: TextStyle(fontSize: 20, color: Colors.white)),
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                    },
-                  ),
-                  ListTile(
-                    tileColor: darkbrown,
-                    leading: const Icon(Icons.help),
-                    iconColor: Colors.white,
-                    title: const Text(' Help ',
-                        style: TextStyle(fontSize: 20, color: Colors.white)),
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HelpCenter()));
-                      }
-                  ),
-                  ListTile(
-                    tileColor: darkbrown,
-                    leading: const Icon(Icons.logout),
-                    iconColor: Colors.white,
-                    title: const Text(' Sign Out ',
-                        style: TextStyle(fontSize: 20, color: Colors.white)),
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
-                      },
-                  ),
-                    ]
-                    )
-                ),
+            drawer: const SideNavi(),
 
             //Page content
             body: Container(
