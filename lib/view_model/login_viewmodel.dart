@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +25,19 @@ class LoginVM{
         return "Some error occurred...";
       }
     }
+  }
+
+  Future getCurrentUserId() async{
+    return _auth.currentUser!.uid;
+  }
+
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
+  Future getUserInformation(String userId) async {
+    QuerySnapshot querySnapshot= await FirebaseFirestore.instance.collection("user").where("id", isEqualTo: userId).get();
+    return querySnapshot.docs[0].data();
   }
 }
 
