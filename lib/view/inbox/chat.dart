@@ -35,47 +35,81 @@ class Chat extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Container(
                         margin: const EdgeInsets.all(15.0),
-                        decoration: BoxDecoration(
-                            border: Border(bottom: BorderSide(width: 5, color: chocolate),)
-                        ),
-                        child: new Text("Inbox",
-                            style: TextStyle(height: 2, fontSize: 30, color: darkbrown, fontWeight: FontWeight.bold)),
+
+                        child: new Text("Johnny",
+                            style: TextStyle(height: 1, fontSize: 20, color: darkbrown, fontWeight: FontWeight.bold)),
                       ),
                     ),
 
-                    Container(
-                        margin: const EdgeInsets.all(15.0),
-                        padding: const EdgeInsets.all(15.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                              offset: Offset(0, 3), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                        child: new Column(
-                          children: [
-                            Container(
-                                decoration: BoxDecoration(
-                                    border: Border(bottom: BorderSide(width: 3, color: chocolate),)
-                                ),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: new Text("Tella Lim",
-                                      style: TextStyle(height: 2, fontSize: 15, color: darkbrown, fontWeight: FontWeight.bold)),
-                                )
-                            ),
+                    Expanded(
+                      child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
 
-                            new Text("Hello Christine! May I ask about the book pages and the packaging of...",
-                                style: TextStyle(height: 2, fontSize: 13, color: darkbrown)),
-                          ],
-                        )
-                    )
+                                Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: ElevatedButton(
+                                  onPressed: () {},
+                                  child: Text("Mark as Sold", style: TextStyle(color: Colors.white)),
+                                  style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.all(5),
+                                    backgroundColor: darkbrown, // <-- Button color
+                                    foregroundColor: tan, // <-- Splash color
+                                  ),
+                                ),
+                                ),
+
+                                SizedBox(
+                                    height: 10
+                                ),
+
+                                Row(
+                                  children:[
+                                    SizedBox(
+                                      width: 285,
+                                      child: TextFormField(
+
+                                        enableSuggestions: false,
+                                        autocorrect: false,
+                                        decoration: InputDecoration(
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          hintText: "Send a message...",
+                                          hintStyle: const TextStyle(
+                                            fontSize: 17,
+                                            color: lightgrey,
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                              width: 0.0,
+                                              style: BorderStyle.none,
+                                            ),
+                                            borderRadius: BorderRadius.circular(20.0),
+                                          ),
+                                        ),
+                                      ),),
+                                    SizedBox(
+                                        width: 5
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {},
+                                      child: Icon(Icons.send, color: Colors.white),
+                                      style: ElevatedButton.styleFrom(
+                                        shape: CircleBorder(),
+                                        padding: EdgeInsets.all(20),
+                                        backgroundColor: darkbrown, // <-- Button color
+                                        foregroundColor: tan, // <-- Splash color
+                                      ),
+                                    ),
+                                  ]
+                                )
+
+                              ]
+                          )
+                      ),
+                    ),
                   ],
                 )
             )

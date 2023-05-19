@@ -17,5 +17,7 @@ class InboxVM {
     QuerySnapshot querySnapshot= await FirebaseFirestore.instance.collection("chats").where("members", arrayContains: currentUserId).get();
     return querySnapshot;
   }
+
+
 }
 

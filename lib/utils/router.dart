@@ -3,6 +3,7 @@ import 'package:bookbridge/view/books/book_info.dart';
 import 'package:bookbridge/view/books/my_books.dart';
 import 'package:bookbridge/view/help_center/help_center.dart';
 import 'package:bookbridge/view/home/homepage.dart';
+import 'package:bookbridge/view/inbox/chat.dart';
 import 'package:flutter/material.dart';
 
 //import 'package:bookbridge/view/help_center/help_center.dart';
@@ -25,6 +26,8 @@ class MainRouter {
         return MaterialPageRoute(builder: (_)=> BookInfo());
       case '/addbook':
         return MaterialPageRoute(builder: (_)=> AddBook());
+      case '/chat':
+        return MaterialPageRoute(builder: (_)=> Chat());
       default:
         return MaterialPageRoute(builder: (_)=> HomePage());
     }
