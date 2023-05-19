@@ -383,9 +383,9 @@ class AddBook extends StatelessWidget {
         gravity: ToastGravity.BOTTOM,
       );
       return;
-    }else{
-      Navigator.pop(context);
+    } else{
       BooksVM().uploadBook(name,author,year, summary, price);
+      Navigator.pop(context);
       Fluttertoast.showToast(
         msg: "Book added.",
         gravity: ToastGravity.BOTTOM,
