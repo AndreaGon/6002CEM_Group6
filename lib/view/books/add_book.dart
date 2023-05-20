@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:bookbridge/view/home/side_navi.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:bookbridge/view_model/books_viewmodel.dart';
+import 'package:bookbridge/view_model/addbook_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
@@ -30,7 +30,10 @@ class _AddBookState extends State<AddBook> {
       if (pickedFile != null) {
         _coverphoto = File(pickedFile.path);
         BookCover = basename(_coverphoto!.path);
-        //uploadBookCover();
+        Fluttertoast.showToast(
+          msg: "Photo selected.",
+          gravity: ToastGravity.BOTTOM,
+        );
       } else {
         Fluttertoast.showToast(
           msg: "Please choose a book cover.",
@@ -47,6 +50,10 @@ class _AddBookState extends State<AddBook> {
       if (pickedFile != null) {
         _coverphoto = File(pickedFile.path);
         BookCover = basename(_coverphoto!.path);
+        Fluttertoast.showToast(
+          msg: "Photo selected.",
+          gravity: ToastGravity.BOTTOM,
+        );
       } else {
         Fluttertoast.showToast(
           msg: "Please choose a book cover.",
@@ -63,6 +70,10 @@ class _AddBookState extends State<AddBook> {
       if (pickedFile != null) {
         _conditionphoto = File(pickedFile.path);
         BookCondition = basename(_conditionphoto!.path);
+        Fluttertoast.showToast(
+          msg: "Photo selected.",
+          gravity: ToastGravity.BOTTOM,
+        );
       } else {
         Fluttertoast.showToast(
           msg: "Please choose a book cover.",
@@ -79,6 +90,10 @@ class _AddBookState extends State<AddBook> {
       if (pickedFile != null) {
         _conditionphoto = File(pickedFile.path);
         BookCondition = basename(_conditionphoto!.path);
+        Fluttertoast.showToast(
+          msg: "Photo selected.",
+          gravity: ToastGravity.BOTTOM,
+        );
       } else {
         Fluttertoast.showToast(
           msg: "Please choose a book cover.",
@@ -114,15 +129,13 @@ class _AddBookState extends State<AddBook> {
                       padding: const EdgeInsets.only(right: 20.0),
                       child: GestureDetector(
                         onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => Inbox()));},
-                        child: const Icon(Icons.chat_outlined,),
+                        child: const Icon(Icons.chat_outlined),
                       )
                   ),
                 ]
             ),
-
             //list tile of side menu
-            drawer: const SideNavi(),
-
+            drawer: SideNavi(),
             //Page content
             body: Container(
                 margin: const EdgeInsets.all(15.0),
@@ -153,7 +166,7 @@ class _AddBookState extends State<AddBook> {
                                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                                   child: Row(
                                       children: [
-                                        const Text('Book Name: ', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                                        const Text('Book Name:', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
                                         SizedBox(
                                           width: 200,
                                           child: TextField(
@@ -190,7 +203,7 @@ class _AddBookState extends State<AddBook> {
                                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                                   child: Row(
                                       children: [
-                                        const Text('Book Cover: ', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                                        const Text('Book Cover:', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
                                         const SizedBox(width: 10),
                                         InkWell(
                                             onTap: () { _showPickerCover(context); },
@@ -221,7 +234,7 @@ class _AddBookState extends State<AddBook> {
                                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                                   child: Row(
                                       children: [
-                                        const Text('Author: ', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                                        const Text('Author:', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
                                         SizedBox(
                                           width: 200,
                                           child: TextField(
@@ -257,9 +270,9 @@ class _AddBookState extends State<AddBook> {
                                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                                   child: Row(
                                       children: [
-                                        const Text('Published Year: ', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                                        const Text('Published Year:', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
                                         SizedBox(
-                                          width: 200,
+                                          width: 180,
                                           child: TextField(
                                             controller: publishedyearController,
                                             keyboardType: TextInputType.number,
@@ -295,7 +308,7 @@ class _AddBookState extends State<AddBook> {
                                       children: [
                                         const Text('Summary: ', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
                                         SizedBox(
-                                          width: 220,
+                                          width: 200,
                                           child: TextField(
                                             controller: summaryController,
                                             keyboardType: TextInputType.multiline,
@@ -330,8 +343,8 @@ class _AddBookState extends State<AddBook> {
                                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                                   child: Row(
                                       children: [
-                                        const Text('Book Condition(optional): ', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                        const SizedBox(width: 10,),
+                                        const Text('Book Condition:', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                                        const SizedBox(width: 10),
                                         InkWell(
                                             onTap: () { _showPickerCondition(context); },
                                             child: Container(
@@ -339,7 +352,7 @@ class _AddBookState extends State<AddBook> {
                                                 decoration: BoxDecoration(color: light, borderRadius: BorderRadius.circular(20)),
                                                 child: Row(
                                                     children: const [
-                                                      Icon(Icons.add_a_photo_outlined, color: darkbrown,size: 30,),
+                                                      Icon(Icons.add_a_photo_outlined, color: darkbrown,size: 30),
                                                     ]
                                                 )
                                             )
@@ -387,9 +400,8 @@ class _AddBookState extends State<AddBook> {
 
                             const SizedBox(height: 10),
                           ]
-                      )
-                      ),
-
+                      )),
+                      //Upload book button
                       InkWell(
                           onTap: () { uploadCheck(context); },
                           child: Container(
@@ -444,9 +456,9 @@ class _AddBookState extends State<AddBook> {
       );
       return;
     } else{
-      BooksVM().uploadBook(name,author,year, summary, price, bookcover, bookcondition);
-      BooksVM().uploadBookCover(_coverphoto!);
-      BooksVM().uploadBookCondition(_conditionphoto!);
+      AddBooksVM().uploadBook(name,author,year, summary, price, bookcover, bookcondition);
+      AddBooksVM().uploadBookCover(_coverphoto!);
+      AddBooksVM().uploadBookCondition(_conditionphoto!);
       Navigator.pop(context);
       Fluttertoast.showToast(
         msg: "Book added.",

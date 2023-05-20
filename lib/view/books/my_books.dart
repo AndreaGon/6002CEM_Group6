@@ -6,8 +6,6 @@ import '../help_center/help_center.dart';
 import '../home/homepage.dart';
 import '../home/side_navi.dart';
 import '../inbox/inbox.dart';
-import '../login_register/login.dart';
-import 'book_info.dart';
 
 class MyBooks extends StatelessWidget{
   const MyBooks({super.key});
@@ -21,7 +19,6 @@ class MyBooks extends StatelessWidget{
       ),
         child: Scaffold(
             backgroundColor: Colors.transparent,
-
             //top bar with side menu and chat icon
             appBar: AppBar(
                 title: null,
@@ -38,16 +35,13 @@ class MyBooks extends StatelessWidget{
                   ),
                 ]
             ),
-
             //list tile of side menu
-            drawer: const SideNavi(),
-
+            drawer: SideNavi(),
             //Page content
             body: Container(
                 margin: const EdgeInsets.all(15.0),
                 child: Column(
                     children: [
-
                       //Page title
                       Align(
                         alignment: Alignment.centerLeft,
@@ -60,7 +54,6 @@ class MyBooks extends StatelessWidget{
                               style: TextStyle(height: 2, fontSize: 30, color: darkbrown, fontWeight: FontWeight.bold)),
                         ),
                       ),
-
                       //Card list
                       Expanded(child: ListView(
                           children: <Widget>[
@@ -98,9 +91,8 @@ class MyBooks extends StatelessWidget{
                                               padding: const EdgeInsets.fromLTRB(10, 0, 20, 20),
                                               alignment: Alignment.bottomRight,
                                               child:InkWell(
-                                                //chat button
                                                 onTap: () { },
-                                                child: const Icon(Icons.delete_forever, color: darkbrown,size: 30,),
+                                                child: const Icon(Icons.delete_forever, color: darkbrown,size: 30),
                                               ),
                                             )
                                         )
@@ -111,7 +103,6 @@ class MyBooks extends StatelessWidget{
                           ]
                       )
                       ),
-
                       InkWell(
                         //chat button
                           onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => AddBook())); },
@@ -144,8 +135,13 @@ class MyBooks extends StatelessWidget{
                 )
             )
         )
-
-
     );
   }
+
+  // Future<void> DeleteBook(String BookId){
+  //   FireBaseFirestore.instance.runTransactions((transaction) async =>
+  //   await transaction.delete(DocumentReference));
+  // }
+
+
 }

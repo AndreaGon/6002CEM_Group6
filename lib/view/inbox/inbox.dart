@@ -39,7 +39,7 @@ class Inbox extends StatelessWidget {
                   ),
                 ]
             ),
-            drawer: const SideNavi(),
+            drawer: SideNavi(),
             body: Container(
                 margin: new EdgeInsets.all(15.0),
                 child: Column(
