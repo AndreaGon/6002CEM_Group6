@@ -438,8 +438,9 @@ class _AddBookState extends State<AddBook> {
 
   uploadCheck(BuildContext context){
 
-    String name,author,year, summary, price, bookcover, bookcondition;
+    String name,author,year, summary, price, bookcover, bookcondition, datetime;
 
+    datetime = DateTime.now().toString();
     bookcondition = 'BookCondition/'+BookCondition;
     bookcover = 'BookCover/'+BookCover;
     name = nameController.text;
@@ -456,7 +457,7 @@ class _AddBookState extends State<AddBook> {
       );
       return;
     } else{
-      AddBooksVM().uploadBook(name,author,year, summary, price, bookcover, bookcondition);
+      AddBooksVM().uploadBook(name,author,year, summary, price, bookcover, bookcondition, datetime);
       AddBooksVM().uploadBookCover(_coverphoto!);
       AddBooksVM().uploadBookCondition(_conditionphoto!);
       Navigator.pop(context);

@@ -5,8 +5,9 @@ import 'package:bookbridge/view/help_center/help_center.dart';
 import 'package:bookbridge/view/home/side_navi.dart';
 import 'package:bookbridge/view/inbox/inbox.dart';
 import 'package:bookbridge/view_model/allbooks_viewmodel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import '../../view_model/addbook_viewmodel.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,13 +15,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final AllBooksVM AllBooksViewModel = AllBooksVM();
 
-  @override
-  void initState() {
-    //var allbookslist = AllBooksVM().getAllBooks() as List;
-    super.initState();
-  }
+  final BookCoverRef = FirebaseStorage.instance.ref().child('BookCover');
+
+  final AllBooksVM AllBooksViewModel = AllBooksVM();
+  final allbookslist = AllBooksVM().getAllBooks();
 
   @override
   Widget build(BuildContext context) {
@@ -86,43 +85,49 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 //Card list
-                Expanded(child: ListView(
+
+                StreamBuilder(
+                    stream: FirebaseFirestore.instance.collection('books').orderBy('datetime', descending: true).snapshots(),
+                    builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                  return Expanded(child: ListView.builder(
                     padding: const EdgeInsets.all(8),
-                    children: <Widget>[
+
+                    itemCount: streamSnapshot.data?.docs.length,
+                    itemBuilder: (BuildContext context, int index) =>
+
                       Card(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),),
-                        child:Column(
-                            children: [
-                              //Book cover
-                              Container(
-                                padding: const EdgeInsets.all(20),
-                                height: 330,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    image: DecorationImage(fit: BoxFit.cover, image: AssetImage("assets/book_cover.png"),),
-                                  )
-                                )
-                              ),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Column(
+                              children: [
+                                //Book cover
 
-                              //Book name and price
-                              ListTile(
-                                onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => BookInfo()));
+                                Container(
+                                    padding: const EdgeInsets.all(20),
+                                    height: 330,
+                                    child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
+                                          image: DecorationImage(fit: BoxFit.cover, image: AssetImage("assets/book_cover.png")))
+                                    )
+                                ),
+
+                                //Book name and price
+                                ListTile(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(
+                                        builder: (context) => BookInfo()));
                                   },
-                                title: Text("Book Name"),
-                                subtitle: Text("Book Price"),
-                                trailing: Icon(Icons.arrow_forward_ios),
-                              )
-                            ]
-                        )
+                                  title: Text(streamSnapshot.data?.docs[index]['name']),
+                                  subtitle: Text('RM'+ streamSnapshot.data?.docs[index]['price']),
+                                  trailing: Icon(Icons.arrow_forward_ios),
+                                )
+                              ]
+                          )
                       )
-                    ]
-                )
-                )
 
-
-                ]
+                  )
+                  );
+                }
+                )]
             )
         )
         )
@@ -130,54 +135,4 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-
-// Widget _getUsersListView(List<User>? users) {
-//   return ListView.builder(
-//       itemCount: users?.length,
-//       itemBuilder: (context, position) {
-//         return _getUserListItem(users![position]);
-//       });
-// }
-
-// Widget _getUserListItem(User item) {
-//   return Card(
-//     shape: RoundedRectangleBorder(
-//         side: BorderSide(color: Colors.grey, width: 1.0),
-//         borderRadius: BorderRadius.all(Radius.circular(10))),
-//     child: ListTile(
-//       // leading: ClipRRect(
-//       //   child: Image.network(
-//       //     item.imagePath ?? "",
-//       //     errorBuilder: (context, error, stackTrace) {
-//       //       return Image.asset('assets/images/error.png');
-//       //     },
-//       //     fit: BoxFit.fill,
-//       //     width: context.resources.dimension.listImageSize,
-//       //     height: context.resources.dimension.listImageSize,
-//       //   ),
-//       //   borderRadius: BorderRadius.circular(
-//       //       context.resources.dimension.imageBorderRadius),
-//       // ),
-//       title: MyTextView(label: item.name ?? "NA"),
-//       subtitle: Column(children: [
-//         Align(
-//           alignment: Alignment.centerLeft,
-//           child: MyTextView(label: item.note ?? "NA"),
-//         ),
-//         Align(
-//           alignment: Alignment.centerLeft,
-//           child: MyTextView(label: item.phone ?? "NA"),
-//         ),
-//       ]),
-//       onTap: () {
-//         _goToDetailScreen(context, item);
-//       },
-//     ),
-//     elevation: context.resources.dimension.lightElevation,
-//   );
-// }
-
-//   void _goToDetailScreen(BuildContext context, User item) {
-//     Navigator.pushNamed(context, UserDetailsScreen.id, arguments: item);
-//   }
 

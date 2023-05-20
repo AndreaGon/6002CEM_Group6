@@ -10,7 +10,7 @@ class AddBooksVM {
   String userId = FirebaseAuth.instance.currentUser!.uid;
   firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
 
-  Future uploadBook(String name, String author, String year, String summary, String price, String bookcover, String bookcondition) {
+  Future uploadBook(String name, String author, String year, String summary, String price, String bookcover, String bookcondition, String datetime) {
     return books
         .add({
       'name': name,
@@ -21,6 +21,7 @@ class AddBooksVM {
       'price': price,
       'summary': summary,
       'uploaded_by': userId,
+      'datetime' : datetime,
     })
         .then((value) => print("Book Added"))
         .catchError((error) => print("Failed to add book: $error"));
