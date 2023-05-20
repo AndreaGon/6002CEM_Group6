@@ -13,4 +13,12 @@ class ChatsModel {
     required this.members,
     required this.recent_message,
     required this.recent_sender});
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'chat_name': chat_name,
+    'members': members,
+    'recent_message': recent_message,
+    'recent_sender': recent_sender,
+  };
 }

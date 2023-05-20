@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:bookbridge/models/chats_model.dart';
 import 'package:bookbridge/view/inbox/chat.dart';
+import 'package:bookbridge/view/login_register/login.dart';
 import 'package:bookbridge/view_model/login_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,8 @@ class Inbox extends StatelessWidget {
   Widget build(BuildContext context) {
 
     InboxVM inboxVM = InboxVM();
+
+    LoginVM loginVM = LoginVM();
 
     return Container(
         decoration: BoxDecoration(
@@ -79,8 +83,11 @@ class Inbox extends StatelessWidget {
                                     ],
                                   ),
                                   child: new InkWell(
-                                    onTap: (){
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Chat()));
+                                    onTap: () async{
+                                      String currentUserId = await loginVM.getCurrentUserId();
+                                      Map<String, dynamic> userInfo = await loginVM.getUserInformation(currentUserId);
+
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(chatModel: chatModel, userModel: userInfo)));
                                     },
                                     child: new Column(
                                       children: [
@@ -109,7 +116,7 @@ class Inbox extends StatelessWidget {
 
                           );
                         },
-                      future: inboxVM.getAllChats()
+                      future: inboxVM.getAllInbox()
                     )
 
                   ],

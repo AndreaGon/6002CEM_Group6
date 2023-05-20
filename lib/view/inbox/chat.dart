@@ -1,10 +1,30 @@
+import 'package:bookbridge/view/inbox/widgets/chatreceiver_container.dart';
+import 'package:bookbridge/view/inbox/widgets/chatsender_container.dart';
 import 'package:flutter/material.dart';
 import 'package:bookbridge/res/colors.dart';
 
+import '../../models/chats_model.dart';
 import '../../res/widgets/navigation.dart';
-class Chat extends StatelessWidget {
+import '../../view_model/chats_viewmodel.dart';
+import '../../view_model/login_viewmodel.dart';
+class Chat extends StatefulWidget {
+  Chat({super.key, this.chatModel, this.userModel});
+
+  final Map<String, dynamic> ?chatModel;
+  final Map<String, dynamic> ?userModel;
+
+  @override
+  State<Chat> createState() => _ChatState();
+}
+
+class _ChatState extends State<Chat> {
+  ChatsVM chatsVM = ChatsVM();
+
+  final TextEditingController _messageController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+
     return Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -36,9 +56,36 @@ class Chat extends StatelessWidget {
                       child: Container(
                         margin: const EdgeInsets.all(15.0),
 
-                        child: new Text("Johnny",
+                        child: new Text(widget.chatModel?["chat_name"],
                             style: TextStyle(height: 1, fontSize: 20, color: darkbrown, fontWeight: FontWeight.bold)),
                       ),
+                    ),
+
+                    StreamBuilder(
+                        stream: chatsVM.getAllMessages(widget.chatModel?["id"]),
+                        builder: (context, AsyncSnapshot snapshot){
+                          if(!snapshot.hasData) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          return Container(
+                              height: (MediaQuery.of(context).size.height) - 300,
+                              child: ListView.builder(
+                                reverse: true,
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount:  snapshot.data?.docs.length,
+                                itemBuilder: (context, index) {
+                                  if(widget.userModel?["username"] == snapshot.data.docs[index]['sender']){
+                                    return ChatSenderContainer(message: snapshot.data.docs?[index]['message']);
+                                  }
+                                  else{
+                                    return ChatReceiverContainer(message: snapshot.data.docs[index]['message'], sender: snapshot.data.docs[index]['sender']);
+                                  }
+
+                                },
+                              )
+                          );
+                        }
                     ),
 
                     Expanded(
@@ -49,16 +96,16 @@ class Chat extends StatelessWidget {
                               children: [
 
                                 Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: ElevatedButton(
-                                  onPressed: () {},
-                                  child: Text("Mark as Sold", style: TextStyle(color: Colors.white)),
-                                  style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.all(5),
-                                    backgroundColor: darkbrown, // <-- Button color
-                                    foregroundColor: tan, // <-- Splash color
+                                    alignment: Alignment.bottomLeft,
+                                    child: ElevatedButton(
+                                    onPressed: () {},
+                                    child: Text("Mark as Sold", style: TextStyle(color: Colors.white)),
+                                    style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsets.all(5),
+                                      backgroundColor: darkbrown, // <-- Button color
+                                      foregroundColor: tan, // <-- Splash color
+                                    ),
                                   ),
-                                ),
                                 ),
 
                                 SizedBox(
@@ -70,7 +117,7 @@ class Chat extends StatelessWidget {
                                     SizedBox(
                                       width: 285,
                                       child: TextFormField(
-
+                                        controller: _messageController,
                                         enableSuggestions: false,
                                         autocorrect: false,
                                         decoration: InputDecoration(
@@ -94,7 +141,26 @@ class Chat extends StatelessWidget {
                                         width: 5
                                     ),
                                     ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: () async {
+
+
+                                        if (_messageController.text.isNotEmpty) {
+
+                                          Map<String, dynamic> chatMessageMap = {
+                                            "message": _messageController.text,
+                                            "sender": widget.userModel?["username"],
+                                            "time": DateTime.now().millisecondsSinceEpoch,
+                                          };
+                                          chatsVM.sendMessage(widget.chatModel?["id"], chatMessageMap);
+
+                                          setState(() {_messageController.clear();});
+
+
+                                        }
+
+
+
+                                      },
                                       child: Icon(Icons.send, color: Colors.white),
                                       style: ElevatedButton.styleFrom(
                                         shape: CircleBorder(),
@@ -116,5 +182,4 @@ class Chat extends StatelessWidget {
         )
     );
   }
-
 }

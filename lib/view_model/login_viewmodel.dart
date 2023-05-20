@@ -36,7 +36,7 @@ class LoginVM{
   }
 
   Future getUserInformation(String userId) async {
-    QuerySnapshot querySnapshot= await FirebaseFirestore.instance.collection("user").where("id", isEqualTo: userId).get();
+    QuerySnapshot querySnapshot= await FirebaseFirestore.instance.collection("users").where("id", isEqualTo: userId).get();
     return querySnapshot.docs[0].data();
   }
 }
