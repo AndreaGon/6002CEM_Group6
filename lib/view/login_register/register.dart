@@ -27,37 +27,39 @@ class _RegisterState extends State<Register> {
 
   handleSubmit() async {
     //function for login credential handling before going to firebase auth
-    if (!registerFormKey.currentState!.validate() || _birthdateController==null || _genderController==null) {
-      if( _birthdateController==null || _genderController==''){
-        registerStatusText = "Please insert all the fields";
-        return;
-      }
-      return;
-    }
+    if (registerFormKey.currentState!.validate() && !_birthdateController.text.isEmpty && _genderController!=null) { //check if anything is empty
+      final username = _usernameController.value.text;
+      final email = _emailController.value.text;
+      final birthdate = _birthdateController.value.text;
+      final password = _passwordController.value.text;
+      final gender = _genderController.toString();
 
-    final username = _usernameController.value.text;
-    final email = _emailController.value.text;
-    final birthdate = _birthdateController.value.text;
-    final password = _passwordController.value.text;
-    final gender = _genderController.toString();
-
-    setState(() {
-      _loading = true; //for the loading progress bar
-    });
-
-    registerStatusText = await RegisterVM().register(context, username, email, birthdate, gender, password);
-
-    if (registerStatusText == "ok") {
-      //redirect to home page... succ method, might change ltr when have time
-      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-    }else{
       setState(() {
-        _loading = false;
+        _loading = true; //for the loading progress bar
       });
+
+      registerStatusText = await RegisterVM().register(context, username, email, birthdate, gender, password);
+
+      if (registerStatusText == "ok") {
+        //redirect to home page... succ method, might change ltr when have time
+        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+        _loading = false;
+      }else{
+        setState(() {
+          _loading = false; //for the loading progress bar
+        });
+      }
+    }
+    else{
+      setState(() {
+        registerStatusText = "Please insert all the fields";
+        _loading = false; //for the loading progress bar
+      });
+      return;
     }
   }
 
-  hintTextColor(hint){
+  hintTextColor(hint){ //for changing hint color
     if(hint != "Enter your birthdate" && hint != "Select your gender"){
       return Colors.black;
     }else{

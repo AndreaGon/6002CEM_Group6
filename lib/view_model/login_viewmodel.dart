@@ -22,7 +22,7 @@ class LoginVM{
           return "Incorrect password...";
       }
       else{
-        return "Some error occurred...";
+        return "Unknown error occurred...";
       }
     }
   }

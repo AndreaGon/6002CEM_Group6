@@ -29,7 +29,7 @@ class RegisterVM {
         return "Email already registered, please login or register with another email!";
       }
       else{
-        return "Some error occurred...";
+        return "Unknown error occurred...";
       }
     }
   }
@@ -49,8 +49,6 @@ class RegisterVM {
 
     await docPost.set(postJson.toJson());
   }
-
-
 }
 
 
