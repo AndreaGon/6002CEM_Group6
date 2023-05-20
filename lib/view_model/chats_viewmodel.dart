@@ -6,8 +6,9 @@ class ChatsVM {
   // Create a CollectionReference called users that references the firestore collection
 
   Stream getAllMessages(String docId) {
-    CollectionReference books = FirebaseFirestore.instance.collection('chats').doc(docId).collection("messages");
-    Stream<QuerySnapshot> querySnapshot= books.orderBy("time").snapshots();
+    String fullCollection = 'chats/' + docId + '/messages';
+    CollectionReference books = FirebaseFirestore.instance.collection(fullCollection.replaceAll(' ', ''));
+    Stream<QuerySnapshot> querySnapshot= books.orderBy("time", descending: true).snapshots();
     return querySnapshot;
   }
 
