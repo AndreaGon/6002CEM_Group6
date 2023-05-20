@@ -4,6 +4,7 @@ class Users {
   final String email;
   final String birthdate;
   final String gender;
+  final double rating;
 
   Users({
     required this.id,
@@ -11,6 +12,7 @@ class Users {
     required this.email,
     required this.birthdate,
     required this.gender,
+    required this.rating,
   });
 
   Map<String, dynamic> toJson() => {
@@ -19,6 +21,7 @@ class Users {
     'email': email,
     'gender': gender,
     'birthdate': birthdate,
+    'rating' : 0.0,
   };
 
 }

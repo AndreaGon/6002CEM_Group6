@@ -42,7 +42,12 @@ class _RegisterState extends State<Register> {
 
       if (registerStatusText == "ok") {
         //redirect to home page... succ method, might change ltr when have time
-        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+        Navigator
+            .of(context)
+            .pushReplacement(
+            MaterialPageRoute(
+                builder: (BuildContext context) => HomePage()
+            ));
         _loading = false;
       }else{
         setState(() {

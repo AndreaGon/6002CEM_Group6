@@ -45,6 +45,7 @@ class RegisterVM {
       username: createUsername,
       gender: createGender,
       birthdate: createBirthdate,
+      rating : 0.0,
     );
 
     await docPost.set(postJson.toJson());
