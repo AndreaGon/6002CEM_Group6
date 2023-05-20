@@ -5,17 +5,16 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 class AllBooksVM {
 
   CollectionReference books = FirebaseFirestore.instance.collection('books');
-  String userId = FirebaseAuth.instance.currentUser!.uid;
   firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
-  Stream collectionStream = FirebaseFirestore.instance.collection('books').snapshots();
+  //Stream<QuerySnapshot> allBooksStream = FirebaseFirestore.instance.collection('books').orderBy('datetime', descending: true).snapshots();
 
-  Future<List<Object?>> getAllBooks() async {
+  getAllBooks() async {
     // Get docs from collection reference
     QuerySnapshot querySnapshot = await books.get();
 
     // Get data from docs and convert map to List
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    return allData;
+    return allData.toList();
   }
 
 
