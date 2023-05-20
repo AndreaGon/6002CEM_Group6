@@ -1,15 +1,12 @@
 import 'package:bookbridge/res/colors.dart';
-import 'package:bookbridge/res/widgets/navigation.dart';
-import 'package:bookbridge/utils/router.dart';
 import 'package:bookbridge/view/books/book_info.dart';
 import 'package:bookbridge/view/books/my_books.dart';
 import 'package:bookbridge/view/help_center/help_center.dart';
 import 'package:bookbridge/view/home/side_navi.dart';
 import 'package:bookbridge/view/inbox/inbox.dart';
+import 'package:bookbridge/view_model/allbooks_viewmodel.dart';
 import 'package:flutter/material.dart';
-
-import '../../view_model/books_viewmodel.dart';
-import '../login_register/login.dart';
+import '../../view_model/addbook_viewmodel.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,11 +14,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final BooksVM viewModel = BooksVM();
+  final AllBooksVM AllBooksViewModel = AllBooksVM();
 
   @override
   void initState() {
-    //viewModel.fetchBookData();
+    //var allbookslist = AllBooksVM().getAllBooks() as List;
     super.initState();
   }
 
@@ -34,7 +31,6 @@ class _HomePageState extends State<HomePage> {
         ),
         child: Scaffold(
             backgroundColor: Colors.transparent,
-
             //top bar with side menu and chat icon
             appBar: AppBar(
               title: null,
@@ -51,15 +47,13 @@ class _HomePageState extends State<HomePage> {
                 ),
               ]
               ),
-
             //list tile of side menu
-            drawer: const SideNavi(),
+            drawer: SideNavi(),
             //Page content
             body: Container(
               margin: const EdgeInsets.all(15.0),
               child: Column(
                 children: [
-
                 //Page title
                   Align(
                     alignment: Alignment.centerLeft,
@@ -72,7 +66,6 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(height: 2, fontSize: 30, color: darkbrown, fontWeight: FontWeight.bold)),
                     ),
                   ),
-
                 //Search box
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -92,7 +85,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-
                 //Card list
                 Expanded(child: ListView(
                     padding: const EdgeInsets.all(8),

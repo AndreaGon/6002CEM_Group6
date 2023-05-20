@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../res/colors.dart';
@@ -7,7 +8,9 @@ import '../login_register/login.dart';
 import 'homepage.dart';
 
 class SideNavi extends StatelessWidget {
-  const SideNavi({super.key});
+  SideNavi({super.key});
+
+  final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +40,7 @@ class SideNavi extends StatelessWidget {
             title: const Text(' My Books ',
                 style: TextStyle(fontSize: 20, color: Colors.white)),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const MyBooks()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MyBooks()));
               },
           ),
           ListTile(
@@ -66,13 +69,15 @@ class SideNavi extends StatelessWidget {
             iconColor: Colors.white,
             title: const Text(' Sign Out ',
                 style: TextStyle(fontSize: 20, color: Colors.white)),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
-              },
+            onTap: () { logout(context); },
           ),
         ]
         )
     );
+  }
+
+  Future logout(context) async {
+    await _auth.signOut().then((value) => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Login()),(route) => false));
   }
 
 }

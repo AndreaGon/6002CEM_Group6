@@ -42,7 +42,7 @@ class BookInfo extends StatelessWidget{
             ),
 
             //list tile of side menu
-            drawer: const SideNavi(),
+            drawer: SideNavi(),
 
             //Page content
             body: Container(
