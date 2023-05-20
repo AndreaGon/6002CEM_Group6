@@ -1,13 +1,17 @@
+import 'package:bookbridge/view/inbox/widgets/chatreceiver_container.dart';
+import 'package:bookbridge/view/inbox/widgets/chatsender_container.dart';
 import 'package:flutter/material.dart';
 import 'package:bookbridge/res/colors.dart';
 
 import '../../models/chats_model.dart';
 import '../../res/widgets/navigation.dart';
 import '../../view_model/chats_viewmodel.dart';
+import '../../view_model/login_viewmodel.dart';
 class Chat extends StatefulWidget {
-  Chat({super.key, this.chatModel});
+  Chat({super.key, this.chatModel, this.userModel});
 
   final Map<String, dynamic> ?chatModel;
+  final Map<String, dynamic> ?userModel;
 
   @override
   State<Chat> createState() => _ChatState();
@@ -20,6 +24,7 @@ class _ChatState extends State<Chat> {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -56,17 +61,32 @@ class _ChatState extends State<Chat> {
                       ),
                     ),
 
-                    // StreamBuilder(
-                    //     stream: chatsVM.getAllMessages(chatModel?["id"]),
-                    //     builder: (context, AsyncSnapshot snapshot){
-                    //       return ListView.builder(
-                    //           itemCount:  snapshot.data.docs.length,
-                    //           itemBuilder: (context, index){
-                    //             return Text(snapshot.data.docs[index]['message']);
-                    //           },
-                    //       );
-                    //     }
-                    // ),
+                    StreamBuilder(
+                        stream: chatsVM.getAllMessages(widget.chatModel?["id"]),
+                        builder: (context, AsyncSnapshot snapshot){
+                          if(!snapshot.hasData) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          return Container(
+                              height: (MediaQuery.of(context).size.height) - 300,
+                              child: ListView.builder(
+                                reverse: true,
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount:  snapshot.data?.docs.length,
+                                itemBuilder: (context, index) {
+                                  if(widget.userModel?["username"] == snapshot.data.docs[index]['sender']){
+                                    return ChatSenderContainer(message: snapshot.data.docs?[index]['message']);
+                                  }
+                                  else{
+                                    return ChatReceiverContainer(message: snapshot.data.docs[index]['message'], sender: snapshot.data.docs[index]['sender']);
+                                  }
+
+                                },
+                              )
+                          );
+                        }
+                    ),
 
                     Expanded(
                       child: Align(
@@ -121,17 +141,24 @@ class _ChatState extends State<Chat> {
                                         width: 5
                                     ),
                                     ElevatedButton(
-                                      onPressed: () {
+                                      onPressed: () async {
+
+
                                         if (_messageController.text.isNotEmpty) {
+
                                           Map<String, dynamic> chatMessageMap = {
                                             "message": _messageController.text,
+                                            "sender": widget.userModel?["username"],
                                             "time": DateTime.now().millisecondsSinceEpoch,
                                           };
-
                                           chatsVM.sendMessage(widget.chatModel?["id"], chatMessageMap);
 
                                           setState(() {_messageController.clear();});
+
+
                                         }
+
+
 
                                       },
                                       child: Icon(Icons.send, color: Colors.white),
