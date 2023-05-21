@@ -15,14 +15,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final BookCoverRef = FirebaseStorage.instance.ref().child('BookCover');
-
-  final AllBooksVM AllBooksViewModel = AllBooksVM();
-  final allbookslist = AllBooksVM().getAllBooks();
-
 
   @override
   Widget build(BuildContext context) {
+
+    BooksVM booksVM = BooksVM();
+
     return Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -87,47 +85,50 @@ class _HomePageState extends State<HomePage> {
                 //Card list
 
                 StreamBuilder(
-                    stream: FirebaseFirestore.instance.collection('books').orderBy('datetime', descending: true).snapshots(),
-                    builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                    stream: booksVM.getAllBooks(),
+                    builder: (context, AsyncSnapshot snapshot){
+                      if(!snapshot.hasData) {
+                        return Center(child: CircularProgressIndicator());
+                      }
                   return Expanded(child: ListView.builder(
                     padding: const EdgeInsets.all(8),
+                      itemCount:  snapshot.data?.docs.length,
+                      itemBuilder: (context, index) {
 
-                    itemCount: streamSnapshot.data?.docs.length,
-                    itemBuilder: (BuildContext context, int index) =>
-
-                      Card(
+                      return Card(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)),
                           child: Column(
                               children: [
                                 //Book cover
-
                                 Container(
                                     padding: const EdgeInsets.all(20),
                                     height: 330,
-                                    child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
-                                          image: DecorationImage(fit: BoxFit.cover, image: AssetImage("assets/book_cover.png")))
+                                    child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                                      child: Image.network(FirebaseStorage.instance.ref().child(snapshot.data.docs[index]['book_cover']).getDownloadURL().toString(), fit: BoxFit.contain ),
                                     )
-                                ),
+                                    ),
 
                                 //Book name and price
                                 ListTile(
                                   onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(
-                                        builder: (context) => BookInfo()));
-                                  },
-                                  title: Text(streamSnapshot.data?.docs[index]['name']),
-                                  subtitle: Text('RM'+ streamSnapshot.data?.docs[index]['price']),
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => BookInfo(snapshot.data.docs[index]['id'])));
+                                    },
+                                  title: Text(snapshot.data.docs[index]['name']),
+                                  subtitle: Text(
+                                      'RM' + snapshot.data.docs[index]['price']),
                                   trailing: Icon(Icons.arrow_forward_ios),
-                                )
+                )
                               ]
                           )
-                      )
-
+                      );
+                    }
                   )
                   );
                 }
-                )]
+                )
+                ]
             )
         )
         )

@@ -9,7 +9,7 @@ import '../login_register/login.dart';
 import 'my_books.dart';
 
 class BookInfo extends StatelessWidget{
-  const BookInfo({super.key});
+  const BookInfo(id, {super.key});
 
   @override
   Widget build(BuildContext context) {
