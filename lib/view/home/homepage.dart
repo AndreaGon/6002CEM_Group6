@@ -15,11 +15,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   final BookCoverRef = FirebaseStorage.instance.ref().child('BookCover');
 
   final AllBooksVM AllBooksViewModel = AllBooksVM();
   final allbookslist = AllBooksVM().getAllBooks();
+
 
   @override
   Widget build(BuildContext context) {

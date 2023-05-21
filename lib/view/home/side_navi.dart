@@ -1,3 +1,4 @@
+import 'package:bookbridge/view/profile/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +7,7 @@ import '../books/my_books.dart';
 import '../help_center/help_center.dart';
 import '../login_register/login.dart';
 import 'homepage.dart';
+import '../profile/profile.dart';
 
 class SideNavi extends StatelessWidget {
   SideNavi({super.key});
@@ -51,7 +53,7 @@ class SideNavi extends StatelessWidget {
             style: TextStyle(fontSize: 20, color: Colors.white)),
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomePage()));
+              context, MaterialPageRoute(builder: (context) => Profile()));
         },
       ),
       ListTile(
@@ -64,20 +66,15 @@ class SideNavi extends StatelessWidget {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => HelpCenter()));
           }),
-      Expanded(
-        child: Align(
-          alignment: FractionalOffset.bottomCenter,
-          child: ListTile(
-            tileColor: darkbrown,
-            leading: const Icon(Icons.logout),
-            iconColor: Colors.white,
-            title: const Text(' Sign Out ',
-                style: TextStyle(fontSize: 20, color: Colors.white)),
-            onTap: () {
-              logout(context);
-            },
-          ),
-        ),
+      ListTile(
+        tileColor: darkbrown,
+        leading: const Icon(Icons.logout),
+        iconColor: Colors.white,
+        title: const Text(' Sign Out ',
+            style: TextStyle(fontSize: 20, color: Colors.white)),
+        onTap: () {
+          logout(context);
+        },
       ),
     ]));
   }

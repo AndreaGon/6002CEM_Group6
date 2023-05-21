@@ -1,8 +1,10 @@
+//reference for datetime formatting: https://www.flutterbeads.com/format-datetime-in-flutter/
 import 'package:bookbridge/res/colors.dart';
 import 'package:bookbridge/view/home/homepage.dart';
 import 'package:flutter/material.dart';
 import '../help_center/help_center.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:intl/intl.dart';
 
 import '../../view_model/register_viewmodel.dart';
 
@@ -191,7 +193,8 @@ class _RegisterState extends State<Register> {
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2050));
-                            _birthdateController.text = date.toString().substring(0, 10);
+                            var dateFormat = DateFormat('dd-MM-yyyy').format(date!);
+                            _birthdateController.text = dateFormat.toString().substring(0, 10);
                             dateText = _birthdateController.text;
                             setState(() {});
                           },
@@ -219,10 +222,10 @@ class _RegisterState extends State<Register> {
                                       DateTime? date = await showDatePicker(
                                           context: context,
                                           initialDate: DateTime.now(),
-                                          firstDate: DateTime(2000),
+                                          firstDate: DateTime(1950),
                                           lastDate: DateTime(2050));
-                                      _birthdateController.text =
-                                          date.toString().substring(0, 10);
+                                      var dateFormat = DateFormat('dd-MM-yyyy').format(date!);
+                                      _birthdateController.text = dateFormat.toString().substring(0, 10);
                                       dateText = _birthdateController.text;
                                       setState(() {});
                                     },
