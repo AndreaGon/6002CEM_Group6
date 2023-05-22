@@ -11,4 +11,14 @@ class BooksVM {
     return querySnapshot;
   }
 
+  Future<String> getImage(String imageUrl) async {
+    var downloadUrl = await storage
+        .ref()
+        .child(imageUrl)
+        .getDownloadURL();
+
+    return await downloadUrl;
+  }
+
+
 }
