@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:bookbridge/view/home/side_navi.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:bookbridge/view_model/addbook_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class AddBook extends StatefulWidget {
 }
 
 class _AddBookState extends State<AddBook> {
+  String userId = FirebaseAuth.instance.currentUser!.uid;
 
   File? _coverphoto;
   File? _conditionphoto;
@@ -441,8 +443,8 @@ class _AddBookState extends State<AddBook> {
     String name,author,year, summary, price, bookcover, bookcondition, datetime;
 
     datetime = DateTime.now().toString();
-    bookcondition = 'BookCondition/'+BookCondition;
-    bookcover = 'BookCover/'+BookCover;
+    bookcondition = 'BookCondition/'+userId+'/'+BookCondition;
+    bookcover = 'BookCover/'+userId+'/'+BookCover;
     name = nameController.text;
     author = authorController.text;
     year = publishedyearController.text;
