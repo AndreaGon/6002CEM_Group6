@@ -105,10 +105,18 @@ class _HomePageState extends State<HomePage> {
                                 Container(
                                     padding: const EdgeInsets.all(20),
                                     height: 330,
-                                    child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
-                                          image: DecorationImage(fit: BoxFit.cover, image: AssetImage("assets/book_cover.png")))
+                                    child: FutureBuilder<String>(
+                                      future: AllBooksViewModel.getImage(streamSnapshot.data?.docs[index]["book_cover"]),
+                                      builder: (context, snapshot) {
+                                        if(snapshot.hasData){
+                                          return Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
+                                          image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(snapshot.data ?? ""))));
+                                        }
+
+                                        return CircularProgressIndicator();
+                                      }
                                     )
-                                ),
+                                  ),
 
                                 //Book name and price
                                 ListTile(
@@ -123,6 +131,16 @@ class _HomePageState extends State<HomePage> {
                               ]
                           )
                       )
+
+                      // AllBooksViewModel.getImage(streamSnapshot.data?.docs[index]["book_cover"]).whenComplete(() async {
+                      //   String bookCoverUrl = "";
+                      //   bookCoverUrl = await AllBooksViewModel.getImage(streamSnapshot.data?.docs[index]["book_cover"]);
+                      //
+                      //   print(bookCoverUrl);
+                      // });
+
+
+
 
                   )
                   );
