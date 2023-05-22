@@ -1,7 +1,6 @@
 import 'dart:ffi';
 
 class BookModel {
-  final String id;
   final String name;
   final String book_cover;
   final String author;
@@ -13,7 +12,6 @@ class BookModel {
   final String datetime;
 
   BookModel({
-    required this.id,
     required this.name,
     required this.book_cover,
     required this.author,
@@ -25,7 +23,6 @@ class BookModel {
     required this.datetime});
 
   Map<String, dynamic> toJson() => {
-    'id': id,
     'name': name,
     'book_cover': book_cover,
     'author': author,

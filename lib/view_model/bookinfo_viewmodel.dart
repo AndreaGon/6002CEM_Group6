@@ -4,9 +4,9 @@ class BookInfoVM {
 
   Future getBookInfo(String bookId) async {
     try {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("books").where("id", isEqualTo: bookId).get();
-    if (querySnapshot.docs.isNotEmpty) {
-      return querySnapshot.docs[0].data();  }
+      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection("books").doc(bookId).get();
+    if (documentSnapshot.exists) {
+      return documentSnapshot.data();  }
     } catch (e) {
       throw Exception('Error occurred while fetching book information: $e');
     }

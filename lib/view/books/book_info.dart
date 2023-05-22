@@ -55,12 +55,12 @@ class BookInfo extends StatelessWidget{
                 margin: const EdgeInsets.all(15.0),
                 child: FutureBuilder(
                     future: bookinfoVM.getBookInfo(bookId),
-                        builder: (context, AsyncSnapshot snapshot) {
-                        if (snapshot.data == null) {
+                        builder: (context, AsyncSnapshot documentSnapshot) {
+                        if (documentSnapshot.data == null) {
                           return Container();
                         }
-                        Map<String, dynamic> bookModel = snapshot.data! as Map<String, dynamic>;
-                        //final bookModel = snapshot.data! as Map<String, dynamic>;
+                        //Map<String, dynamic> bookModel = snapshot.data! as Map<String, dynamic>;
+                        Map<String, dynamic> bookModel = documentSnapshot.data();
                         return Expanded(child: ListView.builder(
                             itemCount: 1,
                             itemBuilder: (context, index) {
