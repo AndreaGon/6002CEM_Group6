@@ -24,10 +24,6 @@ class MainRouter {
         return MaterialPageRoute(builder: (_)=> HomePage());
       case '/mybooks':
         return MaterialPageRoute(builder: (_)=> MyBooks());
-      case '/bookinfo':
-        return MaterialPageRoute(builder: (_)=> BookInfo());
-      case '/addbook':
-        return MaterialPageRoute(builder: (_)=> AddBook());
       default:
         return MaterialPageRoute(builder: (_)=> HomePage());
     }
