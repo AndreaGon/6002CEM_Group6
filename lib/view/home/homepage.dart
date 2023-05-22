@@ -19,8 +19,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
 
-    BooksVM booksVM = BooksVM();
-    final BooksVM AllBooksViewModel = BooksVM();
+    final BooksVM booksVM = BooksVM();
 
     return Container(
         decoration: const BoxDecoration(
@@ -72,7 +71,9 @@ class _HomePageState extends State<HomePage> {
 
                     child: TextField(
                       // controller: _searchController,
-                      decoration: InputDecoration(hintText: 'Search...', border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+                      decoration: InputDecoration(hintText: 'Search...',
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)
+                        ),
 
                         //Search button
                         suffixIcon: IconButton(
@@ -95,9 +96,11 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.all(8),
                       itemCount:  snapshot.data?.docs.length,
                       itemBuilder: (context, index) {
+                        Map<String, dynamic> bookModel = snapshot.data?.docs[index].data();
                         return Card(
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
+                                borderRadius: BorderRadius.circular(20)
+                            ),
                             child: Column(
                                 children: [
                                   //Book cover
@@ -117,9 +120,11 @@ class _HomePageState extends State<HomePage> {
                                                           fit: BoxFit.cover,
                                                           image: NetworkImage(
                                                               snapshot.data ??
-                                                                  ""))));
+                                                                  "")
+                                                      )
+                                                  )
+                                              );
                                             }
-
                                             return CircularProgressIndicator();
                                           }
                                       )
@@ -131,35 +136,29 @@ class _HomePageState extends State<HomePage> {
                                       Navigator.push(context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  BookInfo(snapshot.data
-                                                      .docs[index]['id'])));
+                                                  BookInfo(bookId: bookModel['id'],
+                                          )
+                                      ));
                                     },
                                     title: Text(
-                                        snapshot.data.docs[index]['name']),
+                                        bookModel['name']),
                                     subtitle: Text(
                                         'RM' +
-                                            snapshot.data.docs[index]['price']),
+                                            bookModel['price']),
                                     trailing: Icon(Icons.arrow_forward_ios),
                                   )
                                 ]
                             )
                         );
 
-                        // AllBooksViewModel.getImage(streamSnapshot.data?.docs[index]["book_cover"]).whenComplete(() async {
-                        //   String bookCoverUrl = "";
-                        //   bookCoverUrl = await AllBooksViewModel.getImage(streamSnapshot.data?.docs[index]["book_cover"]);
-                        //
-                        //   print(bookCoverUrl);
-                        // });
-
-
                       }
-                  )
+                      )
                   );
-                }
-                )]
+                    }
+                    )
+                ]
+              )
             )
-        )
         )
     );
   }

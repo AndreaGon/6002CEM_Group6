@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../models/books_model.dart';
 import '../../res/colors.dart';
+import '../../view_model/bookinfo_viewmodel.dart';
 import '../help_center/help_center.dart';
 import '../home/homepage.dart';
 import '../home/side_navi.dart';
@@ -9,7 +11,11 @@ import '../login_register/login.dart';
 import 'my_books.dart';
 
 class BookInfo extends StatelessWidget{
-  const BookInfo(id, {super.key});
+  BookInfoVM bookinfoVM = BookInfoVM();
+
+  BookInfo({super.key, required this.bookId});
+
+  final String bookId;
 
   @override
   Widget build(BuildContext context) {
@@ -49,142 +55,171 @@ class BookInfo extends StatelessWidget{
                 margin: const EdgeInsets.all(15.0),
                 child: ListView(
                     children: [
-                      //Page title
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          margin: const EdgeInsets.all(15.0),
-                          decoration: const BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(width: 5, color: chocolate),)
-                          ),
-                          child: const Text("Book Name",
-                              style: TextStyle(height: 2,
-                                  fontSize: 30,
-                                  color: darkbrown,
-                                  fontWeight: FontWeight.bold)),
-                        ),
-                      ),
 
-                      //Book Content
-                      Expanded(
-                          child: Card(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),),
-                                child:Column(
+                      FutureBuilder(
+                        builder: (context, AsyncSnapshot snapshot) {
+                        if (snapshot.data == null) {
+                          return Container();
+                        }
+                        return ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            final futuredata = bookinfoVM.getBookInfo(bookId);
+                            futuredata.then((dynamic data) {
+                              if (data is Map<String, dynamic>) {
+                                final book = BookModel(
+                                id: data['id'] as String,
+                                author: data['author'] as String,
+                                name: data['name'] as String,
+                                book_cover: data['book_cover'] as String,
+                                datetime: data['datetime'] as String,
+                                other_img: data['other_img'] as String,
+                                price: data['price'] as String,
+                                published_year: data['published_year'] as String,
+                                summary: data['summary'] as String,
+                                uploaded_by: data['uploaded_by'] as String,
+                                );
+
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                    margin: const EdgeInsets.all(15.0),
+                                    decoration: const BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(width: 5, color: chocolate),)
+                                    ),
+                                    child: const Text("Book Name",
+                                        style: TextStyle(height: 2,
+                                            fontSize: 30,
+                                            color: darkbrown,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                );
+
+                                Expanded(
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                    child:Column(
                                     children: [
                                       //Book cover
                                       Container(
-                                          padding: const EdgeInsets.all(20),
-                                          height: 330,
-                                          child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(20),
-                                                image: const DecorationImage(fit: BoxFit.cover, image: AssetImage("assets/book_cover.png"),),
-                                              )
-                                          ),
-                                      ),
+                                        padding: const EdgeInsets.all(20),
+                                        height: 330,
+                                        child: Container(
+                                        decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        image: const DecorationImage(fit:BoxFit.cover, image: AssetImage("assets/book_cover.png")),
+                                        )
+                                        ),
+                                        ),
 
-                                      //Book price
-                                      Align(
+                                        Align(
                                         alignment: Alignment.centerLeft,
                                         child: Container(
-                                            padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                            child: const Text("Book Price: RM 12", style: TextStyle(fontSize: 16,))
+                                        padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                        child: Text("Book Price: RM ${book.price}", style: TextStyle(fontSize: 16,))
                                         ),
-                                      ),
+                                        ),
 
-                                      //Author
                                       Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Container(
-                                            padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                            child: const Text("Author: Jane Smith", style: TextStyle(fontSize: 16,))
-                                        ),
+                                      alignment: Alignment.centerLeft,
+                                      child: Container(
+                                      padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                      child: Text("Author: ${book.author}", style: TextStyle(fontSize: 16,))
+                                      ),
                                       ),
 
                                       //Published year
                                       Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Container(
-                                            padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                            child: const Text("Published year: 1990", style: TextStyle(fontSize: 16,))
-                                        ),
+                                      alignment: Alignment.centerLeft,
+                                      child: Container(
+                                      padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                      child: Text("Published year: ${book.published_year}", style: TextStyle(fontSize: 16))
+                                      ),
                                       ),
 
                                       //Summary
                                       Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Container(
-                                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                            child: const Text("Summary: The story follows the life of 17-year-old Emily as she navigates the challenges of her final year of high school, and the difficult circumstances that arise when her family is forced to move to a small town in the middle of winter.", style: TextStyle(fontSize: 16, ))
-                                        ),
+                                      alignment: Alignment.centerLeft,
+                                      child: Container(
+                                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                                      child: Text("Summary: ${book.summary}", style: TextStyle(fontSize: 16))
+                                      ),
                                       ),
 
-                                    ]
-                                )
-                            )
-                      ),
+                                      const SizedBox(height: 10),
 
-                      const SizedBox(height: 10),
+                                      Card(
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                        child:Container(
+                                        padding: const EdgeInsets.all(20),
+                                        child: Column(
+                                        children: [
 
-                      Card(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),),
-                          child:Container(
-                              padding: const EdgeInsets.all(20),
-                            child: Column(
-                              children: [
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Container(
+                                              padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                              child: Text("Uploaded by: Christine Tan", style: TextStyle(fontSize: 16,))
+                                            ),
+                                          ),
 
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(
-                                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                    child: Text("Uploaded by: Christine Tan", style: TextStyle(fontSize: 16,))
-                                ),
-                              ),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Container(
+                                              padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                              child: Text("Ratings: 4.8", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
+                                            ),
+                                          ),
 
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(
-                                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                    child: Text("Ratings: 4.8", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
-                                ),
-                              ),
+                                          const SizedBox(height: 20),
 
-                              const SizedBox(height: 20),
+                                          InkWell(
+                                            //chat button
+                                            onTap: () {
 
-                              InkWell(
-                                //chat button
-                                onTap: () {
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.all(20),
+                                              width: double.maxFinite,
+                                              decoration: BoxDecoration(
+                                              color: darkbrown,
+                                              borderRadius: BorderRadius.circular(20),
+                                              boxShadow: [
+                                              BoxShadow(
+                                              color: Colors.grey.withOpacity(0.9),
+                                              spreadRadius: 0,
+                                              blurRadius: 5,
+                                              offset: const Offset(0, 6)),
+                                              ],
+                                            ),
 
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(20),
-                                  width: double.maxFinite,
-                                  decoration: BoxDecoration(
-                                    color: darkbrown,
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.grey.withOpacity(0.9),
-                                          spreadRadius: 0,
-                                          blurRadius: 5,
-                                          offset: const Offset(0, 6)),
-                                    ],
-                                  ),
+                                              child: Row(
+                                                children: [
+                                                Icon(Icons.chat_bubble_outline, color: Colors.white,),
+                                                SizedBox(width: 100,),
+                                                Text("Chat", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                                                ])
+                                          )
+                                          )
+                                          ]
+                                          ),
+                                          ),
+                                          ),
 
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.chat_bubble_outline, color: Colors.white,),
-                                      SizedBox(width: 100,),
-                                      Text("Chat", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-                                    ]
-                                  )
-                                )
-                              )
-                              ]
-                            ),
-                          ),
-                      ),
+                                      ]
+                                      )
+                                      )
+                                      );
+
+                              }
+                            });
+                            }
+                            );
+                        },
+                          future: bookinfoVM.getBookInfo(bookId)
+                      )
+
                     ]
                 )
             )
