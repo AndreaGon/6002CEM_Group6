@@ -17,6 +17,14 @@ class AllBooksVM {
     return allData.toList();
   }
 
+  Future<String> getImage(String imageUrl) async {
+    var downloadUrl = await storage
+        .ref()
+        .child(imageUrl)
+        .getDownloadURL();
+
+    return await downloadUrl;
+  }
 
 
 }
