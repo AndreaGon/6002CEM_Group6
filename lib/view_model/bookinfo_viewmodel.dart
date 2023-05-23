@@ -16,17 +16,8 @@ class BookInfoVM {
     }
   }
 
-  Future<String> getImage(String imageUrl) async {
-    var downloadUrl = await storage
-        .ref()
-        .child(imageUrl)
-        .getDownloadURL();
-
-    return await downloadUrl;
-  }
-
-  getCoverImage(String imageUrl) async {
-    var downloadUrl = await storage
+  Future<String> getImageUrl(String imageUrl) async {
+    var downloadUrl = await firebase_storage.FirebaseStorage.instance
         .ref()
         .child(imageUrl)
         .getDownloadURL();
@@ -34,18 +25,6 @@ class BookInfoVM {
     await downloadUrl as String;
     return downloadUrl;
   }
-
-  getConditionImage(String imageUrl) async {
-    var downloadUrl = await storage
-        .ref()
-        .child(imageUrl)
-        .getDownloadURL();
-
-    await downloadUrl as String;
-    return downloadUrl;
-  }
-
-
 
 
 }

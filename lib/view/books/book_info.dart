@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../../models/books_model.dart';
 import '../../res/colors.dart';
@@ -95,17 +96,16 @@ class BookInfo extends StatelessWidget{
                                 scrollDirection: Axis.vertical,
                                 itemBuilder: (context, index) {
 
-                                  //final imageUrls = getImageUrl(bookModel['book_cover'], bookModel['book_condition']);
+                                  final imageFutureUrls = [bookinfoVM.getImageUrl(bookModel['book_cover']), bookinfoVM.getImageUrl(bookModel['other_img'])];
 
                                   return Card(
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                                       child:Column(
                                           children: [
-                                            //Book cover: modify
                                             Container(
                                               padding: const EdgeInsets.all(20),
                                               height: 330,
-                                              child: buildImageSlider(bookModel['book_cover'], bookModel['other_img']),
+                                              child: buildImageSlider(imageFutureUrls),
                                             ),
 
                                             Align(
@@ -153,7 +153,7 @@ class BookInfo extends StatelessWidget{
 
                                             Card(
                                               elevation: 5,
-                                              color: light,
+                                              color: white,
                                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                                               child:Container(
                                                 padding: const EdgeInsets.all(20),
@@ -224,38 +224,40 @@ class BookInfo extends StatelessWidget{
                   ],
                 ),
             )
-
-
         )
     );
     }
 
-  Widget buildImageSlider(bookcover_path,bookcondition_path) {
-    //WanJing: problem here is the string and dynamic datatype, once solve this the whole part can work
-      final bookCover_url = bookinfoVM.getCoverImage(bookcover_path).toString() as String;
-      final bookCondition_url = bookinfoVM.getConditionImage(bookcondition_path).toString() as String;
-      String bookCover = bookCover_url.toString();
-      String bookCondition = bookCondition_url.toString();
-      List<String> imageUrl = [bookCover, bookCondition];
+  Widget buildImageSlider(List<Future<String>> imageFutureUrls) {
+    return FutureBuilder<List<String>>(
+      future: Future.wait(imageFutureUrls), // Wait for all futures to complete
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator(); // Display a loading indicator while waiting for the futures
+        } else if (snapshot.hasError) {
+          return Text('Error loading images'); // Handle any potential errors during image loading
+        } else if (!snapshot.hasData) {
+          return Text('No images found'); // Handle case when no images are available
+        }
 
-    return CarouselSlider(
-      options: CarouselOptions(
-        height: 200,
-        enableInfiniteScroll: true,
-        autoPlay: true,
-      ),
-      items: imageUrl.map((imageUrl) {
-        return Image.network(
-          imageUrl,
-          fit: BoxFit.cover,
+        final imageUrls = snapshot.data!; // Extract the list of image URLs from the snapshot data
+
+        return CarouselSlider(
+          options: CarouselOptions(
+            height: 300,  // Replace with the desired height of the slider
+            enableInfiniteScroll: true,
+            autoPlay: true,
+          ),
+          items: imageUrls.map((imageUrl) {
+            return Image.network(
+              imageUrl,
+              fit: BoxFit.cover,
+            );
+          }).toList(),
         );
-      }).toList(),
+      },
     );
   }
-
-
-
-
 
 
 }
