@@ -1,4 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:flutter/material.dart';
+
+firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
 
 class BookInfoVM {
 
@@ -11,6 +15,36 @@ class BookInfoVM {
       throw Exception('Error occurred while fetching book information: $e');
     }
   }
+
+  Future<String> getImage(String imageUrl) async {
+    var downloadUrl = await storage
+        .ref()
+        .child(imageUrl)
+        .getDownloadURL();
+
+    return await downloadUrl;
+  }
+
+  getCoverImage(String imageUrl) async {
+    var downloadUrl = await storage
+        .ref()
+        .child(imageUrl)
+        .getDownloadURL();
+
+    await downloadUrl as String;
+    return downloadUrl;
+  }
+
+  getConditionImage(String imageUrl) async {
+    var downloadUrl = await storage
+        .ref()
+        .child(imageUrl)
+        .getDownloadURL();
+
+    await downloadUrl as String;
+    return downloadUrl;
+  }
+
 
 
 

@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/books_model.dart';
@@ -93,6 +94,9 @@ class BookInfo extends StatelessWidget{
                                 itemCount: 1,
                                 scrollDirection: Axis.vertical,
                                 itemBuilder: (context, index) {
+
+                                  //final imageUrls = getImageUrl(bookModel['book_cover'], bookModel['book_condition']);
+
                                   return Card(
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                                       child:Column(
@@ -101,12 +105,7 @@ class BookInfo extends StatelessWidget{
                                             Container(
                                               padding: const EdgeInsets.all(20),
                                               height: 330,
-                                              child: Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(20),
-                                                    image: const DecorationImage(fit:BoxFit.cover, image: AssetImage("assets/book_cover.png")),
-                                                  )
-                                              ),
+                                              child: buildImageSlider(bookModel['book_cover'], bookModel['other_img']),
                                             ),
 
                                             Align(
@@ -229,5 +228,34 @@ class BookInfo extends StatelessWidget{
 
         )
     );
+    }
+
+  Widget buildImageSlider(bookcover_path,bookcondition_path) {
+    //WanJing: problem here is the string and dynamic datatype, once solve this the whole part can work
+      final bookCover_url = bookinfoVM.getCoverImage(bookcover_path).toString() as String;
+      final bookCondition_url = bookinfoVM.getConditionImage(bookcondition_path).toString() as String;
+      String bookCover = bookCover_url.toString();
+      String bookCondition = bookCondition_url.toString();
+      List<String> imageUrl = [bookCover, bookCondition];
+
+    return CarouselSlider(
+      options: CarouselOptions(
+        height: 200,
+        enableInfiniteScroll: true,
+        autoPlay: true,
+      ),
+      items: imageUrl.map((imageUrl) {
+        return Image.network(
+          imageUrl,
+          fit: BoxFit.cover,
+        );
+      }).toList(),
+    );
   }
+
+
+
+
+
+
 }
