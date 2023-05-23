@@ -84,25 +84,49 @@ class MyBooks extends StatelessWidget{
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
                                               //Book cover
-                                              const Image(image: AssetImage("assets/book_cover.png"),width: 120),
+                                              Container(
+                                                width: 120,
+                                                child: FutureBuilder<String>(
+                                                  future: mybooksVM.getImage(snapshot.data
+                                                      ?.docs[index]["book_cover"]),
+                                                  builder:  (context, snapshot) {
+                                                    if (snapshot.hasData) {
+                                                      return Container(
+                                                          decoration: BoxDecoration(
+                                                              image: DecorationImage(
+                                                                  fit: BoxFit.cover,
+                                                                  image: NetworkImage(
+                                                                      snapshot.data ??
+                                                                          "")
+                                                              )
+                                                          )
+                                                      );
+                                                    }
+                                                    return CircularProgressIndicator();
+                                                  }
+                                                ),
+                                              ),
 
+                                              //Book info
                                               Padding(
                                                 padding: const EdgeInsets.all(10),
-                                                child: Column(
+                                                child: SizedBox(
+                                                  width: 120,
+                                                  child:Column(
                                                     children: [
                                                       SizedBox(height: 10),
                                                       Text(bookModel['name'],
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontWeight: FontWeight.bold),
-                                                        overflow: TextOverflow.fade,
-                                                          maxLines: 1,
-                                                          softWrap: false),
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight: FontWeight.bold),
+                                                          overflow: TextOverflow.fade,
+                                                          maxLines: 4),
                                                       const SizedBox(height: 10),
-                                                      Text(bookModel['author'], style: TextStyle(fontSize: 12,overflow: TextOverflow.fade)),
-                                                      Text("RM"+bookModel['price'], style: TextStyle(fontSize: 12)),
+                                                      Text(bookModel['author'], style: TextStyle(fontSize: 10,overflow: TextOverflow.fade)),
+                                                      Text("RM"+bookModel['price'], style: TextStyle(fontSize: 10)),
                                                     ]
                                                 ),
+                                                )
                                               ),
 
                                               //Delete book button
@@ -111,7 +135,7 @@ class MyBooks extends StatelessWidget{
                                                     padding: const EdgeInsets.fromLTRB(10, 0, 20, 20),
                                                     alignment: Alignment.bottomRight,
                                                     child:InkWell(
-                                                      onTap: () { },
+                                                      onTap: () { mybooksVM.DeleteBook(bookModel['id']); },
                                                       child: const Icon(Icons.delete_forever, color: darkbrown,size: 30),
                                                     ),
                                                   )
@@ -121,15 +145,14 @@ class MyBooks extends StatelessWidget{
                                       )
                                   );
 
-
-
-
                                 },
                             )
                             );
                           }
 
                       ),
+
+                      SizedBox(height: 20),
 
                       InkWell(
                         //chat button
