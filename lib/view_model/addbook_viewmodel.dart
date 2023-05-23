@@ -21,9 +21,13 @@ class AddBooksVM {
       'price': price,
       'summary': summary,
       'uploaded_by': userId,
-      'datetime' : datetime,
+      'datetime' : datetime
     })
-        .then((value) => print("Book Added"))
+        .then((value) => {
+          books.doc(value.id).update({
+            "id": value.id
+          })
+    })
         .catchError((error) => print("Failed to add book: $error"));
   }
 
