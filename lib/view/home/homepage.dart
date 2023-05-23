@@ -68,14 +68,11 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
-
                     child: TextField(
                       // controller: _searchController,
                       decoration: InputDecoration(hintText: 'Search...',
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)
                         ),
-
-                        //Search button
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.search),
                           onPressed: (){}, //=> _searchController(),
