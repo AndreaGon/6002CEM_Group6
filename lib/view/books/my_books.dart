@@ -75,8 +75,7 @@ class MyBooks extends StatelessWidget{
                                           borderRadius: BorderRadius.circular(20)),
                                       child:Container(
                                           width: double.infinity,
-                                          //Book cover
-                                          height: 150,
+                                          height: 160,
                                           alignment: Alignment.centerLeft,
                                           padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                                           child: Row(
@@ -119,10 +118,10 @@ class MyBooks extends StatelessWidget{
                                                           style: TextStyle(
                                                               fontSize: 14,
                                                               fontWeight: FontWeight.bold),
-                                                          overflow: TextOverflow.fade,
-                                                          maxLines: 4),
+                                                          overflow: TextOverflow.ellipsis,
+                                                          maxLines: 5),
                                                       const SizedBox(height: 10),
-                                                      Text(bookModel['author'], style: TextStyle(fontSize: 10,overflow: TextOverflow.fade)),
+                                                      Text(bookModel['author'], style: TextStyle(fontSize: 10,overflow: TextOverflow.ellipsis)),
                                                       Text("RM"+bookModel['price'], style: TextStyle(fontSize: 10)),
                                                     ]
                                                 ),
@@ -152,7 +151,7 @@ class MyBooks extends StatelessWidget{
 
                       ),
 
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
 
                       InkWell(
                         //chat button

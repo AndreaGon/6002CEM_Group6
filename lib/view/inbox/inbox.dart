@@ -93,7 +93,7 @@ class Inbox extends StatelessWidget {
                                       children: [
                                         Container(
                                             decoration: BoxDecoration(
-                                                border: Border(bottom: BorderSide(width: 3, color: chocolate),)
+                                                border: Border(bottom: BorderSide(width: 3, color: chocolate))
                                             ),
                                             child: Align(
                                               alignment: Alignment.centerLeft,

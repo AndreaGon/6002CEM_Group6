@@ -32,6 +32,15 @@ class BookInfo extends StatelessWidget{
                 title: null,
                 backgroundColor: white,
                 elevation: 0,
+                leading: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: darkbrown,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
                 iconTheme: const IconThemeData(color: darkbrown),
                 actions: <Widget>[
                   Padding(
@@ -55,6 +64,7 @@ class BookInfo extends StatelessWidget{
                 margin: const EdgeInsets.all(15.0),
                 child: Column(
                   children: [
+
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
@@ -77,28 +87,85 @@ class BookInfo extends StatelessWidget{
                         if (documentSnapshot.data == null) {
                           return Container();
                         }
-                        //Map<String, dynamic> bookModel = snapshot.data! as Map<String, dynamic>;
                         Map<String, dynamic> bookModel = documentSnapshot.data;
-                        return Container(
+                        return Expanded(
                             child: ListView.builder(
                                 itemCount: 1,
                                 scrollDirection: Axis.vertical,
                                 itemBuilder: (context, index) {
+                                  return Card(
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                      child:Column(
+                                          children: [
+                                            //Book cover: modify
+                                            Container(
+                                              padding: const EdgeInsets.all(20),
+                                              height: 330,
+                                              child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(20),
+                                                    image: const DecorationImage(fit:BoxFit.cover, image: AssetImage("assets/book_cover.png")),
+                                                  )
+                                              ),
+                                            ),
 
-                                  return Expanded(
-                                            child: Card(
-                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                                child:Column(
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Container(
+                                                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                                  child: Text("Book Name: "+ bookModel['name'], style: TextStyle(fontSize: 16))
+                                              ),
+                                            ),
+                                            SizedBox(height: 10),
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Container(
+                                                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                                  child: Text("Book Price: RM "+ bookModel['price'], style: TextStyle(fontSize: 16))
+                                              ),
+                                            ),
+                                            SizedBox(height: 10),
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Container(
+                                                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                                  child: Text("Author: "+bookModel['author'], style: TextStyle(fontSize: 16))
+                                              ),
+                                            ),
+                                            SizedBox(height: 10),
+                                            //Published year
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Container(
+                                                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                                  child: Text("Published year: "+ bookModel['published_year'], style: TextStyle(fontSize: 16))
+                                              ),
+                                            ),
+                                            SizedBox(height: 10),
+                                            //Summary
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Container(
+                                                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                                                  child: Text("Summary: "+bookModel['summary'], style: TextStyle(fontSize: 14))
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+
+                                            Card(
+                                              elevation: 5,
+                                              color: light,
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                              child:Container(
+                                                padding: const EdgeInsets.all(20),
+                                                child: Column(
                                                     children: [
-                                                      //Book cover
-                                                      Container(
-                                                        padding: const EdgeInsets.all(20),
-                                                        height: 330,
+
+                                                      Align(
+                                                        alignment: Alignment.centerLeft,
                                                         child: Container(
-                                                            decoration: BoxDecoration(
-                                                              borderRadius: BorderRadius.circular(20),
-                                                              image: const DecorationImage(fit:BoxFit.cover, image: AssetImage("assets/book_cover.png")),
-                                                            )
+                                                            padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                                            child: Text("Uploaded by: ", style: TextStyle(fontSize: 16,))
                                                         ),
                                                       ),
 
@@ -106,129 +173,58 @@ class BookInfo extends StatelessWidget{
                                                         alignment: Alignment.centerLeft,
                                                         child: Container(
                                                             padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                                            child: Text("Book Name:"+ bookModel['name'] as String, style: TextStyle(fontSize: 16))
+                                                            child: Text("Ratings: ", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
                                                         ),
                                                       ),
 
-                                                      Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Container(
-                                                            padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                                            child: Text("Book Price: RM "+ bookModel['price'] as String, style: TextStyle(fontSize: 16))
-                                                        ),
-                                                      ),
+                                                      const SizedBox(height: 20),
 
-                                                      Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Container(
-                                                            padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                                            child: Text("Author: "+bookModel['author'] as String, style: TextStyle(fontSize: 16))
-                                                        ),
-                                                      ),
+                                                      InkWell(
+                                                        //chat button
+                                                          onTap: () {
 
-                                                      //Published year
-                                                      Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Container(
-                                                            padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                                            child: Text("Published year: "+ bookModel['published_year'] as String, style: TextStyle(fontSize: 16))
-                                                        ),
-                                                      ),
+                                                          },
+                                                          child: Container(
+                                                              padding: const EdgeInsets.all(20),
+                                                              width: double.maxFinite,
+                                                              decoration: BoxDecoration(
+                                                                color: darkbrown,
+                                                                borderRadius: BorderRadius.circular(20),
+                                                                boxShadow: [
+                                                                  BoxShadow(
+                                                                      color: Colors.grey.withOpacity(0.9),
+                                                                      spreadRadius: 0,
+                                                                      blurRadius: 5,
+                                                                      offset: const Offset(0, 6)),
+                                                                ],
+                                                              ),
 
-                                                      //Summary
-                                                      Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Container(
-                                                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                                                            child: Text("Summary: "+bookModel['summary'] as String, style: TextStyle(fontSize: 16))
-                                                        ),
-                                                      ),
-
-                                                      const SizedBox(height: 10),
-
-                                                      Card(
-                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                                        child:Container(
-                                                          padding: const EdgeInsets.all(20),
-                                                          child: Column(
-                                                              children: [
-
-                                                                Align(
-                                                                  alignment: Alignment.centerLeft,
-                                                                  child: Container(
-                                                                      padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                                                      child: Text("Uploaded by: Christine Tan", style: TextStyle(fontSize: 16,))
-                                                                  ),
-                                                                ),
-
-                                                                Align(
-                                                                  alignment: Alignment.centerLeft,
-                                                                  child: Container(
-                                                                      padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                                                      child: Text("Ratings: 4.8", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
-                                                                  ),
-                                                                ),
-
-                                                                const SizedBox(height: 20),
-
-                                                                InkWell(
-                                                                  //chat button
-                                                                    onTap: () {
-
-                                                                    },
-                                                                    child: Container(
-                                                                        padding: const EdgeInsets.all(20),
-                                                                        width: double.maxFinite,
-                                                                        decoration: BoxDecoration(
-                                                                          color: darkbrown,
-                                                                          borderRadius: BorderRadius.circular(20),
-                                                                          boxShadow: [
-                                                                            BoxShadow(
-                                                                                color: Colors.grey.withOpacity(0.9),
-                                                                                spreadRadius: 0,
-                                                                                blurRadius: 5,
-                                                                                offset: const Offset(0, 6)),
-                                                                          ],
-                                                                        ),
-
-                                                                        child: Row(
-                                                                            children: [
-                                                                              Icon(Icons.chat_bubble_outline, color: Colors.white,),
-                                                                              SizedBox(width: 100,),
-                                                                              Text("Chat", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-                                                                            ])
-                                                                    )
-                                                                )
-                                                              ]
-                                                          ),
-                                                        ),
-                                                      ),
-
+                                                              child: Row(
+                                                                  children: [
+                                                                    Icon(Icons.chat_bubble_outline, color: Colors.white,),
+                                                                    SizedBox(width: 100,),
+                                                                    Text("Chat", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                                                                  ])
+                                                          )
+                                                      )
                                                     ]
-                                                )
-                                            )
-                                        );
+                                                ),
+                                              ),
+                                            ),
 
+                                          ]
+                                      )
+                                  );
 
-
-
-
-
-                                  //}
-                                  //});
                                 }
                             )
                         );
-
                       },
                     )
-
-
 
                   ],
                 ),
             )
-
 
 
         )
