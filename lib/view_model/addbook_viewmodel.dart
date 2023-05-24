@@ -8,12 +8,11 @@ class AddBooksVM {
 
   CollectionReference books = FirebaseFirestore.instance.collection('books');
   String userId = FirebaseAuth.instance.currentUser!.uid;
-  firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
 
+  //add book data
   Future uploadBook(String name, String author, String year, String summary, String price, String bookcover, String bookcondition, String datetime) {
-
+    //set book name to lower case for search book function
     var lowercaseName = name.toLowerCase();
-
     return books
         .add({
       'name': name,
@@ -35,6 +34,7 @@ class AddBooksVM {
         .catchError((error) => print("Failed to add book: $error"));
   }
 
+  //add book cover to storage
   Future uploadBookCover(File _coverphoto) async {
     final BookCover = basename(_coverphoto.path);
     try {
@@ -45,6 +45,7 @@ class AddBooksVM {
     }
   }
 
+  //add book condition to storage
   Future uploadBookCondition(File _conditionphoto) async {
     final BookCondition = basename(_conditionphoto.path);
     try {

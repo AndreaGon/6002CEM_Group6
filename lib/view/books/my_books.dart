@@ -1,10 +1,7 @@
 import 'package:bookbridge/view/books/add_book.dart';
 import 'package:bookbridge/view_model/mybooks_viewmodel.dart';
 import 'package:flutter/material.dart';
-
 import '../../res/colors.dart';
-import '../help_center/help_center.dart';
-import '../home/homepage.dart';
 import '../home/side_navi.dart';
 import '../inbox/inbox.dart';
 
@@ -14,11 +11,13 @@ class MyBooks extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
+    //get my books view model
     final MyBooksVM mybooksVM = MyBooksVM();
 
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
+          //load background
             image: AssetImage("assets/background_1.png"), fit: BoxFit.cover),
       ),
         child: Scaffold(
@@ -39,8 +38,10 @@ class MyBooks extends StatelessWidget{
                   ),
                 ]
             ),
+
             //list tile of side menu
             drawer: SideNavi(),
+
             //Page content
             body: Container(
                 margin: const EdgeInsets.all(15.0),
@@ -58,9 +59,10 @@ class MyBooks extends StatelessWidget{
                               style: TextStyle(height: 2, fontSize: 30, color: darkbrown, fontWeight: FontWeight.bold)),
                         ),
                       ),
-                      //Card list
 
+                      //Card list
                       StreamBuilder(
+                        //get book info with the user id logging in now
                           stream: mybooksVM.getMyBooks(),
                           builder: (context,AsyncSnapshot snapshot) {
                             if (!snapshot.hasData) {
@@ -70,6 +72,8 @@ class MyBooks extends StatelessWidget{
                                 itemCount: snapshot.data?.docs.length,
                                 itemBuilder: (context, index) {
                                   Map<String, dynamic> bookModel = snapshot.data?.docs[index].data();
+
+                                  //show cards of books
                                   return Card(
                                       shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(20)),
@@ -143,18 +147,16 @@ class MyBooks extends StatelessWidget{
                                           )
                                       )
                                   );
-
                                 },
                             )
                             );
                           }
-
                       ),
 
                       SizedBox(height: 10),
 
+                      //add book button
                       InkWell(
-                        //chat button
                           onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => AddBook())); },
                           child: Container(
                               padding: const EdgeInsets.all(20),
