@@ -164,7 +164,7 @@ class BookInfo extends StatelessWidget{
                                                         alignment: Alignment.centerLeft,
                                                         child: Container(
                                                             padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                                            child: Text("Uploaded by: ", style: TextStyle(fontSize: 16,))
+                                                            child: Text("Uploaded by: ", style: TextStyle(fontSize: 16))
                                                         ),
                                                       ),
 
