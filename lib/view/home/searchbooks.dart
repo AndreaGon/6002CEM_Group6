@@ -33,7 +33,7 @@ class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
             child: TextField(
               decoration: InputDecoration(
                   prefixIcon: Icon(Icons.search),
-                  hintText: 'Search...'),
+                  hintText: 'Search in lower case...'),
               onChanged: (val) {
                 setState(() {
                   name = val;
@@ -44,12 +44,10 @@ class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
       ),
 
         body: StreamBuilder<QuerySnapshot>(
-            stream: (name != "")
-                ? FirebaseFirestore.instance.collection('books').where("name", arrayContains: name).snapshots()
-                : FirebaseFirestore.instance.collection("books").snapshots(),
+            stream: FirebaseFirestore.instance.collection('books').where("lowercaseName", isGreaterThanOrEqualTo: name.toLowerCase())
+                .where("lowercaseName", isLessThan: name.toLowerCase() + 'z').snapshots(),
             builder: (context, snapshot) {
               return (snapshot.connectionState == ConnectionState.waiting)
-
                   ? Center(child: CircularProgressIndicator())
                   : ListView.builder(
                     itemCount: snapshot.data?.docs.length ?? 0,
