@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../res/colors.dart';
+import '../books/book_info.dart';
 
 class CloudFirestoreSearch extends StatefulWidget {
   @override
@@ -53,15 +54,25 @@ class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
                     itemCount: snapshot.data?.docs.length ?? 0,
                     itemBuilder: (context, index) {
                       DocumentSnapshot data = snapshot.data!.docs[index];
-                      return Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            data['name'],
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        )
-                    );
+                      return GestureDetector(
+                        child: Card(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                data['name'],
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            )
+                        ),
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      BookInfo(bookId: data['id'],
+                                      )
+                              ));
+                        },
+                      );
                 },
               );
             }
