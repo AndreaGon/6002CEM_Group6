@@ -1,12 +1,10 @@
 import 'package:bookbridge/res/colors.dart';
 import 'package:bookbridge/view/books/book_info.dart';
-import 'package:bookbridge/view/books/my_books.dart';
-import 'package:bookbridge/view/help_center/help_center.dart';
+import 'package:bookbridge/view/home/searchbooks.dart';
 import 'package:bookbridge/view/home/side_navi.dart';
 import 'package:bookbridge/view/inbox/inbox.dart';
 import 'package:bookbridge/view_model/allbooks_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,11 +14,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  String name = "";
+  final BooksVM booksVM = BooksVM();
+
   @override
   Widget build(BuildContext context) {
-
-    final BooksVM booksVM = BooksVM();
-
     return Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -51,39 +49,42 @@ class _HomePageState extends State<HomePage> {
               margin: const EdgeInsets.all(15.0),
               child: Column(
                 children: [
-                //Page title
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      margin: const EdgeInsets.all(15.0),
-                      decoration: const BoxDecoration(
-                          border: Border(bottom: BorderSide(width: 5, color: chocolate),)
-                      ),
-                      child: const Text("Home",
-                          style: TextStyle(height: 2, fontSize: 30, color: darkbrown, fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                //Search box
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: TextField(
-                      // controller: _searchController,
-                      decoration: InputDecoration(hintText: 'Search...',
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)
+                  Container(
+                    width: double.maxFinite,
+                    child:  Row(
+                      children: [
+                        //Page title
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            margin: const EdgeInsets.all(15.0),
+                            decoration: const BoxDecoration(
+                                border: Border(bottom: BorderSide(width: 5, color: chocolate),)
+                            ),
+                            child: const Text("Home",
+                                style: TextStyle(height: 2, fontSize: 30, color: darkbrown, fontWeight: FontWeight.bold)),
+                          ),
                         ),
-                        suffixIcon: IconButton(
-                          icon: const Icon(Icons.search),
-                          onPressed: (){}, //=> _searchController(),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                //Card list
 
-                StreamBuilder(
+                        SizedBox(width: 150),
+
+                        //Search button
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: IconButton(
+                            icon: const Icon(Icons.search, size: 40),
+                            onPressed: (){ Navigator.push(context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CloudFirestoreSearch()
+                                ));
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  StreamBuilder(
                     stream: booksVM.getAllBooks(),
                     builder: (context, AsyncSnapshot snapshot){
                       if(!snapshot.hasData) {
@@ -152,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                       )
                   );
                     }
-                    )
+                    ),
                 ]
               )
             )
