@@ -11,6 +11,7 @@ class BookModel {
   final String other_img;
   final String price;
   final String datetime;
+  final String lowercaseName;
 
   BookModel({
     required this.id,
@@ -22,7 +23,8 @@ class BookModel {
     required this.uploaded_by,
     required this.other_img,
     required this.price,
-    required this.datetime});
+    required this.datetime,
+    required this.lowercaseName});
 
   Map<String, dynamic> toJson() => {
     'id': id,
@@ -35,5 +37,6 @@ class BookModel {
     'other_img' : other_img,
     'price' : price,
     'datetime' : datetime,
+    'lowercaseName' : lowercaseName,
   };
 }

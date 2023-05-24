@@ -11,6 +11,9 @@ class AddBooksVM {
   firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
 
   Future uploadBook(String name, String author, String year, String summary, String price, String bookcover, String bookcondition, String datetime) {
+
+    var lowercaseName = name.toLowerCase();
+
     return books
         .add({
       'name': name,
@@ -21,7 +24,8 @@ class AddBooksVM {
       'price': price,
       'summary': summary,
       'uploaded_by': userId,
-      'datetime' : datetime
+      'datetime' : datetime,
+      'lowercaseName' : lowercaseName
     })
         .then((value) => {
           books.doc(value.id).update({
