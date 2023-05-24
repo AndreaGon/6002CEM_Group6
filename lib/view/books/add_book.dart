@@ -25,86 +25,7 @@ class _AddBookState extends State<AddBook> {
   late String BookCondition;
   final ImagePicker _picker = ImagePicker();
 
-  Future imgFromGalleryBookCover() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      if (pickedFile != null) {
-        _coverphoto = File(pickedFile.path);
-        BookCover = basename(_coverphoto!.path);
-        Fluttertoast.showToast(
-          msg: "Photo selected.",
-          gravity: ToastGravity.BOTTOM,
-        );
-      } else {
-        Fluttertoast.showToast(
-          msg: "Please choose a book cover.",
-          gravity: ToastGravity.BOTTOM,
-        );
-      }
-    });
-  }
-
-  Future imgFromCameraBookCover() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
-
-    setState(() {
-      if (pickedFile != null) {
-        _coverphoto = File(pickedFile.path);
-        BookCover = basename(_coverphoto!.path);
-        Fluttertoast.showToast(
-          msg: "Photo selected.",
-          gravity: ToastGravity.BOTTOM,
-        );
-      } else {
-        Fluttertoast.showToast(
-          msg: "Please choose a book cover.",
-          gravity: ToastGravity.BOTTOM,
-        );
-      }
-    });
-  }
-
-  Future imgFromGalleryBookCondition() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      if (pickedFile != null) {
-        _conditionphoto = File(pickedFile.path);
-        BookCondition = basename(_conditionphoto!.path);
-        Fluttertoast.showToast(
-          msg: "Photo selected.",
-          gravity: ToastGravity.BOTTOM,
-        );
-      } else {
-        Fluttertoast.showToast(
-          msg: "Please choose a book cover.",
-          gravity: ToastGravity.BOTTOM,
-        );
-      }
-    });
-  }
-
-  Future imgFromCameraBookCondition() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
-
-    setState(() {
-      if (pickedFile != null) {
-        _conditionphoto = File(pickedFile.path);
-        BookCondition = basename(_conditionphoto!.path);
-        Fluttertoast.showToast(
-          msg: "Photo selected.",
-          gravity: ToastGravity.BOTTOM,
-        );
-      } else {
-        Fluttertoast.showToast(
-          msg: "Please choose a book cover.",
-          gravity: ToastGravity.BOTTOM,
-        );
-      }
-    });
-  }
-
+  //declare controllers for each textfield
   TextEditingController nameController = TextEditingController();
   TextEditingController authorController = TextEditingController();
   TextEditingController publishedyearController = TextEditingController();
@@ -116,6 +37,7 @@ class _AddBookState extends State<AddBook> {
     return Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
+            //load background image
               image: AssetImage("assets/background_4.png"), fit: BoxFit.cover),
         ),
         child: Scaffold(
@@ -199,7 +121,6 @@ class _AddBookState extends State<AddBook> {
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                                 child:Container(
                                   width: double.infinity,
-                                  //Book cover
                                   height: 100,
                                   alignment: Alignment.centerLeft,
                                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -208,6 +129,7 @@ class _AddBookState extends State<AddBook> {
                                         const Text('Book Cover:', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
                                         const SizedBox(width: 10),
                                         InkWell(
+                                          //show image picker
                                             onTap: () { _showPickerCover(context); },
                                             child: Container(
                                                 padding: const EdgeInsets.all(20),
@@ -348,6 +270,7 @@ class _AddBookState extends State<AddBook> {
                                         const Text('Book Condition:', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
                                         const SizedBox(width: 10),
                                         InkWell(
+                                          //show image picker
                                             onTap: () { _showPickerCondition(context); },
                                             child: Container(
                                                 padding: const EdgeInsets.all(20),
@@ -403,8 +326,10 @@ class _AddBookState extends State<AddBook> {
                             const SizedBox(height: 10),
                           ]
                       )),
+
                       //Upload book button
                       InkWell(
+                        //go to check book info
                           onTap: () { uploadCheck(context); },
                           child: Container(
                             padding: const EdgeInsets.all(20),
@@ -438,8 +363,92 @@ class _AddBookState extends State<AddBook> {
     );
   }
 
-  uploadCheck(BuildContext context){
+  //pick image from mobile gallery
+  Future imgFromGalleryBookCover() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
+    setState(() {
+      if (pickedFile != null) {
+        _coverphoto = File(pickedFile.path);
+        BookCover = basename(_coverphoto!.path);
+        Fluttertoast.showToast(
+          msg: "Photo selected.",
+          gravity: ToastGravity.BOTTOM,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: "Please choose a book cover.",
+          gravity: ToastGravity.BOTTOM,
+        );
+      }
+    });
+  }
+
+  //pick image from mobile camera
+  Future imgFromCameraBookCover() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _coverphoto = File(pickedFile.path);
+        BookCover = basename(_coverphoto!.path);
+        Fluttertoast.showToast(
+          msg: "Photo selected.",
+          gravity: ToastGravity.BOTTOM,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: "Please choose a book cover.",
+          gravity: ToastGravity.BOTTOM,
+        );
+      }
+    });
+  }
+
+  //pick image from mobile gallery
+  Future imgFromGalleryBookCondition() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _conditionphoto = File(pickedFile.path);
+        BookCondition = basename(_conditionphoto!.path);
+        Fluttertoast.showToast(
+          msg: "Photo selected.",
+          gravity: ToastGravity.BOTTOM,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: "Please choose a book cover.",
+          gravity: ToastGravity.BOTTOM,
+        );
+      }
+    });
+  }
+
+  //pick image from mobile camera
+  Future imgFromCameraBookCondition() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _conditionphoto = File(pickedFile.path);
+        BookCondition = basename(_conditionphoto!.path);
+        Fluttertoast.showToast(
+          msg: "Photo selected.",
+          gravity: ToastGravity.BOTTOM,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: "Please choose a book cover.",
+          gravity: ToastGravity.BOTTOM,
+        );
+      }
+    });
+  }
+
+  //check book info and assign variables
+  uploadCheck(BuildContext context){
     String name,author,year, summary, price, bookcover, bookcondition, datetime;
 
     datetime = DateTime.now().toString();
@@ -470,6 +479,7 @@ class _AddBookState extends State<AddBook> {
     }
   }
 
+  //show image picker for book cover
   void _showPickerCover(context) {
     showModalBottomSheet(
         context: context,
@@ -500,6 +510,7 @@ class _AddBookState extends State<AddBook> {
         });
   }
 
+  //show image picker for book condition
   void _showPickerCondition(context) {
     showModalBottomSheet(
         context: context,

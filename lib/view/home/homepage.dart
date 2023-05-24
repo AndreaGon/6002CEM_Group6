@@ -14,19 +14,22 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  String name = "";
+  //get all books view model
   final BooksVM booksVM = BooksVM();
 
   @override
   Widget build(BuildContext context) {
     return Container(
+
+      //load background image
         decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/background_3.png"), fit: BoxFit.cover),
         ),
         child: Scaffold(
             backgroundColor: Colors.transparent,
-            //top bar with side menu and chat icon
+
+            //top bar with side menu icon and chat icon
             appBar: AppBar(
               title: null,
               backgroundColor: white,
@@ -42,13 +45,16 @@ class _HomePageState extends State<HomePage> {
                 ),
               ]
               ),
+
             //list tile of side menu
             drawer: SideNavi(),
+
             //Page content
             body: Container(
               margin: const EdgeInsets.all(15.0),
               child: Column(
                 children: [
+                  //Contains page title and search button
                   Container(
                     width: double.maxFinite,
                     child:  Row(
@@ -84,16 +90,19 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
+                  //Looping of book cards
                   StreamBuilder(
+                    //get books order by latest
                     stream: booksVM.getAllBooks(),
                     builder: (context, AsyncSnapshot snapshot){
                       if(!snapshot.hasData) {
                         return Center(child: CircularProgressIndicator());
                       }
-                  return Expanded(child: ListView.builder(
-                    padding: const EdgeInsets.all(8),
+                    return Expanded(child: ListView.builder(
+                      padding: const EdgeInsets.all(8),
                       itemCount:  snapshot.data?.docs.length,
                       itemBuilder: (context, index) {
+                        //map data into book model
                         Map<String, dynamic> bookModel = snapshot.data?.docs[index].data();
                         return Card(
                             shape: RoundedRectangleBorder(
@@ -106,10 +115,12 @@ class _HomePageState extends State<HomePage> {
                                       padding: const EdgeInsets.all(20),
                                       height: 330,
                                       child: FutureBuilder<String>(
+                                        //get book cover path to download image url
                                           future: booksVM.getImage(snapshot.data
                                               ?.docs[index]["book_cover"]),
                                           builder: (context, snapshot) {
                                             if (snapshot.hasData) {
+                                              //load image
                                               return Container(
                                                   decoration: BoxDecoration(
                                                       borderRadius: BorderRadius
@@ -134,6 +145,7 @@ class _HomePageState extends State<HomePage> {
                                       Navigator.push(context,
                                           MaterialPageRoute(
                                               builder: (context) =>
+                                              //get book id and pass to book info
                                                   BookInfo(bookId: bookModel['id'],
                                           )
                                       ));
@@ -148,7 +160,6 @@ class _HomePageState extends State<HomePage> {
                                 ]
                             )
                         );
-
                       }
                       )
                   );

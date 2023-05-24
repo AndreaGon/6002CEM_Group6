@@ -10,6 +10,8 @@ class CloudFirestoreSearch extends StatefulWidget {
 }
 
 class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
+
+  //declare search variable
   String name = "";
 
   @override
@@ -17,6 +19,7 @@ class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
     return Container(
         decoration: const BoxDecoration(
         image: DecorationImage(
+          //load background image
         image: AssetImage("assets/background_3.png"), fit: BoxFit.cover)),
       child:Scaffold(
         appBar: AppBar(
@@ -24,6 +27,7 @@ class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
           elevation: 0,
           iconTheme: const IconThemeData(color: darkbrown),
           leading: IconButton(
+            //back to home page
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
               Navigator.of(context).pop();
@@ -34,10 +38,11 @@ class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
             child: TextField(
               decoration: InputDecoration(
                   prefixIcon: Icon(Icons.search),
-                  hintText: 'Search in lower case...'),
+                  hintText: 'Search...'),
               onChanged: (val) {
                 setState(() {
-                  name = val;
+                  //get lower case value
+                  name = val.toLowerCase();
                 });
               },
             ),
@@ -68,6 +73,7 @@ class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
                           Navigator.push(context,
                               MaterialPageRoute(
                                   builder: (context) =>
+                                  //get book id and pass to book info
                                       BookInfo(bookId: data['id'],
                                       )
                               ));

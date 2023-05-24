@@ -1,22 +1,17 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-
-import '../../models/books_model.dart';
 import '../../res/colors.dart';
 import '../../view_model/bookinfo_viewmodel.dart';
-import '../help_center/help_center.dart';
 import '../home/homepage.dart';
 import '../home/side_navi.dart';
 import '../inbox/inbox.dart';
-import '../login_register/login.dart';
-import 'my_books.dart';
 
 class BookInfo extends StatelessWidget{
+  //get book info view model
   BookInfoVM bookinfoVM = BookInfoVM();
 
+  //book id that passed from previous page: home page or search
   BookInfo({super.key, required this.bookId});
-
   final String bookId;
 
   @override
@@ -24,11 +19,11 @@ class BookInfo extends StatelessWidget{
     return Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
+            //background image
               image: AssetImage("assets/background_1.png"), fit: BoxFit.cover),
         ),
         child: Scaffold(
             backgroundColor: Colors.transparent,
-
             //top bar with side menu and chat icon
             appBar: AppBar(
                 title: null,
@@ -67,6 +62,7 @@ class BookInfo extends StatelessWidget{
                 child: Column(
                   children: [
 
+                    //Page title
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
@@ -83,21 +79,23 @@ class BookInfo extends StatelessWidget{
                       ),
                     ),
 
+                    //Show book info card
                     FutureBuilder(
+                      //use book id to get doc info
                       future: bookinfoVM.getBookInfo(bookId),
                       builder: (context, AsyncSnapshot documentSnapshot) {
                         if (documentSnapshot.data == null) {
                           return Container();
                         }
+                        //map data into book model
                         Map<String, dynamic> bookModel = documentSnapshot.data;
                         return Expanded(
                             child: ListView.builder(
                                 itemCount: 1,
                                 scrollDirection: Axis.vertical,
                                 itemBuilder: (context, index) {
-
+                                  //combine two image urls
                                   final imageFutureUrls = [bookinfoVM.getImageUrl(bookModel['book_cover']), bookinfoVM.getImageUrl(bookModel['other_img'])];
-
                                   return Card(
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                                       child:Column(
@@ -105,9 +103,11 @@ class BookInfo extends StatelessWidget{
                                             Container(
                                               padding: const EdgeInsets.all(20),
                                               height: 330,
+                                              //show images
                                               child: buildImageSlider(imageFutureUrls),
                                             ),
 
+                                            //book name
                                             Align(
                                               alignment: Alignment.centerLeft,
                                               child: Container(
@@ -115,7 +115,10 @@ class BookInfo extends StatelessWidget{
                                                   child: Text("Book Name: "+ bookModel['name'], style: TextStyle(fontSize: 16))
                                               ),
                                             ),
+
                                             SizedBox(height: 10),
+
+                                            //book price
                                             Align(
                                               alignment: Alignment.centerLeft,
                                               child: Container(
@@ -123,7 +126,10 @@ class BookInfo extends StatelessWidget{
                                                   child: Text("Book Price: RM "+ bookModel['price'], style: TextStyle(fontSize: 16))
                                               ),
                                             ),
+
                                             SizedBox(height: 10),
+
+                                            //book author
                                             Align(
                                               alignment: Alignment.centerLeft,
                                               child: Container(
@@ -131,8 +137,10 @@ class BookInfo extends StatelessWidget{
                                                   child: Text("Author: "+bookModel['author'], style: TextStyle(fontSize: 16))
                                               ),
                                             ),
+
                                             SizedBox(height: 10),
-                                            //Published year
+
+                                            //book published year
                                             Align(
                                               alignment: Alignment.centerLeft,
                                               child: Container(
@@ -140,8 +148,10 @@ class BookInfo extends StatelessWidget{
                                                   child: Text("Published year: "+ bookModel['published_year'], style: TextStyle(fontSize: 16))
                                               ),
                                             ),
+
                                             SizedBox(height: 10),
-                                            //Summary
+
+                                            //book summary
                                             Align(
                                               alignment: Alignment.centerLeft,
                                               child: Container(
@@ -149,8 +159,10 @@ class BookInfo extends StatelessWidget{
                                                   child: Text("Summary: "+bookModel['summary'], style: TextStyle(fontSize: 14))
                                               ),
                                             ),
+
                                             const SizedBox(height: 10),
 
+                                            //user info card
                                             Card(
                                               elevation: 5,
                                               color: white,
@@ -214,13 +226,11 @@ class BookInfo extends StatelessWidget{
                                           ]
                                       )
                                   );
-
                                 }
                             )
                         );
                       },
                     )
-
                   ],
                 ),
             )
@@ -228,23 +238,25 @@ class BookInfo extends StatelessWidget{
     );
     }
 
+    //get urls and map data to show in image slider
   Widget buildImageSlider(List<Future<String>> imageFutureUrls) {
     return FutureBuilder<List<String>>(
-      future: Future.wait(imageFutureUrls), // Wait for all futures to complete
+      //wait for all futures to complete
+      future: Future.wait(imageFutureUrls),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // Display a loading indicator while waiting for the futures
+          return CircularProgressIndicator();
         } else if (snapshot.hasError) {
-          return Text('Error loading images'); // Handle any potential errors during image loading
+          return Text('Error loading images');
         } else if (!snapshot.hasData) {
-          return Text('No images found'); // Handle case when no images are available
+          return Text('No images found');
         }
 
-        final imageUrls = snapshot.data!; // Extract the list of image URLs from the snapshot data
+        final imageUrls = snapshot.data!; // Extract the list of image URLs
 
         return CarouselSlider(
           options: CarouselOptions(
-            height: 300,  // Replace with the desired height of the slider
+            height: 300,
             enableInfiniteScroll: true,
             autoPlay: true,
           ),
@@ -258,6 +270,5 @@ class BookInfo extends StatelessWidget{
       },
     );
   }
-
 
 }

@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:flutter/material.dart';
-
-firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
 
 class BookInfoVM {
 
+  //get doc by book id
   Future getBookInfo(String bookId) async {
     try {
       DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection("books").doc(bookId).get();
@@ -16,13 +14,14 @@ class BookInfoVM {
     }
   }
 
+  //get book cover and book condition url
   Future<String> getImageUrl(String imageUrl) async {
     var downloadUrl = await firebase_storage.FirebaseStorage.instance
         .ref()
         .child(imageUrl)
         .getDownloadURL();
 
-    await downloadUrl as String;
+    await downloadUrl;
     return downloadUrl;
   }
 
