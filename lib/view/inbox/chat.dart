@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:bookbridge/view/inbox/widgets/chatreceiver_container.dart';
 import 'package:bookbridge/view/inbox/widgets/chatsender_container.dart';
 import 'package:flutter/material.dart';
 import 'package:bookbridge/res/colors.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../models/chats_model.dart';
 import '../../res/widgets/navigation.dart';
@@ -19,6 +22,9 @@ class Chat extends StatefulWidget {
 
 class _ChatState extends State<Chat> {
   ChatsVM chatsVM = ChatsVM();
+
+  File? chatPhotos;
+
 
   final TextEditingController _messageController = TextEditingController();
 
@@ -75,10 +81,10 @@ class _ChatState extends State<Chat> {
                             itemCount:  snapshot.data?.docs.length,
                             itemBuilder: (context, index) {
                               if(widget.userModel?["username"] == snapshot.data.docs[index]['sender']){
-                                return ChatSenderContainer(message: snapshot.data.docs?[index]['message']);
+                                return ChatSenderContainer(message: snapshot.data.docs?[index]["message"], type: snapshot.data.docs?[index]["type"]);
                               }
                               else{
-                                return ChatReceiverContainer(message: snapshot.data.docs[index]['message'], sender: snapshot.data.docs[index]['sender']);
+                                return ChatReceiverContainer(message: snapshot.data.docs[index]['message'], type: snapshot.data.docs?[index]["type"], sender: snapshot.data.docs[index]['sender']);
                               }
 
                             },
@@ -110,7 +116,11 @@ class _ChatState extends State<Chat> {
                                           width: 10
                                       ),
                                       ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          setState(() {
+                                            chatsVM.getImageFromPhone(widget.chatModel?["id"], widget.userModel?["username"]);
+                                          });
+                                        },
                                         child: Text("Send photo", style: TextStyle(color: Colors.white)),
                                         style: ElevatedButton.styleFrom(
                                           padding: EdgeInsets.all(5),
@@ -165,6 +175,7 @@ class _ChatState extends State<Chat> {
                                               "message": _messageController.text,
                                               "sender": widget.userModel?["username"],
                                               "time": DateTime.now().millisecondsSinceEpoch,
+                                              "type": "txt"
                                             };
                                             chatsVM.sendMessage(widget.chatModel?["id"], chatMessageMap);
 
