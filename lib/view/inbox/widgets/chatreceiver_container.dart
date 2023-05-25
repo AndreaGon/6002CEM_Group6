@@ -2,11 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../res/colors.dart';
+import '../../../view_model/chats_viewmodel.dart';
 
 class ChatReceiverContainer extends StatelessWidget {
-  ChatReceiverContainer({Key? key, required this.message, required this.sender}) : super(key: key);
+  ChatReceiverContainer({Key? key, required this.message, required this.type, required this.sender}) : super(key: key);
+
+  ChatsVM chatsVM = ChatsVM();
 
   final String message;
+  final String type;
   final String sender;
 
   @override
@@ -37,11 +41,16 @@ class ChatReceiverContainer extends StatelessWidget {
                     alignment: Alignment.topLeft,
                     child: Column(
                       children: [
-                        new Text(sender,
-                            style: TextStyle(height: 0, fontSize: 12, color: Colors.green, fontWeight: FontWeight.bold)),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child:new Text(sender,
+                              style: TextStyle(height: 0, fontSize: 12, color: Colors.green, fontWeight: FontWeight.bold))
+                        ),
 
-                        new Text(message,
-                            style: TextStyle(height: 2, fontSize: 15, color: darkbrown))
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: chatsVM.isATextMessage(type, message),
+                        )
                       ],
                     ),
                   )

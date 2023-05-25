@@ -1,3 +1,4 @@
+
 import 'package:bookbridge/view_model/login_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,8 +20,15 @@ class InboxVM {
     QuerySnapshot querySnapshot= await FirebaseFirestore.instance.collection("chats")
         .where("members", arrayContains: currentUserId)
         .where("related_book", isEqualTo: bookId).get();
+    
+    if(querySnapshot.docs.length == 0){
+      return {"status": 0};
+    }
+    else{
+      return querySnapshot.docs[0].data();
+    }
 
-    return querySnapshot.docs[0].data();
+
   }
 
   createNewInbox(String chatName, String recipient, String bookId) async {
@@ -28,7 +36,7 @@ class InboxVM {
     Map<String, dynamic> name = await LoginVM().getUserInformation(recipient);
 
     return chats.add({
-      'chat_name': name["username"],
+      'chat_name': chatName,
       'members' : [recipient, userId],
       'sub_name': chatName,
       'related_book': bookId

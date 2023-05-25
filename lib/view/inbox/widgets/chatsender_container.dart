@@ -1,12 +1,17 @@
+import 'package:bookbridge/view_model/chats_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../res/colors.dart';
 
 class ChatSenderContainer extends StatelessWidget {
-  ChatSenderContainer({Key? key, required this.message}) : super(key: key);
+
+  ChatSenderContainer({Key? key, required this.message, required this.type}) : super(key: key);
+
+  ChatsVM chatsVM = ChatsVM();
 
   final String message;
+  final String type;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +39,7 @@ class ChatSenderContainer extends StatelessWidget {
 
                   child: Align(
                     alignment: Alignment.topLeft,
-                    child: new Text(message,
-                        style: TextStyle(height: 2, fontSize: 15, color: darkbrown)),
+                    child: chatsVM.isATextMessage(type, message),
                   )
               ),
             ],
