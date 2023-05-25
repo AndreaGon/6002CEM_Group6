@@ -1,14 +1,19 @@
+import 'package:bookbridge/view_model/login_viewmodel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import '../../res/colors.dart';
 import '../../view_model/bookinfo_viewmodel.dart';
+import '../../view_model/inbox_view_model.dart';
 import '../home/homepage.dart';
 import '../home/side_navi.dart';
+import '../inbox/chat.dart';
 import '../inbox/inbox.dart';
 
 class BookInfo extends StatelessWidget{
   //get book info view model
   BookInfoVM bookinfoVM = BookInfoVM();
+  InboxVM inboxVM = InboxVM();
+  LoginVM loginVM = LoginVM();
 
   //book id that passed from previous page: home page or search
   BookInfo({super.key, required this.bookId});
@@ -16,6 +21,9 @@ class BookInfo extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+
+
+
     return Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -192,8 +200,13 @@ class BookInfo extends StatelessWidget{
 
                                                       InkWell(
                                                         //chat button
-                                                          onTap: () {
+                                                          onTap: () async {
+                                                            await inboxVM.createNewInbox(bookModel['lowercaseName'], bookModel['uploaded_by'], bookModel['id']);
+                                                            String currentUserId = await loginVM.getCurrentUserId();
+                                                            Map<String, dynamic> userInfo = await loginVM.getUserInformation(currentUserId);
+                                                            Map<String, dynamic> chatModel = await inboxVM.findInbox(bookModel["id"]);
 
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(chatModel: chatModel, userModel: userInfo)));
                                                           },
                                                           child: Container(
                                                               padding: const EdgeInsets.all(20),

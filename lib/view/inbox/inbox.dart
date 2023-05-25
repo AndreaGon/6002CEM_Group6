@@ -103,7 +103,7 @@ class Inbox extends StatelessWidget {
                                         ),
                                         Align(
                                           alignment: Alignment.topLeft,
-                                          child: new Text(chatModel["recent_message"],
+                                          child: new Text(chatModel["sub_name"],
                                               style: TextStyle(height: 2, fontSize: 13, color: darkbrown)),
                                         )
 
