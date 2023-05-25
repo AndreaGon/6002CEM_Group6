@@ -201,12 +201,20 @@ class BookInfo extends StatelessWidget{
                                                       InkWell(
                                                         //chat button
                                                           onTap: () async {
-                                                            await inboxVM.createNewInbox(bookModel['lowercaseName'], bookModel['uploaded_by'], bookModel['id']);
+                                                            Map<String, dynamic> chatModel = await inboxVM.findInbox(bookModel["id"]);
                                                             String currentUserId = await loginVM.getCurrentUserId();
                                                             Map<String, dynamic> userInfo = await loginVM.getUserInformation(currentUserId);
-                                                            Map<String, dynamic> chatModel = await inboxVM.findInbox(bookModel["id"]);
 
-                                                            Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(chatModel: chatModel, userModel: userInfo)));
+                                                            if(chatModel["status"] == 0) {
+                                                              await inboxVM.createNewInbox(bookModel['lowercaseName'], bookModel['uploaded_by'], bookModel['id']);
+                                                              Map<String, dynamic> chatModel = await inboxVM.findInbox(bookModel["id"]);
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(chatModel: chatModel, userModel: userInfo)));
+                                                            }
+                                                            else{
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(chatModel: chatModel, userModel: userInfo)));
+                                                            }
+
+
                                                           },
                                                           child: Container(
                                                               padding: const EdgeInsets.all(20),
