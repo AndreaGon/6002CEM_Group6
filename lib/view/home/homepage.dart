@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                         Align(
                           alignment: Alignment.bottomRight,
                           child: IconButton(
-                            icon: const Icon(Icons.search, size: 40),
+                            icon: const Icon(Icons.search, size: 40, color: tan),
                             onPressed: (){ Navigator.push(context,
                                 MaterialPageRoute(
                                     builder: (context) =>
