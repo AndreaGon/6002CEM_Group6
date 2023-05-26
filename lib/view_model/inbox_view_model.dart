@@ -34,11 +34,11 @@ class InboxVM {
   createNewInbox(String chatName, String recipient, String bookId) async {
 
     Map<String, dynamic> name = await LoginVM().getUserInformation(recipient);
-
+    print(name["username"]);
     return chats.add({
       'chat_name': chatName,
       'members' : [recipient, userId],
-      'sub_name': chatName,
+      'sub_name': name["username"],
       'related_book': bookId
     }).then((value) => {
       chats.doc(value.id).update({

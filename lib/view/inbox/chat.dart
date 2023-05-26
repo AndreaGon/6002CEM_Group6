@@ -2,14 +2,11 @@ import 'dart:io';
 
 import 'package:bookbridge/view/inbox/widgets/chatreceiver_container.dart';
 import 'package:bookbridge/view/inbox/widgets/chatsender_container.dart';
+import 'package:bookbridge/view/inbox/widgets/image_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:bookbridge/res/colors.dart';
-import 'package:image_picker/image_picker.dart';
-
-import '../../models/chats_model.dart';
-import '../../res/widgets/navigation.dart';
 import '../../view_model/chats_viewmodel.dart';
-import '../../view_model/login_viewmodel.dart';
+
 class Chat extends StatefulWidget {
   Chat({super.key, this.chatModel, this.userModel});
 
@@ -118,7 +115,11 @@ class _ChatState extends State<Chat> {
                                       ElevatedButton(
                                         onPressed: () {
                                           setState(() {
-                                            chatsVM.getImageFromPhone(widget.chatModel?["id"], widget.userModel?["username"]);
+                                            showModalBottomSheet(
+                                                context: context,
+                                                builder: (BuildContext bc) {
+                                                  return ImageModal(docId: widget.chatModel?["id"], sender: widget.chatModel?["id"]);
+                                                });
                                           });
                                         },
                                         child: Text("Send photo", style: TextStyle(color: Colors.white)),

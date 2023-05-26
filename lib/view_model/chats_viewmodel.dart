@@ -60,10 +60,16 @@ class ChatsVM {
       print('error occurred');
     }
   }
-  Future getImageFromPhone(String docId, String sender) async {
-    final imagePicked = await imagePicker.pickImage(source: ImageSource.gallery);
+  Future getImageFromPhone(String docId, String sender, bool isFromCamera) async {
+    var imagePicked;
 
-
+    if(isFromCamera){
+      imagePicked = await imagePicker.pickImage(source: ImageSource.camera);
+    }
+    else{
+      imagePicked = await imagePicker.pickImage(source: ImageSource.gallery);
+    }
+    
 
     if (imagePicked != null) {
       chatPhotos = File(imagePicked.path);
