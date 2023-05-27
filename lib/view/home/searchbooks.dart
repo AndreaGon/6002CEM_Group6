@@ -74,7 +74,7 @@ class _CloudFirestoreSearchState extends State<CloudFirestoreSearch> {
                               MaterialPageRoute(
                                   builder: (context) =>
                                   //get book id and pass to book info
-                                      BookInfo(bookId: data['id'],
+                                      BookInfo(bookId: data['id'], uploadedBy: data["uploaded_by"],
                                       )
                               ));
                         },

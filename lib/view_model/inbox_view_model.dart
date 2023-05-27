@@ -45,7 +45,7 @@ class InboxVM {
         "id": value.id
       })
     })
-        .catchError((error) => print("Failed to add chat: $error"));;
+        .catchError((error) => print("Failed to add chat: $error"));
   }
 
 }

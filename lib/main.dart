@@ -28,6 +28,7 @@ class BookBridge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
         title: 'Book Bridge',
         onGenerateRoute: MainRouter.generateRoute,
         theme: ThemeData(

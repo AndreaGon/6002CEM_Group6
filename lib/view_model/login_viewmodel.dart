@@ -27,7 +27,7 @@ class LoginVM{
     }
   }
 
-  Future getCurrentUserId() async{
+  getCurrentUserId() {
     return _auth.currentUser!.uid;
   }
 
