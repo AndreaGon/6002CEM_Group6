@@ -1,3 +1,4 @@
+import 'package:bookbridge/view/books/widgets/chat_button.dart';
 import 'package:bookbridge/view_model/login_viewmodel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +17,9 @@ class BookInfo extends StatelessWidget{
   LoginVM loginVM = LoginVM();
 
   //book id that passed from previous page: home page or search
-  BookInfo({super.key, required this.bookId});
+  BookInfo({super.key, required this.bookId, required this.uploadedBy});
   final String bookId;
+  final String uploadedBy;
 
   @override
   Widget build(BuildContext context) {
@@ -198,47 +200,8 @@ class BookInfo extends StatelessWidget{
 
                                                       const SizedBox(height: 20),
 
-                                                      InkWell(
-                                                        //chat button
-                                                          onTap: () async {
-                                                            Map<String, dynamic> chatModel = await inboxVM.findInbox(bookModel["id"]);
-                                                            String currentUserId = await loginVM.getCurrentUserId();
-                                                            Map<String, dynamic> userInfo = await loginVM.getUserInformation(currentUserId);
+                                                      ChatButton(bookModel: bookModel, uploadedBy: uploadedBy)
 
-                                                            if(chatModel["status"] == 0) {
-                                                              await inboxVM.createNewInbox(bookModel['lowercaseName'], bookModel['uploaded_by'], bookModel['id']);
-                                                              Map<String, dynamic> chatModel = await inboxVM.findInbox(bookModel["id"]);
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(chatModel: chatModel, userModel: userInfo)));
-                                                            }
-                                                            else{
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(chatModel: chatModel, userModel: userInfo)));
-                                                            }
-
-
-                                                          },
-                                                          child: Container(
-                                                              padding: const EdgeInsets.all(20),
-                                                              width: double.maxFinite,
-                                                              decoration: BoxDecoration(
-                                                                color: darkbrown,
-                                                                borderRadius: BorderRadius.circular(20),
-                                                                boxShadow: [
-                                                                  BoxShadow(
-                                                                      color: Colors.grey.withOpacity(0.9),
-                                                                      spreadRadius: 0,
-                                                                      blurRadius: 5,
-                                                                      offset: const Offset(0, 6)),
-                                                                ],
-                                                              ),
-
-                                                              child: Row(
-                                                                  children: [
-                                                                    Icon(Icons.chat_bubble_outline, color: Colors.white,),
-                                                                    SizedBox(width: 100,),
-                                                                    Text("Chat", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-                                                                  ])
-                                                          )
-                                                      )
                                                     ]
                                                 ),
                                               ),

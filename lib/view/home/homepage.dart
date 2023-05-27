@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                                           MaterialPageRoute(
                                               builder: (context) =>
                                               //get book id and pass to book info
-                                                  BookInfo(bookId: bookModel['id'],
+                                                  BookInfo(bookId: bookModel['id'], uploadedBy: bookModel["uploaded_by"],
                                           )
                                       ));
                                     },
