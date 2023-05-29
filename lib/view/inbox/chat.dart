@@ -100,36 +100,54 @@ class _ChatState extends State<Chat> {
                               children: [
                                 Row(
                                     children: [
-                                      ElevatedButton(
-                                        onPressed: () {},
-                                        child: Text("Mark as Sold", style: TextStyle(color: Colors.white)),
-                                        style: ElevatedButton.styleFrom(
-                                          padding: EdgeInsets.all(5),
-                                          backgroundColor: darkbrown, // <-- Button color
-                                          foregroundColor: tan, // <-- Splash color
+                                      Container(
+                                        child: InkWell(
+                                          onTap: (){
+                                            setState(() {
+
+                                            });
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.handshake, color: Colors.white,),
+                                              Text("End Conversation", style: TextStyle(color: Colors.white,)),
+                                            ],
+                                          ),
+                                        ),
+                                        padding: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                                          color: darkbrown,
                                         ),
                                       ),
                                       SizedBox(
-                                          width: 10
+                                          width: 5,
                                       ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            showModalBottomSheet(
-                                                context: context,
-                                                builder: (BuildContext bc) {
-                                                  return ImageModal(docId: widget.chatModel?["id"], sender: widget.chatModel?["id"]);
-                                                });
-                                          });
-                                        },
-                                        child: Text("Send photo", style: TextStyle(color: Colors.white)),
-                                        style: ElevatedButton.styleFrom(
-                                          padding: EdgeInsets.all(5),
-                                          backgroundColor: darkbrown, // <-- Button color
-                                          foregroundColor: tan, // <-- Splash color
+                                      Container(
+                                        child: InkWell(
+                                          onTap: (){
+                                            setState(() {
+                                              showModalBottomSheet(
+                                                  context: context,
+                                                  builder: (BuildContext bc) {
+                                                    return ImageModal(docId: widget.chatModel?["id"], sender: widget.chatModel?["id"]);
+                                                  });
+                                            });
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.add_a_photo, color: Colors.white,),
+                                              Text("Send Photo", style: TextStyle(color: Colors.white,)),
+                                            ],
+                                          ),
+                                        ),
+                                        padding: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                                          color: darkbrown,
                                         ),
                                       ),
-                                    ]
+                                    ],
                                 ),
 
 

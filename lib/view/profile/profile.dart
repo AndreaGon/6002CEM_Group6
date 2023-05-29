@@ -2,6 +2,8 @@ import 'package:bookbridge/res/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:bookbridge/view/home/side_navi.dart';
 import 'package:bookbridge/view/inbox/inbox.dart';
+import 'package:bookbridge/view_model/profile_viewmodel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -11,11 +13,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  String username = "Example1";
-  String email = "example@mail.com";
-  String ratings = "0.0";
-  String birthdate = "01-01-2001";
-  String gender = "Female";
+  //fetch current user id from firebase auth instance
+  String userID = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +56,8 @@ class _ProfileState extends State<Profile> {
                   margin: const EdgeInsets.all(15.0),
                   decoration: const BoxDecoration(
                       border: Border(
-                        bottom: BorderSide(width: 5, color: chocolate),
-                      )),
+                    bottom: BorderSide(width: 5, color: chocolate),
+                  )),
                   child: const Text("Profile",
                       style: TextStyle(
                           height: 2,
@@ -67,171 +66,195 @@ class _ProfileState extends State<Profile> {
                           fontWeight: FontWeight.bold)),
                 ),
               ),
-              SizedBox(
-                width: 250,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox( //spacing
-                      height: 30,
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        "Username: ",
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
+              FutureBuilder(
+                future: ProfileVM().getProfile(userID),
+                builder: (context, AsyncSnapshot documentSnapshot) {
+                  if (documentSnapshot.data == null) {
+                    return SizedBox(
                       width: 250,
-                      child: Container(
-                        padding: const EdgeInsets.all(13.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(13),
-                        ),
+                      child: Align(
+                        alignment: Alignment.center,
                         child: Text(
-                          username,
+                          "Something went wrong while fetching for user data...",
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
+                            fontSize: 20,
+                            color: darkbrown,
+                            fontStyle: FontStyle.italic,
                           ),
                         ),
                       ),
-                    ), //text box for username
-                    const SizedBox(
-                      //spacing
-                      height: 15,
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        "Email Address: ",
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.black,
+                    );
+                  }
+                  Map<String, dynamic> userInfoModel = documentSnapshot.data;
+                  return SizedBox(
+                    width: 250,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          //spacing
+                          height: 30,
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 300,
-                      child: Container(
-                        padding: const EdgeInsets.all(13.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(13),
-                        ),
-                        child: Text(
-                          email,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: const Text(
+                            "Username: ",
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
-                      ),
-                    ),//text box for email
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        "Ratings: ",
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.black,
+                        SizedBox(
+                          width: 250,
+                          child: Container(
+                            padding: const EdgeInsets.all(13.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(13),
+                            ),
+                            child: Text(
+                              userInfoModel['username'],
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
+                        ), //text box for username
+                        const SizedBox(
+                          //spacing
+                          height: 15,
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 300,
-                      child: Container(
-                        padding: const EdgeInsets.all(13.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(13),
-                        ),
-                        child: Text(
-                          ratings,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: const Text(
+                            "Email Address: ",
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
-                      ),
-                    ), //text box for ratings
-                    const SizedBox(
-                      //spacing
-                      height: 15,
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        "Birth Date: ",
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.black,
+                        SizedBox(
+                          width: 300,
+                          child: Container(
+                            padding: const EdgeInsets.all(13.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(13),
+                            ),
+                            child: Text(
+                              userInfoModel['email'],
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
+                        ), //text box for email
+                        const SizedBox(
+                          height: 15,
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 300,
-                      child: Container(
-                        padding: const EdgeInsets.all(13.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(13),
-                        ),
-                        child: Text(
-                          birthdate,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: const Text(
+                            "Ratings: ",
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
-                      ),
-                    ), //text field for birthdate
-                    const SizedBox(
-                      //spacing
-                      height: 15,
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        "Gender: ",
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.black,
+                        SizedBox(
+                          width: 300,
+                          child: Container(
+                            padding: const EdgeInsets.all(13.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(13),
+                            ),
+                            child: Text(
+                              userInfoModel['ratings'],
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
+                        ), //text box for ratings
+                        const SizedBox(
+                          //spacing
+                          height: 15,
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 300,
-                      child: Container(
-                        padding: const EdgeInsets.all(13.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(13),
-                        ),
-                        child: Text(
-                          gender,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: const Text(
+                            "Birth Date: ",
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
-                      ),
-                    ), //text box for gender
-                    const SizedBox(
-                      //spacing
-                      height: 15,
-                    ), //need help and sign in if got acc
-                  ],
-                ),
+                        SizedBox(
+                          width: 300,
+                          child: Container(
+                            padding: const EdgeInsets.all(13.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(13),
+                            ),
+                            child: Text(
+                              userInfoModel['birthdate'],
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
+                        ), //text field for birthdate
+                        const SizedBox(
+                          //spacing
+                          height: 15,
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: const Text(
+                            "Gender: ",
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 300,
+                          child: Container(
+                            padding: const EdgeInsets.all(13.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(13),
+                            ),
+                            child: Text(
+                              userInfoModel['gender'],
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
+                        ), //text box for gender
+                        const SizedBox(
+                          //spacing
+                          height: 15,
+                        ), //need help and sign in if got acc
+                      ],
+                    ),
+                  );
+                },
               ),
+
             ],
           ),
         ),
