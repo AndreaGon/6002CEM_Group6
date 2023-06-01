@@ -21,8 +21,8 @@ class _AddBookState extends State<AddBook> {
 
   File? _coverphoto;
   File? _conditionphoto;
-  late String BookCover;
-  late String BookCondition;
+  late String BookCover = '';
+  late String BookCondition = '';
   final ImagePicker _picker = ImagePicker();
 
   //declare controllers for each textfield
