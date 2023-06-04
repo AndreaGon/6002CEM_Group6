@@ -14,7 +14,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   //fetch current user id from firebase auth instance
-  String userID = FirebaseAuth.instance.currentUser!.uid;
+  String currentUserID = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               FutureBuilder(
-                future: ProfileVM().getProfile(userID),
+                future: ProfileVM().getProfile(currentUserID),
                 builder: (context, AsyncSnapshot documentSnapshot) {
                   if (documentSnapshot.data == null) {
                     return SizedBox(
@@ -175,7 +175,7 @@ class _ProfileState extends State<Profile> {
                               borderRadius: BorderRadius.circular(13),
                             ),
                             child: Text(
-                              userInfoModel['ratings'],
+                              ProfileVM().getRating(currentUserID).toString(),
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 17,

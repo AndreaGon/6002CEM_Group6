@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 
 class LoginVM{
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  String currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
   Future login(BuildContext context,String email, String password) async{
     try{
@@ -28,7 +28,7 @@ class LoginVM{
   }
 
   getCurrentUserId() {
-    return _auth.currentUser!.uid;
+    return currentUserId;
   }
 
   Future<void> signOut() async {
