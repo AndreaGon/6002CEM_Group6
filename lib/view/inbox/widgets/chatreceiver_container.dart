@@ -5,13 +5,14 @@ import '../../../res/colors.dart';
 import '../../../view_model/chats_viewmodel.dart';
 
 class ChatReceiverContainer extends StatelessWidget {
-  ChatReceiverContainer({Key? key, required this.message, required this.type, required this.sender}) : super(key: key);
+  ChatReceiverContainer({Key? key, required this.message, required this.type, required this.sender, this.sub_name}) : super(key: key);
 
   ChatsVM chatsVM = ChatsVM();
 
   final String message;
   final String type;
   final String sender;
+  final String? sub_name;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,6 @@ class ChatReceiverContainer extends StatelessWidget {
           child: new Column(
             children: [
               Container(
-
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Column(
@@ -49,7 +49,7 @@ class ChatReceiverContainer extends StatelessWidget {
 
                         Align(
                           alignment: Alignment.topLeft,
-                          child: chatsVM.isATextMessage(type, message),
+                          child: chatsVM.isATextMessage(type, message, context, sub_name),
                         )
                       ],
                     ),

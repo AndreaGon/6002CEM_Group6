@@ -4,7 +4,7 @@ class Users {
   final String email;
   final String birthdate;
   final String gender;
-  final double rating;
+  final String rating;
 
   Users({
     required this.id,
@@ -21,7 +21,7 @@ class Users {
     'email': email,
     'gender': gender,
     'birthdate': birthdate,
-    'rating' : 0.0,
+    'rating': '0.0',
   };
 
 }

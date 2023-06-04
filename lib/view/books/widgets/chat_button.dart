@@ -18,7 +18,6 @@ class ChatButton extends StatefulWidget {
 
 class _ChatButtonState extends State<ChatButton> {
   InboxVM inboxVM = InboxVM();
-
   LoginVM loginVM = LoginVM();
 
   @override

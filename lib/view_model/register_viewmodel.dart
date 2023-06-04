@@ -1,40 +1,41 @@
+import 'package:bookbridge/models/rating_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bookbridge/models/user_model.dart';
 import 'package:flutter/material.dart';
 
-
 class RegisterVM {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future register(BuildContext context,String username, String email, String birthdate, String gender, String password) async{
+  Future register(BuildContext context, String username, String email,
+      String birthdate, String gender, String password) async {
     String createUsername = username;
     String createEmail = email;
     String createBirthdate = birthdate;
     String createGender = gender;
-    try{
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    try {
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       createNewUser(createUsername, createEmail, createGender, createBirthdate);
+      createInitialRating(createUsername);
       return "ok";
-    }on FirebaseAuthException catch(e){
+    } on FirebaseAuthException catch (e) {
       print(e);
-      if(e.code == 'weak-password'){
+      if (e.code == 'weak-password') {
         return "Password too weak! Please change your password!";
-      }
-      else if(e.code == 'email-already-in-use'){
+      } else if (e.code == 'email-already-in-use') {
         return "Email already registered, please login or register with another email!";
-      }
-      else{
+      } else {
         return "Unknown error occurred...";
       }
     }
   }
 
-  //function to create new user in firesore db
-  Future createNewUser(String createUsername, String createEmail, createGender, String createBirthdate) async {
+  //function to create new user in firestore db
+  Future createNewUser(String createUsername, String createEmail, createGender,
+      String createBirthdate) async {
     final docPost = FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid);
@@ -44,11 +45,22 @@ class RegisterVM {
       username: createUsername,
       gender: createGender,
       birthdate: createBirthdate,
-      rating : 0.0,
+      rating: '0.0',
+    );
+
+    await docPost.set(postJson.toJson());
+  }
+
+  //create initial rating document for the user as well in ratings collection (as firestore cannot create empty collection...)
+  Future createInitialRating(String createUsername) async {
+    final docPost = FirebaseFirestore.instance
+        .collection('ratings')
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+    RatingRegis postJson = RatingRegis(
+      id: FirebaseAuth.instance.currentUser!.uid,
+      username: createUsername,
     );
 
     await docPost.set(postJson.toJson());
   }
 }
-
-
