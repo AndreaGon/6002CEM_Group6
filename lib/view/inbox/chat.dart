@@ -69,8 +69,7 @@ class _ChatState extends State<Chat> {
                     Expanded(
                         flex: 4,
                         child: StreamBuilder(
-                            stream:
-                                chatsVM.getAllMessages(widget.chatModel?["id"]),
+                            stream: chatsVM.getAllMessages(widget.chatModel?["id"]),
                             builder: (context, AsyncSnapshot snapshot) {
                               if (!snapshot.hasData) {
                                 return Center(

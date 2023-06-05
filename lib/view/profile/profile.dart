@@ -15,9 +15,23 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   //fetch current user id from firebase auth instance
   String currentUserID = FirebaseAuth.instance.currentUser!.uid;
+  String rating = '0.0';
+
+  fetchRating() async{
+    bool _initialRating = await ProfileVM().initialRating(currentUserID);
+
+    if(_initialRating == true){
+      rating = "0.0"; //display 0.0 for rating if the initial rating document is found(none rated)
+    }
+    else{
+      rating = await ProfileVM().getRating(currentUserID);
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
+    fetchRating();  //run the function to get rating first
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: const BoxDecoration(
@@ -175,7 +189,7 @@ class _ProfileState extends State<Profile> {
                               borderRadius: BorderRadius.circular(13),
                             ),
                             child: Text(
-                              ProfileVM().getRating(currentUserID).toString(),
+                              rating,
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 17,

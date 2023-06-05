@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 
 class RegisterVM {
 
-  Future register(BuildContext context, String username, String email,
-      String birthdate, String gender, String password) async {
+  Future register(BuildContext context, String username, String email, String birthdate, String gender, String password) async {
     String createUsername = username;
     String createEmail = email;
     String createBirthdate = birthdate;
@@ -18,8 +17,9 @@ class RegisterVM {
         email: email,
         password: password,
       );
-      createNewUser(createUsername, createEmail, createGender, createBirthdate);
-      createInitialRating(createUsername);
+      createNewUser(createUsername, createEmail, createGender, createBirthdate); //create user document in db
+      createRatingInfo(createUsername); //create user rating document info
+      createInitialRating(); //insert first rating as collection cannot be empty
       return "ok";
     } on FirebaseAuthException catch (e) {
       print(e);
@@ -51,8 +51,8 @@ class RegisterVM {
     await docPost.set(postJson.toJson());
   }
 
-  //create initial rating document for the user as well in ratings collection (as firestore cannot create empty collection...)
-  Future createInitialRating(String createUsername) async {
+  //create initial rating info
+  Future createRatingInfo(String createUsername) async {
     final docPost = FirebaseFirestore.instance
         .collection('ratings')
         .doc(FirebaseAuth.instance.currentUser!.uid);
@@ -63,4 +63,17 @@ class RegisterVM {
 
     await docPost.set(postJson.toJson());
   }
+
+  //create initial rating document for the user as well in ratings collection (as firestore cannot create empty collection...)
+  Future createInitialRating() async {
+    String ratingCollection = 'ratings/' + FirebaseAuth.instance.currentUser!.uid + '/all_ratings';
+    await FirebaseFirestore.instance.collection(ratingCollection.replaceAll(' ', ''))
+        .add({
+      'id' : FirebaseAuth.instance.currentUser!.uid,
+      'ratedBy': 'none',
+      'rating': '0.0',
+    });
+  }
 }
+
+
