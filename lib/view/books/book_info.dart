@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 import '../../res/colors.dart';
 import '../../view_model/bookinfo_viewmodel.dart';
 import '../../view_model/inbox_view_model.dart';
-import '../../view_model/rating_viewmodel.dart';
 import '../home/homepage.dart';
 import '../home/side_navi.dart';
-import '../inbox/chat.dart';
 import '../inbox/inbox.dart';
 import 'package:bookbridge/view_model/profile_viewmodel.dart';
 
@@ -18,25 +16,14 @@ class BookInfo extends StatelessWidget{
   InboxVM inboxVM = InboxVM();
   LoginVM loginVM = LoginVM();
   ProfileVM profileVM = ProfileVM();
-  RatingVM ratingVM = RatingVM();
 
   //book id that passed from previous page: home page or search
   BookInfo({super.key, required this.bookId, required this.uploadedBy});
   final String bookId;
   final String uploadedBy;
 
-  //get seller's total number of rater for rating display
-  int _sellerTotalRater = 0;
-  getSellerRatingInfo() async{
-    Map<String, dynamic> sellerRating = await ratingVM.getAccumulateRating(uploadedBy);
-    _sellerTotalRater = sellerRating['totalRater'];
-  }
-
   @override
   Widget build(BuildContext context) {
-
-
-
     return Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -216,10 +203,7 @@ class BookInfo extends StatelessWidget{
                                                             alignment: Alignment.centerLeft,
                                                             child: Container(
                                                                 padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                                                child:
-                                                                (_sellerTotalRater == 0)
-                                                                ? Text("Ratings: Not Rated", style: TextStyle(fontSize: 16,))
-                                                                : Text("Ratings: ${uploaderModel['rating']}", style: TextStyle(fontSize: 16,))
+                                                                child: Text("Ratings: ${uploaderModel['rating']}", style: TextStyle(fontSize: 16,))
                                                             ),
                                                           ),
 

@@ -14,12 +14,6 @@ class Profile extends StatelessWidget {
   String currentUserID = FirebaseAuth.instance.currentUser!.uid;
   RatingVM ratingVM = RatingVM();
 
-  //get user's total number of rater for rating display
-  int _totalRater = 0;
-  getSellerRatingInfo() async{
-    Map<String, dynamic> sellerRating = await ratingVM.getAccumulateRating(currentUserID);
-    _totalRater = sellerRating['totalRater'];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -181,9 +175,7 @@ class Profile extends StatelessWidget {
                               borderRadius: BorderRadius.circular(13),
                             ),
                             child: Text(
-                              (_totalRater == 0)
-                              ? "Not Rated"
-                              : userInfoModel['rating'],
+                              userInfoModel['rating'],
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 17,
