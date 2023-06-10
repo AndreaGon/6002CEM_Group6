@@ -64,7 +64,7 @@ class RatingVM{
           .update({
         'id' : currentUserId,
         'ratedBy': currentUserId,
-        'rating': rating.toString(),
+        'rating': rating.toStringAsFixed(2),
       });
       return "ok";
     } catch(error){
@@ -103,7 +103,7 @@ class RatingVM{
     try {
       await FirebaseFirestore.instance.collection('ratings').doc(sellerId)
           .update({
-        'accumulateRating' : accumulateRating.toString(),
+        'accumulateRating' : accumulateRating.toStringAsFixed(2),
         'totalRater': totalRater
       });
       return "ok";
@@ -117,7 +117,7 @@ class RatingVM{
     try {
       await FirebaseFirestore.instance.collection('users').doc(sellerId)
           .update({
-        'rating' : averageRating.toString()
+        'rating' : averageRating.toStringAsFixed(2)
       });
       return "ok";
     } catch(error){
