@@ -5,17 +5,21 @@ import 'package:bookbridge/view/inbox/inbox.dart';
 import 'package:bookbridge/view_model/profile_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+import '../../view_model/rating_viewmodel.dart';
 
-  @override
-  State<Profile> createState() => _ProfileState();
-}
+class Profile extends StatelessWidget {
+  Profile({Key? key}) : super(key: key);
 
-class _ProfileState extends State<Profile> {
   //fetch current user id from firebase auth instance
   String currentUserID = FirebaseAuth.instance.currentUser!.uid;
+  RatingVM ratingVM = RatingVM();
 
+  //get user's total number of rater for rating display
+  int _totalRater = 0;
+  getSellerRatingInfo() async{
+    Map<String, dynamic> sellerRating = await ratingVM.getAccumulateRating(currentUserID);
+    _totalRater = sellerRating['totalRater'];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +181,9 @@ class _ProfileState extends State<Profile> {
                               borderRadius: BorderRadius.circular(13),
                             ),
                             child: Text(
-                              userInfoModel['rating'],
+                              (_totalRater == 0)
+                              ? "Not Rated"
+                              : userInfoModel['rating'],
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 17,
