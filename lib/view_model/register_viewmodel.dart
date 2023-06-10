@@ -59,6 +59,8 @@ class RegisterVM {
     RatingRegis postJson = RatingRegis(
       id: FirebaseAuth.instance.currentUser!.uid,
       username: createUsername,
+      accumulateRating: '0.0',
+      totalRaters: 0,
     );
 
     await docPost.set(postJson.toJson());

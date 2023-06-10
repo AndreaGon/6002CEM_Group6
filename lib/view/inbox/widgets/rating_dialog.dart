@@ -28,8 +28,14 @@ class _RatingDialogState extends State<RatingDialog> {
     Map<String, dynamic> userInfo = await loginVM.getUserInformation(currentUserId);
     Map<String, dynamic> sellerInfo = await ratingVM.getSellerInfo(widget.sub_name); //get seller id based on seller name
 
+
     String _sellerId = sellerInfo["id"]; //store seller's uid
     bool _isRated = await ratingVM.isRated(_sellerId, currentUserId);
+
+    //fetch seller's accumulate rating and total raters for info update
+    Map<String, dynamic> sellerRating = await ratingVM.getAccumulateRating(_sellerId);
+    double sellerAccumulateRating = sellerRating['accumulateRating'];
+    int sellerTotalRater = sellerRating['totalRater'];
 
 
     if(userInfo["username"] == widget.sub_name){ //check if the seller is rating themselves lol
@@ -49,7 +55,7 @@ class _RatingDialogState extends State<RatingDialog> {
       return;
     }
     else{
-      ratingSubmitStatus = await ratingVM.rateSeller(rating, _sellerId); //call function to submit rating to db and display the status
+      ratingSubmitStatus = await ratingVM.rateSeller(rating, _sellerId, sellerAccumulateRating, sellerTotalRater); //call function to submit rating to db and display the status
 
       if(ratingSubmitStatus == "ok"){ //rating successfully submitted
         Fluttertoast.showToast(

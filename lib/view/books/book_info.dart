@@ -9,12 +9,14 @@ import '../home/homepage.dart';
 import '../home/side_navi.dart';
 import '../inbox/chat.dart';
 import '../inbox/inbox.dart';
+import 'package:bookbridge/view_model/profile_viewmodel.dart';
 
 class BookInfo extends StatelessWidget{
   //get book info view model
   BookInfoVM bookinfoVM = BookInfoVM();
   InboxVM inboxVM = InboxVM();
   LoginVM loginVM = LoginVM();
+  ProfileVM profileVM = ProfileVM();
 
   //book id that passed from previous page: home page or search
   BookInfo({super.key, required this.bookId, required this.uploadedBy});
@@ -177,33 +179,46 @@ class BookInfo extends StatelessWidget{
                                               elevation: 5,
                                               color: white,
                                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                              child:Container(
-                                                padding: const EdgeInsets.all(20),
-                                                child: Column(
-                                                    children: [
+                                              child: FutureBuilder(
+                                                future: profileVM.getProfile(uploadedBy),
+                                                builder: (context, AsyncSnapshot uploaderSnapshot){
+                                                  if(uploaderSnapshot.data == null){
+                                                    return Container(
+                                                      padding: const EdgeInsets.all(20),
+                                                      child:  Text("Something went wrong when fetching uploader info...",
+                                                                    style: TextStyle(fontSize: 16,),),);
+                                                  }
 
-                                                      Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Container(
-                                                            padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                                            child: Text("Uploaded by: ", style: TextStyle(fontSize: 16))
-                                                        ),
-                                                      ),
+                                                  Map<String, dynamic> uploaderModel = uploaderSnapshot.data;
+                                                  return Container(
+                                                    padding: const EdgeInsets.all(20),
+                                                    child: Column(
+                                                        children: [
 
-                                                      Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Container(
-                                                            padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                                            child: Text("Ratings: ", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
-                                                        ),
-                                                      ),
+                                                          Align(
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Container(
+                                                                padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                                                child: Text("Uploaded by: ${uploaderModel['username']}", style: TextStyle(fontSize: 16))
+                                                            ),
+                                                          ),
 
-                                                      const SizedBox(height: 20),
+                                                          Align(
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Container(
+                                                                padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                                                child: Text("Ratings: ${uploaderModel['rating']}", style: TextStyle(fontSize: 16,))
+                                                            ),
+                                                          ),
 
-                                                      ChatButton(bookModel: bookModel, uploadedBy: uploadedBy)
+                                                          const SizedBox(height: 20),
 
-                                                    ]
-                                                ),
+                                                          ChatButton(bookModel: bookModel, uploadedBy: uploadedBy)
+
+                                                        ]
+                                                    ),
+                                                  );
+                                                }
                                               ),
                                             ),
 

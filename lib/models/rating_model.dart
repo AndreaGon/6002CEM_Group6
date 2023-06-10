@@ -20,14 +20,20 @@ class Rating {
 class RatingRegis{
   final String id;
   final String username;
+  final String accumulateRating;
+  final int totalRaters;
 
   RatingRegis({
     required this.id,
-    required this.username
+    required this.username,
+    required this.accumulateRating,
+    required this.totalRaters
   });
 
   Map<String, dynamic> toJson() =>{
     'id': id,
-    'username': username
+    'username': username,
+    'accumulateRating': accumulateRating,
+    'totalRaters' : totalRaters
   };
 }
