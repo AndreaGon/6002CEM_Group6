@@ -69,12 +69,16 @@ class RegisterVM {
   //create initial rating document for the user as well in ratings collection (as firestore cannot create empty collection...)
   Future createInitialRating() async {
     String ratingCollection = 'ratings/' + FirebaseAuth.instance.currentUser!.uid + '/all_ratings';
-    await FirebaseFirestore.instance.collection(ratingCollection.replaceAll(' ', ''))
-        .add({
-      'id' : FirebaseAuth.instance.currentUser!.uid,
-      'ratedBy': 'none',
-      'rating': '0.0',
-    });
+    final docPost = FirebaseFirestore.instance
+        .collection(ratingCollection.replaceAll(' ', ''))
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+    Rating postJson = Rating(
+      id: FirebaseAuth.instance.currentUser!.uid,
+      ratedBy: "none",
+      rating: "0.0"
+    );
+
+    await docPost.set(postJson.toJson());
   }
 }
 

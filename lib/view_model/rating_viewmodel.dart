@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../models/rating_model.dart';
+
 
 class RatingVM{
   String currentUserId = FirebaseAuth.instance.currentUser!.uid;
@@ -12,13 +14,14 @@ class RatingVM{
   //function for submitting rating
   Future<String> rateSeller(double rating, String sellerId, double sellerAccumulateRating, int sellerTotalRater) async{
     String ratingCollection = 'ratings/' + sellerId + '/all_ratings';
+    String documentId = "";
     //compute new average rating, accumulate rating and total raters
     accumulateRating = sellerAccumulateRating + rating;
     totalRater = sellerTotalRater + 1;
     averageRating = accumulateRating / totalRater;
 
     //check if the seller is rated before,
-    QuerySnapshot querySnapshot= await FirebaseFirestore.instance.collection(ratingCollection.replaceAll(' ', '')).where("ratedBy", isEqualTo: "none").get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection(ratingCollection.replaceAll(' ', '')).where("ratedBy", isEqualTo: "none").get();
     if(querySnapshot.docs.length == 0){ //if yes (no initial created doc found)
       submitRatingtoDB(rating, sellerId, currentUserId); //submit new rating
       updateAccumulateRating(accumulateRating, totalRater, sellerId); //update accumulate rating of the seller
@@ -72,17 +75,22 @@ class RatingVM{
   //submit rating for the seller
   Future<String> submitRatingtoDB(double rating, String sellerId, String currentUserId) async{
     String ratingCollection = 'ratings/' + sellerId + '/all_ratings';
-    try {
-      await FirebaseFirestore.instance.collection(ratingCollection.replaceAll(' ', ''))
-          .add({
-        'id' : currentUserId,
-        'ratedBy': currentUserId,
-        'rating': rating.toString(),
-      });
+
+    try{
+      final docPost = FirebaseFirestore.instance
+          .collection(ratingCollection.replaceAll(' ', ''))
+          .doc(FirebaseAuth.instance.currentUser!.uid);
+      Rating postJson = Rating(
+          id: FirebaseAuth.instance.currentUser!.uid,
+          ratedBy: "none",
+          rating: "0.0"
+      );
+      await docPost.set(postJson.toJson());
       return "ok";
     } catch(error){
       return "Failed upload rating: ${error.toString()}";
     }
+
   }
 
   Future getAccumulateRating(String sellerId) async{
