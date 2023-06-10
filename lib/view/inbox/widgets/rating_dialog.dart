@@ -34,7 +34,7 @@ class _RatingDialogState extends State<RatingDialog> {
 
     //fetch seller's accumulate rating and total raters for info update
     Map<String, dynamic> sellerRating = await ratingVM.getAccumulateRating(_sellerId);
-    double sellerAccumulateRating = sellerRating['accumulateRating'];
+    double sellerAccumulateRating = double.parse(sellerRating['accumulateRating']);
     int sellerTotalRater = sellerRating['totalRater'];
 
 

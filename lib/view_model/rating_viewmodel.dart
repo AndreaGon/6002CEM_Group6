@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -21,18 +20,17 @@ class RatingVM{
     //check if the seller is rated before,
     QuerySnapshot querySnapshot= await FirebaseFirestore.instance.collection(ratingCollection.replaceAll(' ', '')).where("ratedBy", isEqualTo: "none").get();
     if(querySnapshot.docs.length == 0){ //if yes (no initial created doc found)
-      ratingSubmitStatus = submitRatingtoDB(rating, sellerId, currentUserId).toString(); //submit new rating
-      ratingSubmitStatus = updateAccumulateRating(accumulateRating, totalRater, sellerId).toString(); //update accumulate rating of the seller
-      ratingSubmitStatus = updateAverageRating(averageRating, sellerId).toString(); //update average rating info
-      return ratingSubmitStatus;
+      submitRatingtoDB(rating, sellerId, currentUserId); //submit new rating
+      updateAccumulateRating(accumulateRating, totalRater, sellerId); //update accumulate rating of the seller
+      updateAverageRating(averageRating, sellerId); //update average rating info
     }
     else{ //if found initial rating doc(never rated by others before)
-      ratingSubmitStatus = submitInitialRatingtoDB(rating, sellerId, currentUserId).toString(); //call function to update the initial document for first rating
-      ratingSubmitStatus = updateAccumulateRating(accumulateRating, totalRater, sellerId).toString(); //update accumulate rating of the seller
-      ratingSubmitStatus = updateAverageRating(averageRating, sellerId).toString(); //update average rating info
-      return ratingSubmitStatus;
+      submitInitialRatingtoDB(rating, sellerId, currentUserId); //call function to update the initial document for first rating
+      updateAccumulateRating(accumulateRating, totalRater, sellerId); //update accumulate rating of the seller
+      updateAverageRating(averageRating, sellerId); //update average rating info
     }
 
+    return "ok";
   }
 
   //get seller username for sub_name comparison
@@ -63,7 +61,7 @@ class RatingVM{
           .update({
         'id' : currentUserId,
         'ratedBy': currentUserId,
-        'rating': rating,
+        'rating': rating.toString(),
       });
       return "ok";
     } catch(error){
