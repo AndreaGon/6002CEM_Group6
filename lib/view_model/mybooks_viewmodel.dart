@@ -15,7 +15,9 @@ class MyBooksVM {
 
   //get user id to find books
   Stream getMyBooks() {
-    Stream<QuerySnapshot> querySnapshot=  FirebaseFirestore.instance.collection('books').where("uploaded_by", isEqualTo: userId).snapshots();
+    Stream<QuerySnapshot> querySnapshot=FirebaseFirestore.instance
+        .collection('books').where("uploaded_by", isEqualTo: userId)
+        .snapshots();
     return querySnapshot;
   }
 

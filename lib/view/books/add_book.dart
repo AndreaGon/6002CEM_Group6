@@ -440,7 +440,7 @@ class _AddBookState extends State<AddBook> {
         );
       } else {
         Fluttertoast.showToast(
-          msg: "Please choose a book cover.",
+          msg: "Please choose a book condition image.",
           gravity: ToastGravity.BOTTOM,
         );
       }
