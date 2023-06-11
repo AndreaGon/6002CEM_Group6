@@ -20,7 +20,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       //load background image
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -90,6 +89,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
+
                   //Looping of book cards
                   StreamBuilder(
                     //get books order by latest
