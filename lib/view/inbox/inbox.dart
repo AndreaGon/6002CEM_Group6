@@ -61,59 +61,61 @@ class Inbox extends StatelessWidget {
                           if (snapshot.data == null) {
                             return Container();
                           }
-                          return ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: snapshot.data!.docs.length,
-                            itemBuilder: (context, index) {
-                              Map<String, dynamic> chatModel = snapshot.data?.docs[index].data();
-                              return Container(
-                                  margin: const EdgeInsets.all(15.0),
-                                  padding: const EdgeInsets.all(15.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 5,
-                                        blurRadius: 7,
-                                        offset: Offset(0, 3), // changes position of shadow
+                          return Expanded(
+                            child: ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.docs.length,
+                                itemBuilder: (context, index) {
+                                  Map<String, dynamic> chatModel = snapshot.data?.docs[index].data();
+                                  return Container(
+                                      margin: const EdgeInsets.all(15.0),
+                                      padding: const EdgeInsets.all(15.0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 5,
+                                            blurRadius: 7,
+                                            offset: Offset(0, 3), // changes position of shadow
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                  child: new InkWell(
-                                    onTap: () async{
-                                      String currentUserId = await loginVM.getCurrentUserId();
-                                      Map<String, dynamic> userInfo = await loginVM.getUserInformation(currentUserId);
+                                      child: new InkWell(
+                                          onTap: () async{
+                                            String currentUserId = await loginVM.getCurrentUserId();
+                                            Map<String, dynamic> userInfo = await loginVM.getUserInformation(currentUserId);
 
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(chatModel: chatModel, userModel: userInfo)));
-                                    },
-                                    child: new Column(
-                                      children: [
-                                        Container(
-                                            decoration: BoxDecoration(
-                                                border: Border(bottom: BorderSide(width: 3, color: chocolate))
-                                            ),
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: new Text(chatModel["chat_name"],
-                                                  style: TextStyle(height: 2, fontSize: 15, color: darkbrown, fontWeight: FontWeight.bold)),
-                                            )
-                                        ),
-                                        Align(
-                                          alignment: Alignment.topLeft,
-                                          child: new Text("Seller: " + chatModel["sub_name"],
-                                              style: TextStyle(height: 2, fontSize: 13, color: darkbrown)),
-                                        )
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(chatModel: chatModel, userModel: userInfo)));
+                                          },
+                                          child: new Column(
+                                            children: [
+                                              Container(
+                                                  decoration: BoxDecoration(
+                                                      border: Border(bottom: BorderSide(width: 3, color: chocolate))
+                                                  ),
+                                                  child: Align(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: new Text(chatModel["chat_name"],
+                                                        style: TextStyle(height: 2, fontSize: 15, color: darkbrown, fontWeight: FontWeight.bold)),
+                                                  )
+                                              ),
+                                              Align(
+                                                alignment: Alignment.topLeft,
+                                                child: new Text("Seller: " + chatModel["sub_name"],
+                                                    style: TextStyle(height: 2, fontSize: 13, color: darkbrown)),
+                                              )
 
-                                      ],
+                                            ],
 
-                                    )
-                                  )
-                              );
-                            }
+                                          )
+                                      )
+                                  );
+                                }
 
+                            )
                           );
                         },
                       future: inboxVM.getAllInbox()

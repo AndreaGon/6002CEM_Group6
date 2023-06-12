@@ -119,7 +119,7 @@ class _ChatState extends State<Chat> {
                                                     builder: (BuildContext bc) {
                                                       return ImageModal(
                                                           docId: widget.chatModel?["id"],
-                                                          sender: widget.chatModel?["id"]);
+                                                          sender: widget.userModel?["username"]);
                                                       });
                                               });
                                             },
