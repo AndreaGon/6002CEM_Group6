@@ -21,19 +21,19 @@ class RatingRegis{
   final String id;
   final String username;
   final String accumulateRating;
-  final int totalRaters;
+  final int totalRater;
 
   RatingRegis({
     required this.id,
     required this.username,
     required this.accumulateRating,
-    required this.totalRaters
+    required this.totalRater
   });
 
   Map<String, dynamic> toJson() =>{
     'id': id,
     'username': username,
     'accumulateRating': accumulateRating,
-    'totalRaters' : totalRaters
+    'totalRater' : totalRater
   };
 }
